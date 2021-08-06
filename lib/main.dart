@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/views/login.view.dart';
 import 'package:nicotine/views/register.view.dart';
 import 'package:nicotine/views/signup.view.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          primaryColor: HexColor('#677DB7'),
           primarySwatch: Colors.green,
         ),
         home: PageView(

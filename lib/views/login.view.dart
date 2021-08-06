@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/components/logo.components.dart';
 
 class LoginView extends StatefulWidget {
   LoginView(
@@ -35,34 +36,8 @@ class _LoginViewState extends State<LoginView> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
             ),
-            Center(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: <Widget>[
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      color: HexColor('#677DB7'),
-                    ),
-                  ),
-                  Positioned(
-                    top: 35,
-                    right: -15,
-                    child: Text(
-                      'Nicotine',
-                      style: TextStyle(
-                        color: HexColor('#F4F5F5'),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.italic,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            LogoComponent(
+              size: 120,
             ),
             Spacer(),
             Padding(
