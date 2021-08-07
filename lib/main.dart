@@ -13,19 +13,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: HexColor('#677DB7'),
-          primarySwatch: Colors.green,
-        ),
-        home: PageView(
-          controller: _pController,
-          children: <Widget>[
-            RegisterView(),
-            LoginView(_pController),
-            SignUpView(),
-          ],
-        ));
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: HexColor('#677DB7'),
+        primarySwatch: Colors.green,
+      ),
+      home: PageView(
+        controller: _pController,
+        children: <Widget>[
+          RegisterView(),
+          LoginView(_pController),
+          SignUpView(),
+        ],
+      ),
+    );
   }
 }
