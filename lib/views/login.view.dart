@@ -20,8 +20,8 @@ class _LoginViewState extends State<LoginView> {
           decoration: BoxDecoration(
             color: HexColor('#1B2A41'),
             image: DecorationImage(
-              fit: BoxFit.cover,
-              image: ExactAssetImage('assets/background2.jpg'),
+              fit: BoxFit.fill,
+              image: ExactAssetImage('assets/startBg.jpg'),
               colorFilter: ColorFilter.mode(
                 HexColor('#1B2A41').withOpacity(0.15),
                 BlendMode.dstATop,

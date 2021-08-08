@@ -3,7 +3,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:nicotine/views/register.view.dart';
 import 'package:nicotine/views/signup.view.dart';
-import 'home.view.dart';
 
 class IntroductionView extends StatefulWidget {
   @override
@@ -11,12 +10,6 @@ class IntroductionView extends StatefulWidget {
 }
 
 class _IntroductionViewState extends State<IntroductionView> {
-  // void _onIntroEnd(context) {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(builder: (_) => HomeView()),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
@@ -43,7 +36,37 @@ class _IntroductionViewState extends State<IntroductionView> {
               ),
             ),
           ),
-          body: 'Seja bem vindo ao Nicotine!',
+          bodyWidget: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Column(
+              children: [
+                Text(
+                  'Seja bem vindo ao Nicotine',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 30),
+                  height: MediaQuery.of(context).size.height / 2.5,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: ExactAssetImage('assets/cutCigarrete.jpg'),
+                    ),
+                  ),
+                ),
+                Text(
+                  'Estamos muito contentes por teres dado este primeiro passo rumo a uma vida sem cigarros!',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
         ),
         PageViewModel(
           titleWidget: Padding(
@@ -56,7 +79,37 @@ class _IntroductionViewState extends State<IntroductionView> {
               ),
             ),
           ),
-          body: 'O primeiro maço é o mais dificil!',
+          bodyWidget: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Column(
+              children: [
+                Text(
+                  'O caminho para uma vida sem cigarros não será fácil!',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 30),
+                  height: MediaQuery.of(context).size.height / 2.5,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: ExactAssetImage('assets/progress.jpg'),
+                    ),
+                  ),
+                ),
+                Text(
+                  'Lutar contra a abstinencia não será fácil, vai ser preciso muita determinação! vamos tentar ajuda-lo, mas lembre-se que só você pode tomar o controle de sua vida de volta.',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
         ),
         PageViewModel(
           titleWidget: Padding(

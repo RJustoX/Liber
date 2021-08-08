@@ -20,6 +20,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           Expanded(
             child: Container(
+              height: double.maxFinite,
               width: double.maxFinite,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(

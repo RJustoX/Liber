@@ -23,7 +23,10 @@ class CardComponent extends StatelessWidget {
                 child: Text(
                   'Titulo',
                   style: TextStyle(
-                      color: HexColor('#1B2A41'), fontSize: 22, fontWeight: FontWeight.w600),
+                    color: HexColor('#1B2A41'),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Padding(
@@ -31,7 +34,10 @@ class CardComponent extends StatelessWidget {
                 child: Text(
                   'Descrição do modulo, um breve resumo da funcionalidade!',
                   style: TextStyle(
-                      color: HexColor('#1B2A41'), fontSize: 14, fontWeight: FontWeight.w600),
+                    color: HexColor('#1B2A41'),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               )
             ],
