@@ -11,11 +11,11 @@ class IntroductionView extends StatefulWidget {
 }
 
 class _IntroductionViewState extends State<IntroductionView> {
-  void _onIntroEnd(context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => HomeView()),
-    );
-  }
+  // void _onIntroEnd(context) {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(builder: (_) => HomeView()),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _IntroductionViewState extends State<IntroductionView> {
       pages: [
         PageViewModel(
           titleWidget: Padding(
-            padding: EdgeInsets.only(top: 50.0),
+            padding: EdgeInsets.only(top: 30.0),
             child: Text(
               'Boas Vindas!',
               style: TextStyle(
@@ -47,7 +47,7 @@ class _IntroductionViewState extends State<IntroductionView> {
         ),
         PageViewModel(
           titleWidget: Padding(
-            padding: EdgeInsets.only(top: 50.0),
+            padding: EdgeInsets.only(top: 30.0),
             child: Text(
               'Este é o inicio',
               style: TextStyle(
@@ -60,7 +60,7 @@ class _IntroductionViewState extends State<IntroductionView> {
         ),
         PageViewModel(
           titleWidget: Padding(
-            padding: EdgeInsets.only(top: 50.0),
+            padding: EdgeInsets.only(top: 30.0),
             child: Text(
               'Quase tudo pronto!',
               style: TextStyle(
@@ -70,7 +70,7 @@ class _IntroductionViewState extends State<IntroductionView> {
             ),
           ),
           bodyWidget: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.8,
             child: Column(
               children: [
                 Text(
@@ -82,7 +82,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20),
-                  height: MediaQuery.of(context).size.height / 3,
+                  height: MediaQuery.of(context).size.height / 2.5,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
