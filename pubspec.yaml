@@ -50,10 +50,12 @@ flutter:
   assets:
   - assets/loginbg.jpg
   - assets/background2.jpg
-  - assets/loginSticker.jpg
   - assets/startBg.jpg
   - assets/cutCigarrete.jpg
-  - assets/progress.jpg
+  - assets/progress.gif
+  - assets/login.gif
+  - assets/welcome.gif
+   
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

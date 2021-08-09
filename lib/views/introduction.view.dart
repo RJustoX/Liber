@@ -53,7 +53,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: ExactAssetImage('assets/cutCigarrete.jpg'),
+                      image: ExactAssetImage('assets/welcome.gif'),
                     ),
                   ),
                 ),
@@ -96,7 +96,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: ExactAssetImage('assets/progress.jpg'),
+                      image: ExactAssetImage('assets/progress.gif'),
                     ),
                   ),
                 ),
@@ -139,7 +139,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: ExactAssetImage('assets/loginSticker.jpg'),
+                      image: ExactAssetImage('assets/login.gif'),
                     ),
                   ),
                 ),
