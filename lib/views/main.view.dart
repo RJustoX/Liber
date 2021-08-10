@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/logo.components.dart';
+import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/introduction.view.dart';
 
-class LoginView extends StatefulWidget {
+class MainView extends StatefulWidget {
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _MainViewState createState() => _MainViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor('#1B2A41'),
+      backgroundColor: AppColors.secondaryColor,
       body: SafeArea(
         child: Container(
           height: double.maxFinite,
           width: double.maxFinite,
           decoration: BoxDecoration(
-            color: HexColor('#1B2A41'),
+            color: AppColors.secondaryColor,
             image: DecorationImage(
               fit: BoxFit.fill,
               image: ExactAssetImage('assets/startBg.jpg'),
               colorFilter: ColorFilter.mode(
-                HexColor('#1B2A41').withOpacity(0.15),
+                AppColors.secondaryColor.withOpacity(0.15),
                 BlendMode.dstATop,
               ),
             ),
@@ -62,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
                     child: Text(
                       'Vamos Começar?',
                       style: TextStyle(
-                        color: HexColor('#1B2A41'),
+                        color: AppColors.secondaryColor,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,

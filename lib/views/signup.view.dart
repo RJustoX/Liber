@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/home.view.dart';
 
 class SignUpView extends StatelessWidget {
@@ -7,18 +8,18 @@ class SignUpView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: HexColor('#1B2A41'),
+      backgroundColor: AppColors.secondaryColor,
       body: SafeArea(
         child: Container(
           height: double.maxFinite,
           width: double.maxFinite,
           decoration: BoxDecoration(
-            color: HexColor('#1B2A41'),
+            color: AppColors.secondaryColor,
             image: DecorationImage(
               fit: BoxFit.cover,
               image: ExactAssetImage('assets/loginbg.jpg'),
               colorFilter: ColorFilter.mode(
-                HexColor('#1B2A41').withOpacity(0.15),
+                AppColors.secondaryColor.withOpacity(0.15),
                 BlendMode.dstATop,
               ),
             ),
@@ -36,7 +37,7 @@ class SignUpView extends StatelessWidget {
                         height: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(60),
-                          color: HexColor('#677DB7'),
+                          color: AppColors.primaryColor,
                         ),
                       ),
                       Positioned(
@@ -160,10 +161,11 @@ class SignUpView extends StatelessWidget {
                               child: TextButton(
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
-                                        color: HexColor('#1B2A41'),
-                                      )),
+                                    borderRadius: BorderRadius.circular(15),
+                                    side: BorderSide(
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).push(
@@ -177,7 +179,7 @@ class SignUpView extends StatelessWidget {
                                 child: Text(
                                   'Entrar',
                                   style: TextStyle(
-                                    color: HexColor('#1B2A41'),
+                                    color: AppColors.secondaryColor,
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FontStyle.italic,

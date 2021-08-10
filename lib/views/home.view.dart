@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/card.component.dart';
+import 'package:nicotine/utils/app_colors.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -11,11 +11,11 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor('#1B2A41'),
+      backgroundColor: AppColors.secondaryColor,
       body: Column(
         children: [
           Container(
-            color: HexColor('#1B2A41'),
+            color: AppColors.secondaryColor,
             height: MediaQuery.of(context).size.height * 0.35,
           ),
           Expanded(
@@ -26,7 +26,7 @@ class _HomeViewState extends State<HomeView> {
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(60),
                 ),
-                color: HexColor('#677DB7'),
+                color: AppColors.primaryColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),

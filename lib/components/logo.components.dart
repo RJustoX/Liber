@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/utils/app_colors.dart';
 
 class LogoComponent extends StatefulWidget {
   LogoComponent({
@@ -27,7 +28,7 @@ class _LogoComponentState extends State<LogoComponent> {
               height: 120,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(60),
-                color: HexColor('#677DB7'),
+                color: AppColors.primaryColor,
               ),
             ),
             Positioned(

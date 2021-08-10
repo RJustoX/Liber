@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:nicotine/views/login.view.dart';
+import 'package:nicotine/views/main.view.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    DevicePreview(
+      enabled: false,
+      builder: (context) => MyApp(), // Wrap your app
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,11 +17,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: HexColor('#677DB7'),
-        primarySwatch: Colors.green,
-      ),
-      home: LoginView(),
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      home: MainView(),
       // PageView(
       //   controller: _pController,
       //   children: <Widget>[

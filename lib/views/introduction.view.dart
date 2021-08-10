@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/register.view.dart';
 import 'package:nicotine/views/signup.view.dart';
 
@@ -147,12 +147,12 @@ class _IntroductionViewState extends State<IntroductionView> {
                   width: MediaQuery.of(context).size.width / 2,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: HexColor('#677DB7'),
+                      backgroundColor: AppColors.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       side: BorderSide(
-                        color: HexColor('#677DB7'),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     child: Text(
@@ -181,13 +181,13 @@ class _IntroductionViewState extends State<IntroductionView> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       side: BorderSide(
-                        color: HexColor('#677DB7'),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     child: Text(
                       'Já tenho uma conta',
                       style: TextStyle(
-                        color: HexColor('#677DB7'),
+                        color: AppColors.primaryColor,
                         fontSize: 16,
                       ),
                     ),

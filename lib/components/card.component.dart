@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/utils/app_colors.dart';
 
 class CardComponent extends StatelessWidget {
   const CardComponent({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class CardComponent extends StatelessWidget {
                 child: Text(
                   'Titulo',
                   style: TextStyle(
-                    color: HexColor('#1B2A41'),
+                    color: AppColors.secondaryColor,
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                   ),
@@ -34,7 +35,7 @@ class CardComponent extends StatelessWidget {
                 child: Text(
                   'Descrição do modulo, um breve resumo da funcionalidade!',
                   style: TextStyle(
-                    color: HexColor('#1B2A41'),
+                    color: AppColors.secondaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
