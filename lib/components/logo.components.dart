@@ -28,7 +28,7 @@ class _LogoComponentState extends State<LogoComponent> {
               height: 120,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(60),
-                color: AppColors.primaryColor,
+                color: AppColors.secondaryColor,
               ),
             ),
             Positioned(

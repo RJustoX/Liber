@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:nicotine/utils/app_colors.dart';
-import 'package:nicotine/views/register.view.dart';
-import 'package:nicotine/views/signup.view.dart';
+import 'package:nicotine/views/logon.view.dart';
+import 'package:nicotine/views/login.view.dart';
 
 class IntroductionView extends StatefulWidget {
   @override
@@ -166,7 +166,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
                           builder: (_) {
-                            return RegisterView();
+                            return LogonView();
                           },
                         ),
                       );
@@ -195,7 +195,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
                           builder: (_) {
-                            return SignUpView();
+                            return LoginView();
                           },
                         ),
                       );

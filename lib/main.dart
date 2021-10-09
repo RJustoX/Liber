@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/views/main.view.dart';
 import 'package:device_preview/device_preview.dart';
 
@@ -16,6 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor: HexColor('#003476'),
+        splashColor: HexColor('#CAD4DF'),
+        backgroundColor: HexColor('#f4f5f5'),
+      ),
       debugShowCheckedModeBanner: false,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
