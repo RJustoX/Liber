@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/components/home/feature_card.component.dart';
+import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
 
 class HomeView extends StatefulWidget {
@@ -22,6 +23,13 @@ class _HomeViewState extends State<HomeView> {
       'desc': 'Metas ativas',
     },
   ];
+  late HomeController _homeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _homeController = HomeController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,156 +139,7 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(
                       height: 30,
                     ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(55.0, 20.0, 20.0, 20.0),
-                          margin: EdgeInsets.only(left: 40.0),
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'Saúde',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 7.5,
-                              ),
-                              Text(
-                                'Informações sobre doenças e maleficios derivadas do vicio.',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.primaryColor,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          heightFactor: 1.5,
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundColor: HexColor('#FCE0A2'),
-                            child: Icon(
-                              Icons.smoke_free,
-                              size: 35,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(55.0, 20.0, 20.0, 20.0),
-                          margin: EdgeInsets.only(left: 40.0),
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'Saúde',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 7.5,
-                              ),
-                              Text(
-                                'Informações sobre doenças e maleficios derivadas do vicio.',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.primaryColor,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          heightFactor: 1.5,
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundColor: HexColor('#FCE0A2'),
-                            child: Icon(
-                              Icons.smoke_free,
-                              size: 35,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(55.0, 20.0, 20.0, 20.0),
-                          margin: EdgeInsets.only(left: 40.0),
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'Saúde',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 7.5,
-                              ),
-                              Text(
-                                'Informações sobre doenças e maleficios derivadas do vicio.',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.primaryColor,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          heightFactor: 1.5,
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundColor: HexColor('#FCE0A2'),
-                            child: Icon(
-                              Icons.smoke_free,
-                              size: 35,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
+                    ...buildFeatures(),
                   ],
                 ),
               ),
@@ -288,6 +147,27 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
       ),
+    );
+  }
+
+  List<Widget> buildFeatures() {
+    List<Map<String, dynamic>> data = _homeController.getFeatures();
+    return List<Widget>.generate(
+      data.length,
+      (int index) {
+        return Column(
+          children: <Widget>[
+            FeatureCardComponent(
+              data[index]['icon'],
+              data[index]['title'],
+              data[index]['desc'],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+          ],
+        );
+      },
     );
   }
 }
