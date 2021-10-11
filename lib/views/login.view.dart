@@ -126,11 +126,15 @@ class _LoginViewState extends State<LoginView> {
                                 fillColor: HexColor('#CAD4DF'),
                                 filled: true,
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
+                              validator: (email) {
+                                if (email == null || email.isEmpty) {
                                   return 'Campo não preenchido';
-                                } else
-                                  return null;
+                                } else if (!RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(_emailController.text)) {
+                                  return 'Por favor, digite um email válido';
+                                }
+                                return null;
                               },
                             ),
                             Padding(
