@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/controllers/login.controller.dart';
+import 'package:nicotine/models/login.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/logon.view.dart';
@@ -13,11 +15,17 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  LoginModel _model = LoginModel();
+  LoginController? _controller;
 
-  Future<bool> validacao() async {
-    return false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _controller = LoginController();
+  }
+
+  void onError(dynamic error, dynamic stackTrace) {
+    ToastUtil.error('Usuário e/ou senha incorretos');
   }
 
   @override
@@ -116,7 +124,6 @@ class _LoginViewState extends State<LoginView> {
                               ),
                             ),
                             TextFormField(
-                              controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 hintText: 'Insira seu email...',
@@ -131,10 +138,13 @@ class _LoginViewState extends State<LoginView> {
                                   return 'Campo não preenchido';
                                 } else if (!RegExp(
                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(_emailController.text)) {
+                                    .hasMatch(email)) {
                                   return 'Por favor, digite um email válido';
                                 }
                                 return null;
+                              },
+                              onSaved: (email) {
+                                _model.email = email!.trim();
                               },
                             ),
                             Padding(
@@ -151,7 +161,6 @@ class _LoginViewState extends State<LoginView> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10.0),
                               child: TextFormField(
-                                controller: _passwordController,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   hintText: 'Insira sua senha...',
@@ -166,6 +175,9 @@ class _LoginViewState extends State<LoginView> {
                                     return 'Campo não preenchido';
                                   } else
                                     return null;
+                                },
+                                onSaved: (password) {
+                                  _model.password = password!;
                                 },
                               ),
                             ),
@@ -193,19 +205,17 @@ class _LoginViewState extends State<LoginView> {
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      await validacao().then((value) {
-                                        if (value) {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute<void>(
-                                              builder: (_) {
-                                                return HomeView();
-                                              },
-                                            ),
-                                          );
-                                        } else {
-                                          ToastUtil.error('Usuário não cadastrado');
-                                        }
-                                      });
+                                      _formKey.currentState!.save();
+                                      await _controller!.login(_model).then((_) {
+                                        ToastUtil.success('Bem vindo!');
+                                        return Navigator.of(context).push(
+                                          MaterialPageRoute<void>(
+                                            builder: (_) {
+                                              return HomeView();
+                                            },
+                                          ),
+                                        );
+                                      }).catchError(onError);
                                     }
                                   },
                                   child: Text(

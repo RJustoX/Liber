@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/views/home.view.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:nicotine/views/login.view.dart';
 
 void main() {
   runApp(
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
-      home: HomeView(),
+      home: LoginView(),
       // PageView(
       //   controller: _pController,
       //   children: <Widget>[

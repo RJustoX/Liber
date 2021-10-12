@@ -1,5 +1,17 @@
+import 'package:nicotine/providers/api.provider.dart';
+
 class HomeController {
   HomeController();
+  List<dynamic>? books;
+  bool isLoading = true;
+
+  List<dynamic>? getBooks() {
+    return books != null ? books : null;
+  }
+
+  Future<void> deleteBookByid(int id) async {
+    await ApiProvider().deleteBook(id);
+  }
 
   List<Map<String, dynamic>> getFeatures() {
     List<Map<String, dynamic>> featureData = <Map<String, dynamic>>[
