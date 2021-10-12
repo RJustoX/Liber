@@ -4,7 +4,7 @@ import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/login.view.dart';
 
-import 'home.view.dart';
+import 'home/home.view.dart';
 
 class LogonView extends StatefulWidget {
   @override

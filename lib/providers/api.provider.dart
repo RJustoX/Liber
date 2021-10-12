@@ -18,7 +18,7 @@ class ApiProvider {
 
   Future<Map<String, dynamic>> postLogin(LoginModel model) async {
     Response? response = await _dio.post(
-      '${url}Login&nm_usuario=${model.email}&ds_senha=${model.password}',
+      '${url}Login&ds_email=${model.email}&ds_senha=${model.password}',
     );
     print(response.data);
     return response.data != null ? jsonDecode(response.data) : <String, dynamic>{};

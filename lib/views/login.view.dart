@@ -5,8 +5,7 @@ import 'package:nicotine/models/login.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/logon.view.dart';
-
-import 'home.view.dart';
+import 'package:nicotine/views/main.view.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -208,10 +207,10 @@ class _LoginViewState extends State<LoginView> {
                                       _formKey.currentState!.save();
                                       await _controller!.login(_model).then((_) {
                                         ToastUtil.success('Bem vindo!');
-                                        return Navigator.of(context).push(
+                                        return Navigator.of(context).pushReplacement(
                                           MaterialPageRoute<void>(
                                             builder: (_) {
-                                              return HomeView();
+                                              return MainView();
                                             },
                                           ),
                                         );

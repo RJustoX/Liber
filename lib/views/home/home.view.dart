@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/home/feature_card.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
-import 'package:nicotine/views/profile.view.dart';
+import 'package:nicotine/views/home/profile.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {

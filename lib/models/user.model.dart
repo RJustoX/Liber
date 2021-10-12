@@ -5,19 +5,21 @@ class UserModel {
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    id = json['i_id_usuario'] as int;
-    name = json['s_nm_usuario'];
-    print(name);
+    id = json['id_usuario'] as int;
+    name = json['nm_usuario'];
+    email = json['ds_email'];
   }
 
   late int id;
   late String name;
+  late String email;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
 
-    data['i_id_usuario'] = id;
-    data['s_nm_usuario'] = name;
+    data['id_usuario'] = id;
+    data['nm_usuario'] = name;
+    data['ds_email'] = email;
 
     return data;
   }
