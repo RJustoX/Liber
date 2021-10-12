@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:nicotine/models/login.model.dart';
-import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/endpoint.dart';
 
 class ApiProvider {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FeatureCardComponent extends StatelessWidget {
   const FeatureCardComponent(
@@ -17,10 +18,10 @@ class FeatureCardComponent extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(55.0, 15.0, 20.0, 20.0),
-          margin: EdgeInsets.only(left: 40.0),
-          height: MediaQuery.of(context).size.height * 0.15,
-          width: double.maxFinite,
+          padding: EdgeInsets.fromLTRB(70.0.r, 15.0, 20.0, 20.0),
+          margin: EdgeInsets.only(left: 50.r),
+          height: 0.16.sh,
+          width: 400.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25.0),
             color: Colors.white,
@@ -30,16 +31,16 @@ class FeatureCardComponent extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 26.0.sp,
                 ),
               ),
               SizedBox(
-                height: 7.5,
+                height: 5.h,
               ),
               Text(
                 desc,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 18.0.sp,
                   color: AppColors.primaryColor,
                 ),
               ),
@@ -50,7 +51,7 @@ class FeatureCardComponent extends StatelessWidget {
           alignment: Alignment.centerLeft,
           heightFactor: 1.5,
           child: CircleAvatar(
-            radius: 40,
+            radius: 50.r,
             backgroundColor: HexColor('#FCE0A2'),
             child: Image.asset(icon),
           ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/home/feature_card.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:nicotine/views/profile.view.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -35,18 +38,28 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        leadingWidth: 65,
         backgroundColor: AppColors.primaryColor,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 5.0, top: 5.0, bottom: 5.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.grey,
-            child: Icon(
-              Icons.person,
-              size: 28,
-              color: Colors.white,
+          padding: const EdgeInsets.only(left: 10.0, top: 1.0, bottom: 5.0),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ProfileView();
+                  },
+                ),
+              );
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              child: Icon(
+                Icons.person,
+                size: 28,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -54,18 +67,30 @@ class _HomeViewState extends State<HomeView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text('Rafael Justo'),
-            Text('250'),
+            Row(
+              children: <Widget>[
+                Icon(
+                  FontAwesomeIcons.trophy,
+                  size: 14.0,
+                ),
+                SizedBox(
+                  width: 5.0,
+                ),
+                Text('250'),
+              ],
+            ),
           ],
         ),
         actions: <Widget>[
           CircleAvatar(
-            child: Icon(
-              Icons.smoke_free,
-              size: 28,
-            ),
+            child: Image.asset('assets/vicioLogo/tabagismoLogo.png'),
+            radius: 16,
+          ),
+          SizedBox(
+            width: 5.0,
           ),
           Icon(
-            Icons.notifications,
+            Icons.notifications_outlined,
             size: 28,
           ),
           SizedBox(
@@ -77,20 +102,20 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 110,
+              height: 150.h,
               width: double.maxFinite,
               color: AppColors.backgroundColor,
               child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0.h),
                 scrollDirection: Axis.horizontal,
-                separatorBuilder: (BuildContext context, int index) => SizedBox(width: 30.0),
+                separatorBuilder: (BuildContext context, int index) => SizedBox(width: 35.0.w),
                 itemCount: dataMap.length,
                 itemBuilder: (BuildContext context, int index) => SizedBox(
                   child: Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                     color: AppColors.secondaryColor,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      padding: EdgeInsets.symmetric(horizontal: 30.0.w),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -99,7 +124,7 @@ class _HomeViewState extends State<HomeView> {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
+                              fontSize: 24.0.sp,
                             ),
                           ),
                           Text(
@@ -107,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w400,
-                              fontSize: 16.0,
+                              fontSize: 22.sp,
                             ),
                           ),
                         ],
@@ -125,7 +150,7 @@ class _HomeViewState extends State<HomeView> {
                   topLeft: Radius.circular(35.0),
                 ),
               ),
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
                   children: [
@@ -133,18 +158,18 @@ class _HomeViewState extends State<HomeView> {
                       'Bom dia Rafael, mais um dia livre do vicio!',
                       style: TextStyle(
                         color: AppColors.backgroundColor,
-                        fontSize: 18.0,
+                        fontSize: 24.0.sp,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 30.h,
                     ),
                     ...buildFeatures(),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
