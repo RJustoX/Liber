@@ -91,6 +91,6 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
 
   Future<bool> getSession() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString('token') != null;
+    return sharedPreferences.getInt('token') != null;
   }
 }

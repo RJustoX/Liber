@@ -28,8 +28,14 @@ class ApiProvider {
   Future<Map<String, dynamic>> createNewUser(UserModel user) async {
     Response response = await _dio.post(
         '${url}Inserir&ds_email=${user.email}&ds_senha=${user.senha}&nm_usuario=${user.name}&ds_nickname=${user.nickname}');
-    print(jsonDecode(response.data));
+
     return jsonDecode(response.data);
+  }
+
+  Future<UserModel> getUser(int id) async {
+    final Response response = await _dio.get('${url}Consultar&id_usuario=$id');
+
+    return UserModel.fromJson(jsonDecode(response.data)['dados']);
   }
 
   Future deleteBook(int id) async {

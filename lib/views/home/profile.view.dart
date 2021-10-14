@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/views/login.view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView();
@@ -38,10 +40,39 @@ class _ProfileViewState extends State<ProfileView> {
                               size: 50.r,
                             ),
                           ),
-                          Icon(
-                            FontAwesomeIcons.edit,
-                            color: Colors.white,
-                            size: 35.r,
+                          IconButton(
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: Text('Atenção!'),
+                                        content: Text('Quer mesmo sair da sua conta?'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('Cancelar')),
+                                          TextButton(
+                                              onPressed: () async {
+                                                SharedPreferences sharedPreferences =
+                                                    await SharedPreferences.getInstance();
+                                                await sharedPreferences.clear();
+                                                Navigator.of(context).pushReplacement(
+                                                  MaterialPageRoute(
+                                                    builder: (context) => LoginView(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Confirmar'))
+                                        ],
+                                      ));
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.edit,
+                              color: Colors.white,
+                              size: 35.r,
+                            ),
                           ),
                         ],
                       ),

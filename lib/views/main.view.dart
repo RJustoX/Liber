@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nicotine/controllers/main.controller.dart';
+import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,8 +15,12 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  void didChangeDependencies() {
+  MainController? _controller;
+
+  void didChangeDependencies() async {
     super.didChangeDependencies();
+    _controller ??= MainController();
+    _initialFetch();
   }
 
   int _currentIndex = 0;
@@ -33,7 +40,18 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: tabs[_currentIndex],
+      body: _controller!.loading
+          ? Container(
+              height: 1.sh,
+              width: 1.sw,
+              color: AppColors.primaryColor,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.backgroundColor,
+                ),
+              ),
+            )
+          : tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedFontSize: 18.0.sp,
@@ -69,44 +87,21 @@ class _MainViewState extends State<MainView> {
         onTap: (int index) {
           setState(() {
             _currentIndex = index;
+            print(_controller!.getUser().name);
           });
         },
       ),
-      //       IconButton(
-      //         onPressed: () {},
-      //         icon: Icon(
-      //           Icons.home,
-      //           color: AppColors.secondaryColor,
-      //           size: 45.r,
-      //         ),
-      //       ),
-      //       IconButton(
-      //         onPressed: () {},
-      //         icon: Icon(
-      //           Icons.assignment,
-      //           color: AppColors.secondaryColor,
-      //           size: 45.r,
-      //         ),
-      //       ),
-      //       IconButton(
-      //         onPressed: () {},
-      //         icon: Icon(
-      //           Icons.group,
-      //           color: AppColors.secondaryColor,
-      //           size: 45.r,
-      //         ),
-      //       ),
-      //       IconButton(
-      //         onPressed: () {},
-      //         icon: Icon(
-      //           FontAwesomeIcons.medal,
-      //           color: AppColors.secondaryColor,
-      //           size: 30.r,
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
+  }
+
+  Future<void> _initialFetch() async {
+    try {
+      await _controller!.fetchUser();
+    } catch (error) {
+      ToastUtil.error(error.toString());
+      print(error.toString());
+    }
+
+    if (mounted) setState(() => _controller!.loading = false);
   }
 }

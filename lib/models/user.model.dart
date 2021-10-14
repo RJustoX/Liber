@@ -13,6 +13,8 @@ class UserModel {
     email = json['ds_email'];
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
+    print(name);
+    print(email);
   }
 
   late int id;

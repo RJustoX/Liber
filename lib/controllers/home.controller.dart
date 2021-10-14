@@ -1,16 +1,11 @@
-import 'package:nicotine/providers/api.provider.dart';
+import 'package:nicotine/controllers/main.controller.dart';
 
-class HomeController {
+class HomeController extends MainController {
   HomeController();
-  List<dynamic>? books;
   bool isLoading = true;
 
-  List<dynamic>? getBooks() {
-    return books != null ? books : null;
-  }
-
-  Future<void> deleteBookByid(int id) async {
-    await ApiProvider().deleteBook(id);
+  String getUserName() {
+    return getUser().name;
   }
 
   List<Map<String, dynamic>> getFeatures() {

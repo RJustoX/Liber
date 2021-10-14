@@ -8,8 +8,10 @@ class LoginController {
   Future<void> login(LoginModel model) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final Map<String, dynamic> data = await ApiProvider().postLogin(model);
-    if (data['status'] != 1) throw Exception();
-    sharedPreferences.setString('token', data['dados']['id_usuario']);
-    print(sharedPreferences.getString('token'));
+    if (data['status'] != 1) {
+      throw Exception();
+    }
+    print(data['dados']['id_usuario']);
+    await sharedPreferences.setInt('token', data['dados']['id_usuario']);
   }
 }
