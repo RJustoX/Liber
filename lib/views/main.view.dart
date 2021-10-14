@@ -12,6 +12,10 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   int _currentIndex = 0;
 
   List<Widget> tabs = [

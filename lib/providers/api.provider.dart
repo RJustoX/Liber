@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:nicotine/models/login.model.dart';
+import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/endpoint.dart';
 
 class ApiProvider {
@@ -22,6 +23,13 @@ class ApiProvider {
     );
     print(response.data);
     return response.data != null ? jsonDecode(response.data) : <String, dynamic>{};
+  }
+
+  Future<Map<String, dynamic>> createNewUser(UserModel user) async {
+    Response response = await _dio.post(
+        '${url}Inserir&ds_email=${user.email}&ds_senha=${user.senha}&nm_usuario=${user.name}&ds_nickname=${user.nickname}');
+    print(jsonDecode(response.data));
+    return jsonDecode(response.data);
   }
 
   Future deleteBook(int id) async {

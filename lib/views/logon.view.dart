@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/controllers/logon.controller.dart';
+import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/login.view.dart';
-
-import 'home/home.view.dart';
+import 'package:nicotine/views/main.view.dart';
 
 class LogonView extends StatefulWidget {
   @override
@@ -13,11 +14,12 @@ class LogonView extends StatefulWidget {
 
 class _LogonViewState extends State<LogonView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  UserModel _newUser = UserModel();
+  late LogonController _controller;
 
-  Future<bool> validacao() async {
-    return false;
+  void initState() {
+    super.initState();
+    _controller = LogonController();
   }
 
   @override
@@ -82,223 +84,234 @@ class _LogonViewState extends State<LogonView> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Bem vindo',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 26.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Estamos contentes por ter vindo!',
-                            style: TextStyle(
-                              color: HexColor('#6A7188'),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 10.0),
-                            child: Text(
-                              'Seu Nome',
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Bem vindo',
                               style: TextStyle(
-                                color: HexColor('#B0B4C0'),
-                                fontSize: 16.0,
+                                color: Colors.black,
+                                fontSize: 26.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              hintText: 'Insira seu nome...',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
-                              fillColor: HexColor('#CAD4DF'),
-                              filled: true,
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Campo não preenchido';
-                              } else
-                                return null;
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10.0),
-                            child: Text(
-                              'Seu Nickname',
+                            Text(
+                              'Estamos contentes por ter vindo!',
                               style: TextStyle(
-                                color: HexColor('#B0B4C0'),
+                                color: HexColor('#6A7188'),
                                 fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                hintText: 'Insira seu Nickname...',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
-                                fillColor: HexColor('#CAD4DF'),
-                                filled: true,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Campo não preenchido';
-                                } else
-                                  return null;
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Text(
-                              'Seu Email',
-                              style: TextStyle(
-                                color: HexColor('#B0B4C0'),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                hintText: 'Insira seu email...',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
-                                fillColor: HexColor('#CAD4DF'),
-                                filled: true,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Campo não preenchido';
-                                } else
-                                  return null;
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Text(
-                              'Sua Senha',
-                              style: TextStyle(
-                                color: HexColor('#B0B4C0'),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: TextFormField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                hintText: 'Insira sua senha...',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
-                                fillColor: HexColor('#CAD4DF'),
-                                filled: true,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Campo não preenchido';
-                                } else
-                                  return null;
-                              },
-                            ),
-                          ),
-                          const Spacer(),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 40.0),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: AppColors.primaryColor,
-                                  minimumSize: Size(double.maxFinite, 45.0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20, bottom: 10.0),
+                              child: Text(
+                                'Seu Nome',
+                                style: TextStyle(
+                                  color: HexColor('#B0B4C0'),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    await validacao().then((value) {
-                                      if (value) {
-                                        Navigator.of(context).push(
+                              ),
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'Insira seu nome...',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
+                                fillColor: HexColor('#CAD4DF'),
+                                filled: true,
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Campo não preenchido';
+                                } else
+                                  return null;
+                              },
+                              onSaved: (nome) {
+                                _newUser.name = nome!;
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10, bottom: 10.0),
+                              child: Text(
+                                'Seu Nickname',
+                                style: TextStyle(
+                                  color: HexColor('#B0B4C0'),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Insira seu Nickname...',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
+                                  fillColor: HexColor('#CAD4DF'),
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Campo não preenchido';
+                                  } else
+                                    return null;
+                                },
+                                onSaved: (nickname) {
+                                  _newUser.nickname = nickname!;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Text(
+                                'Seu Email',
+                                style: TextStyle(
+                                  color: HexColor('#B0B4C0'),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: TextFormField(
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  hintText: 'Insira seu email...',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
+                                  fillColor: HexColor('#CAD4DF'),
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Campo não preenchido';
+                                  } else
+                                    return null;
+                                },
+                                onSaved: (email) {
+                                  _newUser.email = email!.trim();
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Text(
+                                'Sua Senha',
+                                style: TextStyle(
+                                  color: HexColor('#B0B4C0'),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: TextFormField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  hintText: 'Insira sua senha...',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
+                                  fillColor: HexColor('#CAD4DF'),
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Campo não preenchido';
+                                  } else
+                                    return null;
+                                },
+                                onSaved: (senha) {
+                                  _newUser.senha = senha!;
+                                },
+                              ),
+                            ),
+                            const Spacer(),
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 40.0),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: AppColors.primaryColor,
+                                    minimumSize: Size(double.maxFinite, 45.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
+                                      await _controller.cadastrar(_newUser).then((_) {
+                                        ToastUtil.success('Usuario cadastrado com sucesso!');
+                                        return Navigator.of(context).pushReplacement(
                                           MaterialPageRoute<void>(
                                             builder: (_) {
-                                              return HomeView();
+                                              return MainView();
                                             },
                                           ),
                                         );
-                                      } else {
-                                        ToastUtil.error('Usuário não cadastrado');
-                                      }
-                                    });
-                                  }
+                                      }).catchError(onError);
+                                    }
+                                  },
+                                  child: Text(
+                                    'Entrar',
+                                    style: TextStyle(
+                                      color: AppColors.backgroundColor,
+                                      fontSize: 26.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) {
+                                        return LoginView();
+                                      },
+                                    ),
+                                  );
                                 },
-                                child: Text(
-                                  'Entrar',
-                                  style: TextStyle(
-                                    color: AppColors.backgroundColor,
-                                    fontSize: 26.0,
-                                    fontWeight: FontWeight.bold,
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Já tem uma conta?',
+                                        style: TextStyle(
+                                          color: HexColor('#6A7188'),
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: ' faça login',
+                                        style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute<void>(
-                                    builder: (_) {
-                                      return LoginView();
-                                    },
-                                  ),
-                                );
-                              },
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Já tem uma conta?',
-                                      style: TextStyle(
-                                        color: HexColor('#6A7188'),
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: ' faça login',
-                                      style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -309,5 +322,9 @@ class _LogonViewState extends State<LogonView> {
         ),
       ),
     );
+  }
+
+  void onError(dynamic error, dynamic stackTrace) {
+    ToastUtil.error('Usuário já cadastrado');
   }
 }
