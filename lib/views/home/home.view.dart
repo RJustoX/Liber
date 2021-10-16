@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
       'desc': 'Dias',
     },
     {
-      'value': 'R\$: 134:00',
+      'value': 'R\$: 134,00',
       'desc': 'Economizados',
     },
     {
@@ -54,7 +54,7 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return ProfileView();
+                          return ProfileView(_homeController!);
                         },
                       ),
                     );
@@ -72,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(_homeController!.getUserName()),
+                  Text(_homeController!.getUser().nickname),
                   Row(
                     children: <Widget>[
                       Icon(
@@ -158,14 +158,14 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: const EdgeInsets.all(25.0),
                       child: Column(
                         children: [
                           Text(
                             'Bom dia ${_homeController!.getUserName()}, mais um dia livre do vicio!',
                             style: TextStyle(
                               color: AppColors.backgroundColor,
-                              fontSize: 24.0.sp,
+                              fontSize: 22.0.sp,
                             ),
                             textAlign: TextAlign.center,
                           ),

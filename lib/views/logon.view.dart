@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/controllers/logon.controller.dart';
+import 'package:nicotine/dialogs/logon_info.dialog.dart';
 import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
@@ -257,7 +258,7 @@ class _LogonViewState extends State<LogonView> {
                                         return Navigator.of(context).pushReplacement(
                                           MaterialPageRoute<void>(
                                             builder: (_) {
-                                              return MainView();
+                                              return LogonInfoDialog();
                                             },
                                           ),
                                         );

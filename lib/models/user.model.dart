@@ -5,6 +5,8 @@ class UserModel {
     this.email = '',
     this.nickname = '',
     this.senha = '',
+    this.birthDate,
+    this.gender,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -13,8 +15,8 @@ class UserModel {
     email = json['ds_email'];
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
-    print(name);
-    print(email);
+    birthDate = json['dt_nascimento'];
+    gender = json['fl_sexo'];
   }
 
   late int id;
@@ -22,6 +24,8 @@ class UserModel {
   late String email;
   late String senha;
   late String nickname;
+  DateTime? birthDate;
+  int? gender;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

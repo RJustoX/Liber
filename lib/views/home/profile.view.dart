@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/login.view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView();
+  const ProfileView(
+    this._controller,
+  );
+
+  final HomeController _controller;
 
   @override
   _ProfileViewState createState() => _ProfileViewState();
@@ -79,7 +84,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Padding(
                         padding: EdgeInsets.only(left: 35.w, top: 10.h),
                         child: Text(
-                          'Rafael Justo',
+                          widget._controller.getUser().nickname,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -158,7 +163,7 @@ class _ProfileViewState extends State<ProfileView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              '@Justo343',
+                              widget._controller.getUser().name,
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w600,
@@ -166,7 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                             Text(
-                              'rafael.justoscherer@gmail.com',
+                              widget._controller.getUser().email,
                               style: TextStyle(
                                 color: Colors.black45,
                                 fontWeight: FontWeight.w600,
@@ -207,7 +212,7 @@ class _ProfileViewState extends State<ProfileView> {
                               height: 20.h,
                             ),
                             Text(
-                              'Record de logins consecutivos:',
+                              'Recorde de logins consecutivos:',
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w600,

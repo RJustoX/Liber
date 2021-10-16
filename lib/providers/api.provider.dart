@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:nicotine/models/login.model.dart';
 import 'package:nicotine/models/user.model.dart';
+import 'package:nicotine/models/vicio.model.dart';
 import 'package:nicotine/utils/endpoint.dart';
 
 class ApiProvider {
@@ -21,7 +22,7 @@ class ApiProvider {
     Response? response = await _dio.post(
       '${url}Login&ds_email=${model.email}&ds_senha=${model.password}',
     );
-    print(response.data);
+
     return response.data != null ? jsonDecode(response.data) : <String, dynamic>{};
   }
 
@@ -38,7 +39,12 @@ class ApiProvider {
     return UserModel.fromJson(jsonDecode(response.data)['dados']);
   }
 
-  Future deleteBook(int id) async {
-    await _dio.delete('${url}Excluir&id_livro=$id');
+  Future<List<dynamic>> getAllVicios() async {
+    final Response response = await _dio.get('${url}ListarTodosVicios');
+    var obj = json.decode(response.data)['dados'];
+
+    return obj.map((dynamic t) {
+      return VicioModel.fromJson(t as Map<String, dynamic>);
+    }).toList();
   }
 }
