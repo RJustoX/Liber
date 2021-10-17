@@ -15,7 +15,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<dynamic>? books;
   List<Map<String, String>> dataMap = [
     {
       'value': '27',
@@ -72,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(_homeController!.getUser().nickname),
+                  Text(_homeController!.getUserName()),
                   Row(
                     children: <Widget>[
                       Icon(

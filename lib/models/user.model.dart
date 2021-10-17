@@ -6,7 +6,7 @@ class UserModel {
     this.nickname = '',
     this.senha = '',
     this.birthDate,
-    this.gender,
+    this.gender = 0,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -15,8 +15,14 @@ class UserModel {
     email = json['ds_email'];
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
-    birthDate = json['dt_nascimento'];
-    gender = json['fl_sexo'];
+    gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : 0;
+    print(gender);
+
+    if (json['dt_nascimento'] != null &&
+        json['dt_nascimento'] != '' &&
+        json['dt_nascimento'] is String) {
+      birthDate = DateTime.parse(json['dt_nascimento']);
+    }
   }
 
   late int id;

@@ -14,7 +14,23 @@ class MainController {
     _user = await ApiProvider().getUser(sharedPreferences.getInt('token')!);
   }
 
-  UserModel getUser() {
-    return _user;
+  /// GETTERS ///
+
+  UserModel getUser() => _user;
+
+  DateTime? getUserBirthDate() => _user.birthDate;
+
+  int? getUSerGender() => _user.gender;
+
+  String getUserName() => _user.name;
+
+  /// SETTERS ///
+
+  void setUserBirthDate(DateTime date) {
+    _user.birthDate = date;
+  }
+
+  void setUSerGender(int gender) {
+    _user.gender = gender;
   }
 }
