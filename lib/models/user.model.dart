@@ -15,8 +15,8 @@ class UserModel {
     email = json['ds_email'];
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
-    birthDate = json['dt_nascimento'];
-    gender = json['fl_sexo'];
+    //birthDate = json['dt_nascimento'];
+    gender = json['fl_sexo'] as int;
   }
 
   late int id;

@@ -33,6 +33,11 @@ class ApiProvider {
     return jsonDecode(response.data);
   }
 
+  Future<void> finishLogon(UserModel user, int idvicio) async {
+    await _dio.put(
+        '${url}FinalizarCadastro&dt_nascimento=${user.birthDate}&fl_sexo=${user.gender}&id_usuario=${user.id}&id_vicio=$idvicio');
+  }
+
   Future<UserModel> getUser(int id) async {
     final Response response = await _dio.get('${url}Consultar&id_usuario=$id');
 

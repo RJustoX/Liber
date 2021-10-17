@@ -1,18 +1,18 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/controllers/logon.controller.dart';
-import 'package:nicotine/models/user.model.dart';
+import 'package:nicotine/models/vicio.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:nicotine/utils/toast.util.dart';
+import 'package:nicotine/views/home/home.view.dart';
+import 'package:nicotine/views/main.view.dart';
 
 class LogonInfoDialog extends StatefulWidget {
-  const LogonInfoDialog({
-    this.userModel,
-  });
-
-  final UserModel? userModel;
+  const LogonInfoDialog();
 
   @override
   _LogonInfoDialogState createState() => _LogonInfoDialogState();
@@ -20,23 +20,35 @@ class LogonInfoDialog extends StatefulWidget {
 
 class _LogonInfoDialogState extends State<LogonInfoDialog> {
   List<String> titles = ['Informações adicionais', 'Informações adicionais', 'Vicios', 'Razões'];
+  DateFormat _format = DateFormat('dd/MM/yyyy');
   int currentIndex = 0;
   late String vicioId = '';
   PageController? _pageController;
   late LogonController _controller;
 
+  Future<void> _initialFetch() async {
+    try {
+      await _controller.fetchVicios();
+      await _controller.fetchUser();
+    } catch (error) {
+      ToastUtil.error(error.toString());
+      print(error.toString());
+    }
+
+    if (mounted) setState(() => _controller.loading = false);
+  }
+
   @override
   void initState() {
     super.initState();
     _controller = LogonController();
-    _controller.fetchVicios();
+    _initialFetch();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (widget.userModel == null) {}
     _pageController ??= PageController(initialPage: 0, keepPage: true);
   }
 
@@ -47,21 +59,29 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         leading: SizedBox(),
-        title: Text(titles[currentIndex]),
+        title: Text(
+          titles[currentIndex],
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.sp),
+        ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
-        child: PageView(
-          controller: _pageController,
-          children: <Widget>[
-            firstPage(),
-            secondPage(),
-            thirdPage(),
-            fourthPage(),
-          ],
-        ),
-      ),
+      body: _controller.loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
+              child: PageView(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  firstPage(),
+                  secondPage(),
+                  thirdPage(),
+                  fourthPage(),
+                ],
+              ),
+            ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
         child: Row(
@@ -91,28 +111,50 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                 ),
               ),
             Spacer(),
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                minimumSize: Size(150.w, 50.0.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+            if (!_controller.loading)
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      canStepUp() ? AppColors.primaryColor : AppColors.primaryFontColor,
+                  minimumSize: Size(150.w, 50.0.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: canStepUp()
+                    ? currentIndex != 3
+                        ? () {
+                            setState(() {
+                              currentIndex++;
+                              _pageController!.nextPage(
+                                  duration: Duration(milliseconds: 250), curve: Curves.easeOut);
+                            });
+                          }
+                        : () async {
+                            await _controller
+                                .finalizaCadastro(_controller.getUser(), int.parse(vicioId))
+                                .then(
+                              (_) {
+                                ToastUtil.success('Seja bem vindo!');
+                                return Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) {
+                                      return MainView();
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                    : () {},
+                child: Text(
+                  currentIndex != 3 ? 'Avançar' : 'Confirmar',
+                  style: TextStyle(
+                      color: AppColors.backgroundColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
                 ),
               ),
-              onPressed: () {
-                setState(() {
-                  print(widget.userModel?.birthDate);
-                  currentIndex++;
-                  _pageController!
-                      .nextPage(duration: Duration(milliseconds: 250), curve: Curves.easeOut);
-                });
-              },
-              child: Text(
-                'Avançar',
-                style: TextStyle(
-                    color: AppColors.backgroundColor, fontWeight: FontWeight.bold, fontSize: 18.sp),
-              ),
-            ),
           ],
         ),
       ),
@@ -125,7 +167,12 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          'Agora precisamos apenas de mais algumas informações para podermos começar XD',
+          'Antes de continuar precisamos de mais algumas informações sobre você, mas é rapidinho.',
+          style: TextStyle(
+            color: HexColor('#6A7188'),
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+          ),
           textAlign: TextAlign.center,
         ),
         Spacer(),
@@ -142,26 +189,31 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
               child: Column(
                 children: [
                   Text(
-                    'Sua data de nascimento:',
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+                    'Quando você nasceu?',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: HexColor('#6A7188').withOpacity(0.8),
+                    ),
                   ),
                   Spacer(),
                   DateTimeField(
-                    initialValue: widget.userModel?.birthDate,
+                    initialValue: _controller.getUserBirthDate(),
+                    autocorrect: true,
                     onChanged: (DateTime? date) {
-                      setState(() => widget.userModel?.birthDate = date!);
+                      setState(() => _controller.setUserBirthDate(date!));
                     },
                     decoration: const InputDecoration(
                         hintText: 'Clique para inserir',
                         border: UnderlineInputBorder(),
-                        suffixIcon: Icon(Icons.calendar_today)),
-                    format: DateFormat('dd/MM/yyyy'),
+                        suffixIcon: Icon(FontAwesomeIcons.calendarAlt)),
+                    format: _format,
                     onShowPicker: (BuildContext context, DateTime? currentValue) {
                       return showDatePicker(
                         context: context,
                         firstDate: DateTime(1900),
                         initialDate:
-                            widget.userModel?.birthDate ?? DateTime(DateTime.now().year - 18, 5),
+                            _controller.getUserBirthDate() ?? DateTime(DateTime.now().year - 18, 5),
                         lastDate: DateTime(DateTime.now().year - 18, 5, 30),
                         errorInvalidText: 'Data inválida',
                       );
@@ -197,11 +249,30 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Seu sexo:',
-                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+                      'Qual seu sexo:',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: HexColor('#6A7188').withOpacity(0.8),
+                      ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(
+                                'Por questões biológicas precisamos saber seu sexo de nascimento. esperamos que compreenda :)'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Entendi'))
+                            ],
+                          ),
+                        );
+                      },
                       icon: Icon(
                         Icons.info_outline,
                         color: Colors.grey,
@@ -211,10 +282,11 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                 ),
                 Spacer(),
                 RadioListTile<int>(
+                  contentPadding: EdgeInsets.all(0),
                   dense: true,
                   value: 1,
                   activeColor: Theme.of(context).primaryColor,
-                  groupValue: widget.userModel?.gender,
+                  groupValue: _controller.getUSerGender(),
                   title: Text(
                     'Masculino',
                     style: const TextStyle(fontSize: 14.0),
@@ -222,21 +294,25 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   onChanged: (int? value) {
                     if (value != null)
                       setState(() {
-                        widget.userModel?.gender = value;
+                        _controller.setUSerGender(value);
                       });
                   },
                 ),
                 RadioListTile<int>(
+                  contentPadding: EdgeInsets.all(0),
                   dense: true,
                   value: 2,
                   activeColor: Theme.of(context).primaryColor,
-                  groupValue: 5,
+                  groupValue: _controller.getUSerGender(),
                   title: Text(
-                    'Femino',
+                    'Feminino',
                     style: const TextStyle(fontSize: 14.0),
                   ),
                   onChanged: (int? value) {
-                    if (value != null) setState(() {});
+                    if (value != null)
+                      setState(() {
+                        _controller.setUSerGender(value);
+                      });
                   },
                 ),
                 Spacer(),
@@ -251,55 +327,134 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
   Widget thirdPage() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          'Selecione o vicio que deseja se desvencilhar',
+          'Qual vício gostaria de se desvencilhar?',
+          style: TextStyle(
+            color: AppColors.primaryFontColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 20.sp,
+          ),
           textAlign: TextAlign.center,
         ),
-        Spacer(),
-        Flexible(
-          flex: 1,
-          child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              color: Colors.white,
-              child: ListView.separated(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(left: 15.0, right: 10.0, top: index == 0 ? 5.0 : 0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.info_outline),
-                        SizedBox(width: 10),
-                        Text(_controller.getVicios()[index].name),
-                        Spacer(),
-                        Radio<String>(
-                          value: '${_controller.getVicios()[index].id}',
-                          groupValue: '$vicioId',
-                          onChanged: (String? value) {
-                            setState(() => vicioId = value!);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => Divider(
-                  thickness: 1,
-                ),
-              )),
+        Text(
+          'Você poderá escolher outros vícios depois.',
+          style: TextStyle(
+            color: AppColors.primaryFontColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 16.sp,
+          ),
+          textAlign: TextAlign.center,
         ),
-        Spacer(),
+        SizedBox(
+          height: 0.2.sh,
+        ),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25.0),
+              border: Border.all(
+                color: HexColor('#707070'),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: buildVicioTiles(),
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget fourthPage() {
     return Column(
-      children: <Widget>[Text('Selecione as razões pelas quais quer se desvencilhar do seu vicio')],
+      children: <Widget>[
+        Text(
+          'Por qual razão gostaria de desvencilhar deste vicio?',
+          style: TextStyle(
+            color: AppColors.primaryFontColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 20.sp,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        Spacer(),
+        Text(
+          'Em Breve!',
+          style: TextStyle(
+            color: AppColors.primaryFontColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 32.sp,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        Spacer(),
+      ],
     );
+  }
+
+  List<Widget> buildVicioTiles() {
+    List<Widget> tiles = [];
+    int lenght = _controller.getVicios().length;
+    for (VicioModel vicio in _controller.getVicios()) {
+      tiles.add(
+        Container(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+            child: Row(
+              children: [
+                SizedBox(height: 50.h, width: 50.w, child: Image.asset(vicio.icon!)),
+                SizedBox(width: 10),
+                Text(
+                  vicio.name,
+                  style: TextStyle(
+                    color: AppColors.primaryFontColor,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Spacer(),
+                Radio<String>(
+                  value: '${vicio.id}',
+                  groupValue: '$vicioId',
+                  onChanged: (String? value) {
+                    setState(() => vicioId = value!);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      if (vicio.id != lenght)
+        tiles.add(
+          Divider(
+            thickness: 1,
+            color: HexColor('#707070'),
+          ),
+        );
+    }
+    return tiles;
+  }
+
+  bool canStepUp() {
+    bool result = false;
+    switch (currentIndex) {
+      case 0:
+        result = _controller.getUserBirthDate() != null;
+        break;
+      case 1:
+        result = _controller.getUSerGender() != null;
+        break;
+      case 2:
+        result = vicioId != '';
+        break;
+      case 3:
+        result = true;
+        break;
+    }
+    return result;
   }
 }
