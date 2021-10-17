@@ -71,65 +71,69 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
               size: 120,
             ),
             Spacer(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0.2.sw, vertical: 15.0.h),
-              child: loading
-                  ? CircularProgressIndicator()
-                  : TextButton(
-                      style: TextButton.styleFrom(
-                        minimumSize: Size(300.w, 55.h),
-                        backgroundColor: HexColor('#F4F5F5'),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) {
-                              return IntroductionView();
-                            },
+            loading
+                ? CircularProgressIndicator()
+                : Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.2.sw, vertical: 15.0.h),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: Size(300.w, 55.h),
+                            backgroundColor: HexColor('#F4F5F5'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                           ),
-                        );
-                      },
-                      child: Text(
-                        'Vamos Começar?',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 25.0.sp,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.italic,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) {
+                                  return IntroductionView();
+                                },
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Vamos Começar?',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 25.0.sp,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: HexColor('#F4F5F5'),
-                minimumSize: Size(300.w, 55.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) {
-                      return LoginView();
-                    },
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: HexColor('#F4F5F5'),
+                          minimumSize: Size(300.w, 55.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) {
+                                return LoginView();
+                              },
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Já tenho uma conta',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 25.0.sp,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              },
-              child: Text(
-                'Já tenho uma conta',
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: 25.0.sp,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
             ),

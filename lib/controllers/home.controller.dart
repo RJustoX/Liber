@@ -4,6 +4,19 @@ class HomeController extends MainController {
   HomeController();
   bool isLoading = true;
 
+  String getInitialMessage() {
+    String result = '';
+    int hour = DateTime.now().hour;
+    if (hour >= 6 && hour <= 12) {
+      result = 'Bom dia';
+    } else if (hour >= 13 && hour <= 18) {
+      result = 'Boa tarde';
+    } else {
+      result = 'Boa noite';
+    }
+    return '$result ${getUserName()}';
+  }
+
   List<Map<String, dynamic>> getFeatures() {
     List<Map<String, dynamic>> featureData = <Map<String, dynamic>>[
       <String, dynamic>{

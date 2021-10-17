@@ -140,7 +140,7 @@ class HomeShimmerComponent extends StatelessWidget {
                       baseColor: Colors.blueGrey[100]!,
                       highlightColor: Colors.blueGrey[50]!,
                       child: Text(
-                        'Seus dados estão sendo carregados!',
+                        'Aguarde um instante!',
                         style: TextStyle(
                           color: AppColors.backgroundColor,
                           fontSize: 22.0.sp,

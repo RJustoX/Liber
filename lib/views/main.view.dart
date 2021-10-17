@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
+import 'package:nicotine/views/content/content.view.dart';
+import 'package:nicotine/views/content/groups.view.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,12 +28,8 @@ class _MainViewState extends State<MainView> {
 
   List<Widget> tabs = [
     HomeView(),
-    Center(
-      child: Text('Tela de conteudos'),
-    ),
-    Center(
-      child: Text('Tela dos grupos'),
-    ),
+    ContentView(),
+    GroupsView(),
     Center(
       child: Text('Tela de ranking'),
     ),

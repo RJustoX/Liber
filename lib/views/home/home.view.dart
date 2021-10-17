@@ -162,7 +162,7 @@ class _HomeViewState extends State<HomeView> {
                       child: Column(
                         children: [
                           Text(
-                            'Bom dia ${_homeController!.getUserName()}, mais um dia livre do vicio!',
+                            _homeController!.getInitialMessage(),
                             style: TextStyle(
                               color: AppColors.backgroundColor,
                               fontSize: 22.0.sp,
