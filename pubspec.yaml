@@ -37,6 +37,7 @@ dependencies:
   hexcolor: ^2.0.4
   introduction_screen: ^2.1.0
   shared_preferences: ^2.0.7
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

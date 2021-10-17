@@ -6,7 +6,7 @@ import 'package:nicotine/views/splash_screen.dialog.dart';
 void main() {
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => MyApp(), // Wrap your app
     ),
   );

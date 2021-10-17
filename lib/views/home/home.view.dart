@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/home/feature_card.component.dart';
+import 'package:nicotine/components/shimmer/home_shimmer.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
@@ -41,7 +42,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return _homeController!.loading
-        ? Center(child: CircularProgressIndicator())
+        ? HomeShimmerComponent()
         : Scaffold(
             backgroundColor: AppColors.backgroundColor,
             appBar: AppBar(
