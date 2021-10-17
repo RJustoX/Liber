@@ -7,7 +7,6 @@ class LogonController extends MainController {
   LogonController();
 
   late List<dynamic> _vicios;
-  bool loading = true;
 
   Future<void> cadastrar(UserModel newUser) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

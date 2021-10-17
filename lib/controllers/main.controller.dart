@@ -22,6 +22,8 @@ class MainController {
 
   int? getUSerGender() => _user.gender;
 
+  String getUserName() => _user.name;
+
   /// SETTERS ///
 
   void setUserBirthDate(DateTime date) {

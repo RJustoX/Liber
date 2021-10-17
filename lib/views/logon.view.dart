@@ -6,7 +6,6 @@ import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/login.view.dart';
-import 'package:nicotine/views/main.view.dart';
 
 class LogonView extends StatefulWidget {
   @override

@@ -40,7 +40,7 @@ class ApiProvider {
 
   Future<UserModel> getUser(int id) async {
     final Response response = await _dio.get('${url}Consultar&id_usuario=$id');
-
+    print(jsonDecode(response.data)['dados']);
     return UserModel.fromJson(jsonDecode(response.data)['dados']);
   }
 

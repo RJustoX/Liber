@@ -8,7 +8,6 @@ import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:nicotine/utils/toast.util.dart';
-import 'package:nicotine/views/home/home.view.dart';
 import 'package:nicotine/views/main.view.dart';
 
 class LogonInfoDialog extends StatefulWidget {

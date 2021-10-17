@@ -4,10 +4,6 @@ class HomeController extends MainController {
   HomeController();
   bool isLoading = true;
 
-  String getUserName() {
-    return getUser().name;
-  }
-
   List<Map<String, dynamic>> getFeatures() {
     List<Map<String, dynamic>> featureData = <Map<String, dynamic>>[
       <String, dynamic>{
