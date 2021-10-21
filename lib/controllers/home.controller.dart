@@ -1,4 +1,5 @@
 import 'package:nicotine/controllers/main.controller.dart';
+import 'package:nicotine/views/home/goal.view.dart';
 
 class HomeController extends MainController {
   HomeController();
@@ -22,12 +23,13 @@ class HomeController extends MainController {
       <String, dynamic>{
         'icon': 'assets/healthIcon.png',
         'title': 'Saúde',
-        'desc': 'Informações sobre doenças e maleficios derivadas do vicio.'
+        'desc': 'Informações sobre doenças e maleficios derivadas do vicio.',
       },
       <String, dynamic>{
         'icon': 'assets/goalIcon.png',
         'title': 'Metas',
-        'desc': 'Estabeleça metas! Coloque em mente seus objetivos e foque para alcançá-los.'
+        'desc': 'Estabeleça metas! Coloque em mente seus objetivos e foque para alcançá-los.',
+        'route': GoalView(),
       },
       <String, dynamic>{
         'icon': 'assets/strengIcon.png',

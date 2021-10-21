@@ -7,6 +7,7 @@ import 'package:nicotine/views/content/content.view.dart';
 import 'package:nicotine/views/content/groups.view.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/views/ranking/ranking.view.dart';
 
 class MainView extends StatefulWidget {
   const MainView();
@@ -30,9 +31,7 @@ class _MainViewState extends State<MainView> {
     HomeView(),
     ContentView(),
     GroupsView(),
-    Center(
-      child: Text('Tela de ranking'),
-    ),
+    RankingView(),
   ];
   @override
   Widget build(BuildContext context) {

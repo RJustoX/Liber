@@ -194,6 +194,7 @@ class _HomeViewState extends State<HomeView> {
               data[index]['icon'],
               data[index]['title'],
               data[index]['desc'],
+              route: data[index]['route'],
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
