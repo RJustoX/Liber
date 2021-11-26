@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/components/button/default_primary_button.component.dart';
 import 'package:nicotine/controllers/logon.controller.dart';
 import 'package:nicotine/dialogs/logon_info.dialog.dart';
 import 'package:nicotine/models/user.model.dart';
@@ -241,15 +242,8 @@ class _LogonViewState extends State<LogonView> {
                             Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 40.0),
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: AppColors.primaryColor,
-                                    minimumSize: Size(double.maxFinite, 45.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                  ),
-                                  onPressed: () async {
+                                child: DefaultPrimaryButtonComponent(
+                                  onTap: () async {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       await _controller.cadastrar(_newUser).then((_) {
@@ -264,14 +258,7 @@ class _LogonViewState extends State<LogonView> {
                                       }).catchError(onError);
                                     }
                                   },
-                                  child: Text(
-                                    'Entrar',
-                                    style: TextStyle(
-                                      color: AppColors.backgroundColor,
-                                      fontSize: 26.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  title: 'Entrar',
                                 ),
                               ),
                             ),

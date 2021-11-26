@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/goal_card.component.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:nicotine/views/home/new_goal.view.dart';
 
 class GoalView extends StatelessWidget {
   const GoalView({Key? key}) : super(key: key);
@@ -101,6 +102,7 @@ class GoalView extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(height: 2.5),
                               Text(
                                 'R\$: 7,50',
                                 style: TextStyle(
@@ -129,6 +131,7 @@ class GoalView extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(height: 2.5),
                               Text(
                                 'R\$: 15,00',
                                 style: TextStyle(
@@ -158,6 +161,7 @@ class GoalView extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(height: 2.5),
                               Text(
                                 '0',
                                 style: TextStyle(
@@ -180,7 +184,9 @@ class GoalView extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewGoalView()));
+          },
           child: Icon(
             Icons.add,
             size: 45.r,
