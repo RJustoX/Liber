@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nicotine/components/tab_bar.component.dart';
+import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

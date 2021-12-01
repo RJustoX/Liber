@@ -1,5 +1,7 @@
 import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/views/home/goal.view.dart';
+import 'package:nicotine/views/progress/calendar.dialog.dart';
+import 'package:nicotine/views/progress/progress.view.dart';
 
 class HomeController extends MainController {
   HomeController();
@@ -34,7 +36,8 @@ class HomeController extends MainController {
       <String, dynamic>{
         'icon': 'assets/strengIcon.png',
         'title': 'Acompanhamento',
-        'desc': 'Acompanhe seu progresso em se desvencilhar do seu vicio.'
+        'desc': 'Acompanhe seu progresso em se desvencilhar do seu vicio.',
+        'route': ProgressView(),
       },
     ];
     return featureData;
