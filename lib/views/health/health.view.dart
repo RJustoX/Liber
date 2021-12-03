@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/default_appbar.component.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
+import 'package:nicotine/views/health/diseases.view.dart';
 import 'package:nicotine/views/progress/calendar.dialog.dart';
-import 'package:nicotine/views/progress/chart.dialog.dart';
 
-class ProgressView extends StatefulWidget {
-  const ProgressView();
+class HealthView extends StatefulWidget {
+  const HealthView();
 
   @override
-  _ProgressViewState createState() => _ProgressViewState();
+  _HealthViewState createState() => _HealthViewState();
 }
 
-class _ProgressViewState extends State<ProgressView> with SingleTickerProviderStateMixin {
+class _HealthViewState extends State<HealthView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -25,18 +25,18 @@ class _ProgressViewState extends State<ProgressView> with SingleTickerProviderSt
     return Scaffold(
       appBar: DefaultAppBarComponent(
         context,
-        title: 'Acompanhamento',
+        title: 'Saúde',
         haveLeading: true,
         tabBar: TabBarComponent(
           controller: _tabController,
-          tabs: ['Diário', 'Gráfico'],
+          tabs: ['Doenças', 'Motivos'],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
+          DiseasesView(),
           CalendarDialog(),
-          ChartDialog(),
         ],
       ),
     );

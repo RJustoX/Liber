@@ -21,7 +21,7 @@ class GoalView extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(20.w),
                   color: AppColors.primaryColor,
-                  height: 300.h,
+                  height: 260.h,
                   width: 1.sw,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +37,7 @@ class GoalView extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 35.w, top: 30.h),
+                        padding: EdgeInsets.only(left: 35.w, top: 15.h),
                         child: Text(
                           'Metas',
                           style: TextStyle(
@@ -68,7 +68,7 @@ class GoalView extends StatelessWidget {
               ],
             ),
             Positioned(
-              top: 200.h,
+              top: 160.h,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 22.5.w),
                 child: Container(

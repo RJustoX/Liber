@@ -1,4 +1,5 @@
 import 'package:nicotine/controllers/main.controller.dart';
+import 'package:nicotine/views/health/health.view.dart';
 import 'package:nicotine/views/home/goal.view.dart';
 import 'package:nicotine/views/progress/calendar.dialog.dart';
 import 'package:nicotine/views/progress/progress.view.dart';
@@ -26,6 +27,7 @@ class HomeController extends MainController {
         'icon': 'assets/healthIcon.png',
         'title': 'Saúde',
         'desc': 'Informações sobre doenças e maleficios derivadas do vicio.',
+        'route': HealthView(),
       },
       <String, dynamic>{
         'icon': 'assets/goalIcon.png',

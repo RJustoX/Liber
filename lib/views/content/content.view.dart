@@ -26,7 +26,10 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         backgroundColor: AppColors.primaryColor,
         title: Text(
           'Conteúdos',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.sp),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 28.sp,
+          ),
         ),
         actions: <Widget>[
           CircleAvatar(
