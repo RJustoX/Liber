@@ -1,4 +1,4 @@
-package com.example.nicotine
+package com.justo.liber
 
 import io.flutter.embedding.android.FlutterActivity
 

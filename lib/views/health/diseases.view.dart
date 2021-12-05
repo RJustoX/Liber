@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/utils/app_colors.dart';
 
 class DiseasesView extends StatelessWidget {
@@ -19,7 +18,7 @@ class DiseasesView extends StatelessWidget {
             badgeColor: Colors.white,
             borderRadius: BorderRadius.circular(8),
             badgeContent: Text(
-              'Estas são as principais doeças derivadas de seu vicío!',
+              'Estas são as principais doenças derivadas de seu vicío!',
               style: TextStyle(
                 color: AppColors.primaryFontColor,
                 fontSize: 16.0,
@@ -54,14 +53,16 @@ class DiseasesView extends StatelessWidget {
                                 size: 60,
                                 color: AppColors.primaryFontColor,
                               ),
-                              const SizedBox(height: 15.0),
+                              const SizedBox(height: 10.0),
                               Text(
-                                'Hemorroida',
+                                'Impotencia sexual',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.w600,
+                                  height: 1.0,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                               RichText(
                                 text: TextSpan(
