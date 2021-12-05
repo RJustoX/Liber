@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/login.view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView(
@@ -18,6 +22,50 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final FirebaseStorage _fStorage = FirebaseStorage.instance;
+  bool uploading = false;
+  double percent = 0;
+  String userAvatar =
+      'https://firebasestorage.googleapis.com/v0/b/liber-a964e.appspot.com/o/images%2Fimg-2021-12-05%2019%3A52%3A46.473242.jpg?alt=media&token=975e0d9c-7d87-4ec8-adaa-4f37005136e7';
+
+  Future<XFile?> getImage() async {
+    final ImagePicker _picker = ImagePicker();
+
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    return image;
+  }
+
+  Future<UploadTask> upload(String path) async {
+    File file = File(path);
+
+    try {
+      String ref = 'images/img-${DateTime.now().toString()}.jpg';
+      return _fStorage.ref(ref).putFile(file);
+    } on FirebaseException catch (error) {
+      throw Exception('Erro no upload ${error.code}');
+    }
+  }
+
+  pickAnUploadImage() async {
+    XFile? file = await getImage();
+    if (file != null) {
+      UploadTask task = await upload(file.path);
+
+      task.snapshotEvents.listen((TaskSnapshot snapshot) async {
+        if (snapshot.state == TaskState.running) {
+          setState(() {
+            uploading = true;
+            percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          });
+        } else if (snapshot.state == TaskState.success) {
+          setState(() {
+            uploading = false;
+          });
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -241,13 +289,36 @@ class _ProfileViewState extends State<ProfileView> {
             Positioned(
               top: 150.h,
               left: (0.5.sw - 100.h),
-              child: CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 100.h,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 80.h,
+              child: GestureDetector(
+                onTap: pickAnUploadImage,
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage: CachedNetworkImageProvider(userAvatar),
+                  radius: 100.h,
+                  child: uploading
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.upload,
+                              color: Colors.white,
+                              size: 60.r,
+                            ),
+                            Text('Carregando: ${percent.round()}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w600,
+                                ))
+                          ],
+                        )
+                      : userAvatar != ''
+                          ? null
+                          : Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 80.h,
+                            ),
                 ),
               ),
             ),
