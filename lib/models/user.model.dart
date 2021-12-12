@@ -16,7 +16,7 @@ class UserModel {
     email = json['ds_email'];
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
-    gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : 0;
+    gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : null;
 
     if (json['dt_nascimento'] != null &&
         json['dt_nascimento'] != '' &&

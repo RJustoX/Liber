@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/home/feature_card.component.dart';
 import 'package:nicotine/components/shimmer/home_shimmer.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
+import 'package:nicotine/providers/firebase.provider.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/home/profile.view.dart';
@@ -19,6 +20,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late UserStore _uStore;
+  late String avatarUrl;
   List<Map<String, String>> dataMap = [
     {
       'value': '27',
@@ -58,7 +60,9 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return ProfileView();
+                          return ProfileView(
+                            () => setState(() {}),
+                          );
                         },
                       ),
                     );
@@ -66,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
                   child: _uStore.user!.avatar != null
                       ? CircleAvatar(
                           backgroundColor: Colors.grey,
-                          backgroundImage: CachedNetworkImageProvider(_uStore.user!.avatar!))
+                          backgroundImage: CachedNetworkImageProvider(avatarUrl))
                       : CircleAvatar(
                           backgroundColor: Colors.grey,
                           child: Icon(
@@ -214,6 +218,11 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> _initialFetch() async {
+    if (_uStore.user!.avatar != null) {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
+
+      print(avatarUrl);
+    }
     if (mounted) setState(() => _homeController!.isLoading = false);
   }
 }

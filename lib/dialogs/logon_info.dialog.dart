@@ -43,13 +43,14 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
   void initState() {
     super.initState();
     _controller = LogonController();
-    _uStore = Provider.of<UserStore>(context);
-    _initialFetch();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _uStore = Provider.of<UserStore>(context);
+    _initialFetch();
 
     _pageController ??= PageController(initialPage: 0, keepPage: true);
   }

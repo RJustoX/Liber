@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nicotine/providers/api.provider.dart';
+import 'package:nicotine/providers/firebase.provider.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView();
+  const ProfileView(this.callbackMethod);
+
+  final VoidCallback callbackMethod;
 
   @override
   _ProfileViewState createState() => _ProfileViewState();
@@ -25,33 +28,30 @@ class _ProfileViewState extends State<ProfileView> {
   bool uploading = false, loading = true;
   double percent = 0;
   String? ref;
-  late Reference avatar;
   late String avatarUrl;
 
   @override
   void didChangeDependencies() async {
     _uStore = Provider.of<UserStore>(context);
     super.didChangeDependencies();
-    avatar = (await _fStorage.ref('images/${_uStore.user!.nickname}/avatar').listAll()).items.last;
 
-    avatarUrl = await avatar.getDownloadURL();
-    setState(() {
-      print(avatar.name);
-      print(avatar.fullPath);
-      loading = false;
-    });
+    if (_uStore.user!.avatar != null) {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
+      setState(() {
+        print(avatarUrl);
+        loading = false;
+      });
+    }
   }
 
   Future<XFile?> getImage() async {
     final ImagePicker _picker = ImagePicker();
-
     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     return image;
   }
 
   Future<UploadTask> upload(String path) async {
     File file = File(path);
-
     try {
       ref = 'images/${_uStore.user!.nickname}/avatar/img-${DateTime.now().toString()}.jpg';
       return _fStorage.ref(ref).putFile(file);
@@ -74,7 +74,7 @@ class _ProfileViewState extends State<ProfileView> {
         } else if (snapshot.state == TaskState.success) {
           avatarUrl = await FirebaseStorage.instance.ref(ref).getDownloadURL();
 
-          ApiProvider().changeUserAvatar(_uStore.user!.id, avatarUrl);
+          ApiProvider().changeUserAvatar(_uStore.user!.id, ref!);
           setState(() {
             uploading = false;
             print(_uStore.user!.avatar);
@@ -313,9 +313,7 @@ class _ProfileViewState extends State<ProfileView> {
                 child: CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage:
-                      !loading //widget._controller.getUserAvatar() != null && !uploading
-                          ? CachedNetworkImageProvider(avatarUrl)
-                          : null,
+                      !loading && !uploading ? CachedNetworkImageProvider(avatarUrl) : null,
                   radius: 100.h,
                   child: uploading
                       ? Column(
