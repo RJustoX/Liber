@@ -1,14 +1,12 @@
-import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/views/health/health.view.dart';
 import 'package:nicotine/views/home/goal.view.dart';
-import 'package:nicotine/views/progress/calendar.dialog.dart';
 import 'package:nicotine/views/progress/progress.view.dart';
 
-class HomeController extends MainController {
+class HomeController {
   HomeController();
   bool isLoading = true;
 
-  String getInitialMessage() {
+  String getInitialMessage(String name) {
     String result = '';
     int hour = DateTime.now().hour;
     if (hour >= 6 && hour <= 12) {
@@ -18,7 +16,7 @@ class HomeController extends MainController {
     } else {
       result = 'Boa noite';
     }
-    return '$result ${getUserName()}';
+    return '$result $name';
   }
 
   List<Map<String, dynamic>> getFeatures() {

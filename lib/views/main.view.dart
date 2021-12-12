@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/controllers/main.controller.dart';
+import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/content/content.view.dart';
@@ -8,6 +9,7 @@ import 'package:nicotine/views/content/groups.view.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/ranking/ranking.view.dart';
+import 'package:provider/provider.dart';
 
 class MainView extends StatefulWidget {
   const MainView();
@@ -17,11 +19,13 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  late UserStore _uStore;
   MainController? _controller;
 
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    _controller ??= MainController();
+    _uStore = Provider.of<UserStore>(context);
+    _controller ??= MainController(_uStore);
     _initialFetch();
   }
 
@@ -83,7 +87,6 @@ class _MainViewState extends State<MainView> {
         onTap: (int index) {
           setState(() {
             _currentIndex = index;
-            print(_controller!.getUser().name);
           });
         },
       ),

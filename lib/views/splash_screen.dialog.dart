@@ -3,10 +3,12 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/logo.components.dart';
 import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/dialogs/logon_info.dialog.dart';
+import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/introduction.view.dart';
 import 'package:nicotine/views/login.view.dart';
 import 'package:nicotine/views/main.view.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,6 +19,7 @@ class SplashScreenDialog extends StatefulWidget {
 
 class _SplashScreenDialogState extends State<SplashScreenDialog> {
   bool loading = true;
+  late UserStore _uStore;
   late MainController _controller;
 
   Future<void> _initialFetch() async {
@@ -28,9 +31,10 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _controller = MainController();
+  void didChangeDependencies() {
+    _uStore = Provider.of<UserStore>(context);
+    super.didChangeDependencies();
+    _controller = MainController(_uStore);
     _initialFetch().then((void value) {
       getSession().then(
         (int value) {
@@ -149,7 +153,7 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
     int result = 1;
     if (sharedPreferences.getInt('token') == null) {
       return 0;
-    } else if (_controller.getUser().gender == null) {
+    } else if (_uStore.user!.gender == null) {
       return 2;
     }
     return result;

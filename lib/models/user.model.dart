@@ -11,6 +11,7 @@ class UserModel {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id_usuario'] as int;
+    avatar = json['nm_avatar'];
     name = json['nm_usuario'];
     email = json['ds_email'];
     senha = json['ds_senha'];
@@ -25,6 +26,7 @@ class UserModel {
   }
 
   late int id;
+  String? avatar;
   late String name;
   late String email;
   late String senha;

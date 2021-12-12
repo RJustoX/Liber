@@ -1,12 +1,12 @@
-import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/providers/api.provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LogonController extends MainController {
+class LogonController {
   LogonController();
 
   late List<dynamic> _vicios;
+  bool loading = true;
 
   Future<void> cadastrar(UserModel newUser) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

@@ -1,10 +1,15 @@
 import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/providers/api.provider.dart';
+import 'package:nicotine/stores/user.store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainController {
-  MainController();
-
+  MainController(
+    UserStore uStore,
+  ) {
+    _uStore = uStore;
+  }
+  late UserStore _uStore;
   late UserModel _user;
   bool loading = true;
 
@@ -12,25 +17,10 @@ class MainController {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     print(sharedPreferences.getInt('token'));
     _user = await ApiProvider().getUser(sharedPreferences.getInt('token')!);
+    setUser();
   }
 
-  /// GETTERS ///
-
-  UserModel getUser() => _user;
-
-  DateTime? getUserBirthDate() => _user.birthDate;
-
-  int? getUSerGender() => _user.gender;
-
-  String getUserName() => _user.name;
-
-  /// SETTERS ///
-
-  void setUserBirthDate(DateTime date) {
-    _user.birthDate = date;
-  }
-
-  void setUSerGender(int gender) {
-    _user.gender = gender;
+  void setUser() {
+    _uStore.setUser(_user);
   }
 }
