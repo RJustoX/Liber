@@ -9,6 +9,7 @@ class DefaultAppBarComponent extends AppBar {
     String title = '',
     TabBarComponent? tabBar,
     bool haveLeading = false,
+    bool centerTitle = false,
   }) : super(
           backgroundColor: AppColors.primaryColor,
           leading: haveLeading
@@ -20,6 +21,7 @@ class DefaultAppBarComponent extends AppBar {
                   ),
                 )
               : const SizedBox(),
+          centerTitle: centerTitle,
           title: Text(
             title,
             style: TextStyle(

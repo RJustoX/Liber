@@ -25,7 +25,9 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
   Future<void> _initialFetch() async {
     try {
       await _controller.fetchUser();
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
 
     if (mounted) setState(() => _controller.loading = false);
   }

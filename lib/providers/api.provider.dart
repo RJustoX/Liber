@@ -16,14 +16,18 @@ class ApiProvider {
   static final ApiProvider _instance = ApiProvider._internal();
 
   final Dio _dio = Dio();
-  String url = '${Endpoint.apiUrl}/CrudUsuario.php?oper=';
+  String url = '${Endpoint.endpointUrl}';
 
-  Future<Map<String, dynamic>> postLogin(LoginModel model) async {
+  Future<int> postLogin(LoginModel model) async {
     Response? response = await _dio.post(
-      '${url}Login&ds_email=${model.email}&ds_senha=${model.password}',
+      '$url/login',
+      data: <String, dynamic>{
+        'email': model.email,
+        'password': model.password,
+      },
     );
 
-    return response.data != null ? jsonDecode(response.data) : <String, dynamic>{};
+    return response.data != null ? response.data : 0;
   }
 
   Future<Map<String, dynamic>> createNewUser(UserModel user) async {
@@ -42,11 +46,11 @@ class ApiProvider {
     await _dio.put('${url}Alterar&id_usuario=$id&nm_avatar=$newAvatar');
   }
 
+  // funcionando
   Future<UserModel> getUser(int id) async {
-    final Response response = await _dio.get('${url}Consultar&id_usuario=$id');
-    print(jsonDecode(response.data)['dados']);
+    final Response response = await _dio.get('$url/user/$id');
 
-    return UserModel.fromJson(jsonDecode(response.data)['dados']);
+    return UserModel.fromJson(response.data);
   }
 
   Future<List<dynamic>> getAllVicios() async {

@@ -1,3 +1,5 @@
+import 'package:nicotine/models/vicio.model.dart';
+
 class UserModel {
   UserModel({
     this.id = 0,
@@ -31,6 +33,7 @@ class UserModel {
   late String email;
   late String senha;
   late String nickname;
+  VicioModel? vicio;
   DateTime? birthDate;
   int? gender;
 
