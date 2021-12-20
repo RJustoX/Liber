@@ -201,7 +201,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   ),
                   Spacer(),
                   DateTimeField(
-                    initialValue: _uStore.user!.birthDate,
+                    initialValue: _uStore.user?.birthDate,
                     autocorrect: true,
                     onChanged: (DateTime? date) {
                       setState(() => _uStore.user!.birthDate = date!);
@@ -289,7 +289,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   dense: true,
                   value: 1,
                   activeColor: Theme.of(context).primaryColor,
-                  groupValue: _uStore.user!.gender,
+                  groupValue: _uStore.user?.gender,
                   title: Text(
                     'Masculino',
                     style: const TextStyle(fontSize: 14.0),
@@ -306,7 +306,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   dense: true,
                   value: 2,
                   activeColor: Theme.of(context).primaryColor,
-                  groupValue: _uStore.user!.gender,
+                  groupValue: _uStore.user?.gender,
                   title: Text(
                     'Feminino',
                     style: const TextStyle(fontSize: 14.0),

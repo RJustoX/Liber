@@ -4,6 +4,7 @@ import 'package:nicotine/components/logo.components.dart';
 import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/dialogs/logon_info.dialog.dart';
 import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/introduction.view.dart';
 import 'package:nicotine/views/login.view.dart';
@@ -20,6 +21,7 @@ class SplashScreenDialog extends StatefulWidget {
 class _SplashScreenDialogState extends State<SplashScreenDialog> {
   bool loading = true;
   late UserStore _uStore;
+  late VicioStore _vStore;
   late MainController _controller;
 
   Future<void> _initialFetch() async {
@@ -35,8 +37,9 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
   @override
   void didChangeDependencies() {
     _uStore = Provider.of<UserStore>(context);
+    _vStore = Provider.of<VicioStore>(context);
     super.didChangeDependencies();
-    _controller = MainController(_uStore);
+    _controller = MainController(_uStore, _vStore);
     _initialFetch().then((void value) {
       getSession().then(
         (int value) {

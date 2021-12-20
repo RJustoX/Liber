@@ -6,6 +6,7 @@ import 'package:nicotine/components/shimmer/home_shimmer.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/providers/firebase.provider.dart';
 import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/home/profile.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late UserStore _uStore;
+  late VicioStore _vStore;
   late String avatarUrl;
   List<Map<String, String>> dataMap = [
     {
@@ -41,6 +43,7 @@ class _HomeViewState extends State<HomeView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _uStore = Provider.of<UserStore>(context);
+    _vStore = Provider.of<VicioStore>(context);
     _homeController ??= HomeController();
     _initialFetch();
   }
@@ -101,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               actions: <Widget>[
                 CircleAvatar(
-                  child: Image.asset('assets/vicioLogo/tabagismoLogo.png'),
+                  child: Image.asset(_vStore.vicio!.icon!),
                   radius: 16,
                 ),
                 SizedBox(

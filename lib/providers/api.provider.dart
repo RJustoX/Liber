@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:nicotine/models/login.model.dart';
 import 'package:nicotine/models/user.model.dart';
@@ -31,15 +29,23 @@ class ApiProvider {
   }
 
   Future<Map<String, dynamic>> createNewUser(UserModel user) async {
-    Response response = await _dio.post(
-        '${url}Inserir&ds_email=${user.email}&ds_senha=${user.senha}&nm_usuario=${user.name}&ds_nickname=${user.nickname}');
+    Response response = await _dio.post('$url/logon', data: <String, dynamic>{
+      'name': user.name,
+      'email': user.email,
+      'nickname': user.nickname,
+      'password': user.senha,
+    });
 
-    return jsonDecode(response.data);
+    return response.data;
   }
 
   Future<void> finishLogon(UserModel user, int idvicio) async {
-    await _dio.put(
-        '${url}FinalizarCadastro&dt_nascimento=${user.birthDate}&fl_sexo=${user.gender}&id_usuario=${user.id}&id_vicio=$idvicio');
+    await _dio.put('$url/finishLogon', data: <String, dynamic>{
+      'id': user.id,
+      'birthDate': user.birthDate!.toIso8601String(),
+      'sex': user.gender,
+      'vicioId': idvicio,
+    });
   }
 
   Future<void> changeUserAvatar(int id, String newAvatar) async {
@@ -53,11 +59,26 @@ class ApiProvider {
     return UserModel.fromJson(response.data);
   }
 
-  Future<List<dynamic>> getAllVicios() async {
-    final Response response = await _dio.get('${url}ListarTodosVicios');
-    var obj = json.decode(response.data)['dados'];
+  Future<List<dynamic>> getUserVicios(int userId) async {
+    final Response response = await _dio.get('$url/vicios/$userId');
 
-    return obj.map((dynamic t) {
+    return response.data['values'].map((dynamic t) {
+      return VicioModel.fromJson(t as Map<String, dynamic>);
+    }).toList();
+  }
+
+  Future<List<dynamic>> getVicio(int userId) async {
+    final Response response = await _dio.get('$url/vicios/$userId');
+
+    return response.data['values'].map((dynamic t) {
+      return VicioModel.fromJson(t as Map<String, dynamic>);
+    }).toList();
+  }
+
+  Future<List<dynamic>> getAllVicios() async {
+    final Response response = await _dio.get('$url/vicios');
+
+    return response.data.map((dynamic t) {
       return VicioModel.fromJson(t as Map<String, dynamic>);
     }).toList();
   }

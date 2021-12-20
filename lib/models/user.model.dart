@@ -9,6 +9,7 @@ class UserModel {
     this.senha = '',
     this.birthDate,
     this.gender = 0,
+    this.vicios,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -33,7 +34,7 @@ class UserModel {
   late String email;
   late String senha;
   late String nickname;
-  VicioModel? vicio;
+  List<VicioModel>? vicios;
   DateTime? birthDate;
   int? gender;
 

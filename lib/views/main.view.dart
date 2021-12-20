@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/controllers/main.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/content/content.view.dart';
@@ -21,12 +22,14 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   late UserStore _uStore;
+  late VicioStore _vStore;
   MainController? _controller;
 
   void didChangeDependencies() async {
     super.didChangeDependencies();
     _uStore = Provider.of<UserStore>(context);
-    _controller ??= MainController(_uStore);
+    _vStore = Provider.of<VicioStore>(context);
+    _controller ??= MainController(_uStore, _vStore);
     _initialFetch();
   }
 

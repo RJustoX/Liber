@@ -312,6 +312,6 @@ class _LogonViewState extends State<LogonView> {
   }
 
   void onError(dynamic error, dynamic stackTrace) {
-    ToastUtil.error('Usuário já cadastrado');
+    ToastUtil.error('Usuário já cadastrado $error');
   }
 }
