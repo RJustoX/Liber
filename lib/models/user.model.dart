@@ -1,3 +1,5 @@
+import 'package:nicotine/models/vicio.model.dart';
+
 class UserModel {
   UserModel({
     this.id = 0,
@@ -7,16 +9,17 @@ class UserModel {
     this.senha = '',
     this.birthDate,
     this.gender = 0,
+    this.vicios,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id_usuario'] as int;
+    avatar = json['nm_avatar'];
     name = json['nm_usuario'];
     email = json['ds_email'];
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
-    gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : 0;
-    print(gender);
+    gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : null;
 
     if (json['dt_nascimento'] != null &&
         json['dt_nascimento'] != '' &&
@@ -26,10 +29,12 @@ class UserModel {
   }
 
   late int id;
+  String? avatar;
   late String name;
   late String email;
   late String senha;
   late String nickname;
+  List<VicioModel>? vicios;
   DateTime? birthDate;
   int? gender;
 

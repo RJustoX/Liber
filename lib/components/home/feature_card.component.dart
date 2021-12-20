@@ -7,45 +7,52 @@ class FeatureCardComponent extends StatelessWidget {
   const FeatureCardComponent(
     this.icon,
     this.title,
-    this.desc,
-  );
+    this.desc, {
+    this.route,
+  });
 
   final String icon;
   final String title, desc;
+  final Widget? route;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.fromLTRB(70.0.r, 15.0, 20.0, 20.0),
-          margin: EdgeInsets.only(left: 50.r),
-          height: 0.16.sh,
-          width: 400.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.0),
-            color: Colors.white,
-          ),
-          child: Column(
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 26.0.sp,
+        GestureDetector(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(70.0.r, 15.0, 20.0, 20.0),
+            margin: EdgeInsets.only(left: 50.r),
+            height: 0.16.sh,
+            width: 400.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25.0.r),
+              color: Colors.white,
+            ),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 26.0.sp,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Text(
-                desc,
-                style: TextStyle(
-                  fontSize: 18.0.sp,
-                  color: AppColors.primaryColor,
+                SizedBox(
+                  height: 5.h,
                 ),
-              ),
-            ],
+                Text(
+                  desc,
+                  style: TextStyle(
+                    fontSize: 18.0.sp,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+              ],
+            ),
           ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => route!));
+          },
         ),
         Align(
           alignment: Alignment.centerLeft,

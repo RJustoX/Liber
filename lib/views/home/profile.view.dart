@@ -1,23 +1,89 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nicotine/controllers/home.controller.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:nicotine/providers/api.provider.dart';
+import 'package:nicotine/providers/firebase.provider.dart';
+import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/login.view.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView(
-    this._controller,
-  );
+  const ProfileView(this.callbackMethod);
 
-  final HomeController _controller;
+  final VoidCallback callbackMethod;
 
   @override
   _ProfileViewState createState() => _ProfileViewState();
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final FirebaseStorage _fStorage = FirebaseStorage.instance;
+  late UserStore _uStore;
+  bool uploading = false, loading = true;
+  double percent = 0;
+  String? ref;
+  late String avatarUrl;
+
+  @override
+  void didChangeDependencies() async {
+    _uStore = Provider.of<UserStore>(context);
+    super.didChangeDependencies();
+
+    if (_uStore.user!.avatar != null) {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
+      setState(() {
+        print(avatarUrl);
+        loading = false;
+      });
+    }
+  }
+
+  Future<XFile?> getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    return image;
+  }
+
+  Future<UploadTask> upload(String path) async {
+    File file = File(path);
+    try {
+      ref = 'images/${_uStore.user!.nickname}/avatar/img-${DateTime.now().toString()}.jpg';
+      return _fStorage.ref(ref).putFile(file);
+    } on FirebaseException catch (error) {
+      throw Exception('Erro no upload ${error.code}');
+    }
+  }
+
+  pickAndUploadImage() async {
+    XFile? file = await getImage();
+    if (file != null) {
+      UploadTask task = await upload(file.path);
+
+      task.snapshotEvents.listen((TaskSnapshot snapshot) async {
+        if (snapshot.state == TaskState.running) {
+          setState(() {
+            uploading = true;
+            percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          });
+        } else if (snapshot.state == TaskState.success) {
+          avatarUrl = await FirebaseStorage.instance.ref(ref).getDownloadURL();
+
+          ApiProvider().changeUserAvatar(_uStore.user!.id, ref!);
+          setState(() {
+            uploading = false;
+            print(_uStore.user!.avatar);
+          });
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,30 +114,31 @@ class _ProfileViewState extends State<ProfileView> {
                           IconButton(
                             onPressed: () async {
                               showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: Text('Atenção!'),
-                                        content: Text('Quer mesmo sair da sua conta?'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('Cancelar')),
-                                          TextButton(
-                                              onPressed: () async {
-                                                SharedPreferences sharedPreferences =
-                                                    await SharedPreferences.getInstance();
-                                                await sharedPreferences.clear();
-                                                Navigator.of(context).pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) => LoginView(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text('Confirmar'))
-                                        ],
-                                      ));
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Atenção!'),
+                                  content: Text('Quer mesmo sair da sua conta?'),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Cancelar')),
+                                    TextButton(
+                                        onPressed: () async {
+                                          SharedPreferences sharedPreferences =
+                                              await SharedPreferences.getInstance();
+                                          await sharedPreferences.clear();
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) => LoginView(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Confirmar'))
+                                  ],
+                                ),
+                              );
                             },
                             icon: Icon(
                               FontAwesomeIcons.edit,
@@ -84,7 +151,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Padding(
                         padding: EdgeInsets.only(left: 35.w, top: 10.h),
                         child: Text(
-                          widget._controller.getUser().nickname,
+                          _uStore.user!.nickname,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -163,7 +230,7 @@ class _ProfileViewState extends State<ProfileView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              widget._controller.getUser().name,
+                              _uStore.user!.name,
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w600,
@@ -171,7 +238,7 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                             Text(
-                              widget._controller.getUser().email,
+                              _uStore.user!.email,
                               style: TextStyle(
                                 color: Colors.black45,
                                 fontWeight: FontWeight.w600,
@@ -241,13 +308,37 @@ class _ProfileViewState extends State<ProfileView> {
             Positioned(
               top: 150.h,
               left: (0.5.sw - 100.h),
-              child: CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 100.h,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 80.h,
+              child: GestureDetector(
+                onTap: pickAndUploadImage,
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage:
+                      !loading && !uploading ? CachedNetworkImageProvider(avatarUrl) : null,
+                  radius: 100.h,
+                  child: uploading
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.upload,
+                              color: Colors.white,
+                              size: 60.r,
+                            ),
+                            Text('Carregando: ${percent.round()}%',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w600,
+                                ))
+                          ],
+                        )
+                      : _uStore.user!.avatar != null
+                          ? null
+                          : Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 80.h,
+                            ),
                 ),
               ),
             ),

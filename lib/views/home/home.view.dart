@@ -1,11 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/home/feature_card.component.dart';
+import 'package:nicotine/components/shimmer/home_shimmer.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
+import 'package:nicotine/providers/firebase.provider.dart';
+import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
-import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/home/profile.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
   HomeView();
@@ -15,6 +20,9 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late UserStore _uStore;
+  late VicioStore _vStore;
+  late String avatarUrl;
   List<Map<String, String>> dataMap = [
     {
       'value': '27',
@@ -34,14 +42,16 @@ class _HomeViewState extends State<HomeView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _uStore = Provider.of<UserStore>(context);
+    _vStore = Provider.of<VicioStore>(context);
     _homeController ??= HomeController();
     _initialFetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _homeController!.loading
-        ? Center(child: CircularProgressIndicator())
+    return _homeController!.isLoading
+        ? HomeShimmerComponent()
         : Scaffold(
             backgroundColor: AppColors.backgroundColor,
             appBar: AppBar(
@@ -53,25 +63,31 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return ProfileView(_homeController!);
+                          return ProfileView(
+                            () => setState(() {}),
+                          );
                         },
                       ),
                     );
                   },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Icon(
-                      Icons.person,
-                      size: 28,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _uStore.user!.avatar != null
+                      ? CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          backgroundImage: CachedNetworkImageProvider(avatarUrl))
+                      : CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          child: Icon(
+                            Icons.person,
+                            size: 28,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(_homeController!.getUserName()),
+                  Text(_uStore.user!.name),
                   Row(
                     children: <Widget>[
                       Icon(
@@ -88,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               actions: <Widget>[
                 CircleAvatar(
-                  child: Image.asset('assets/vicioLogo/tabagismoLogo.png'),
+                  child: Image.asset(_vStore.vicio!.icon!),
                   radius: 16,
                 ),
                 SizedBox(
@@ -161,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
                       child: Column(
                         children: [
                           Text(
-                            'Bom dia ${_homeController!.getUserName()}, mais um dia livre do vicio!',
+                            _homeController!.getInitialMessage(_uStore.user!.name),
                             style: TextStyle(
                               color: AppColors.backgroundColor,
                               fontSize: 22.0.sp,
@@ -193,6 +209,7 @@ class _HomeViewState extends State<HomeView> {
               data[index]['icon'],
               data[index]['title'],
               data[index]['desc'],
+              route: data[index]['route'],
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
@@ -204,13 +221,11 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> _initialFetch() async {
-    try {
-      await _homeController!.fetchUser();
-    } catch (error) {
-      ToastUtil.error(error.toString());
-      print(error.toString());
-    }
+    if (_uStore.user!.avatar != null) {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
 
-    if (mounted) setState(() => _homeController!.loading = false);
+      print(avatarUrl);
+    }
+    if (mounted) setState(() => _homeController!.isLoading = false);
   }
 }

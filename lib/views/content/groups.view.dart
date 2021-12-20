@@ -3,14 +3,14 @@ import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ContentView extends StatefulWidget {
-  const ContentView();
+class GroupsView extends StatefulWidget {
+  const GroupsView();
 
   @override
-  _ContentViewState createState() => _ContentViewState();
+  _GroupsViewState createState() => _GroupsViewState();
 }
 
-class _ContentViewState extends State<ContentView> with SingleTickerProviderStateMixin {
+class _GroupsViewState extends State<GroupsView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -25,11 +25,8 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Conteúdos',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 28.sp,
-          ),
+          'Grupos',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.sp),
         ),
         actions: <Widget>[
           CircleAvatar(
@@ -42,7 +39,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         ],
         bottom: TabBarComponent(
           controller: _tabController,
-          tabs: ['Relatos', 'Dicas'],
+          tabs: ['Meus Grupos', 'Explorar'],
         ),
       ),
       body: Center(
