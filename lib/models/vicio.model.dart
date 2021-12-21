@@ -8,11 +8,11 @@ class VicioModel {
   VicioModel.fromJson(Map<String, dynamic> json) {
     id = json['id_vicio'] as int;
     name = json['nm_vicio'];
-    score = json['nu_pontuacao'] as int;
+    score = (json['nu_pontuacao'] ?? 0) as int;
     icon = json['nm_logo'];
   }
   late int id;
   late String name;
-  late int score;
+  int? score;
   String? icon;
 }

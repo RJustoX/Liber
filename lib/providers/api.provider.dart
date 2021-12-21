@@ -52,10 +52,10 @@ class ApiProvider {
     await _dio.put('${url}Alterar&id_usuario=$id&nm_avatar=$newAvatar');
   }
 
-  // funcionando
   Future<UserModel> getUser(int id) async {
     final Response response = await _dio.get('$url/user/$id');
 
+    print(response.data);
     return UserModel.fromJson(response.data);
   }
 

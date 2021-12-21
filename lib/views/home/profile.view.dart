@@ -3,9 +3,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nicotine/providers/api.provider.dart';
+import 'package:nicotine/components/vicios.component.dart';
 import 'package:nicotine/providers/firebase.provider.dart';
 import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/login.view.dart';
@@ -25,6 +26,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final FirebaseStorage _fStorage = FirebaseStorage.instance;
   late UserStore _uStore;
+  late VicioStore _vStore;
   bool uploading = false, loading = true;
   double percent = 0;
   String? ref;
@@ -33,6 +35,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void didChangeDependencies() async {
     _uStore = Provider.of<UserStore>(context);
+    _vStore = Provider.of<VicioStore>(context);
     super.didChangeDependencies();
 
     if (_uStore.user!.avatar != null) {
@@ -74,7 +77,7 @@ class _ProfileViewState extends State<ProfileView> {
         } else if (snapshot.state == TaskState.success) {
           avatarUrl = await FirebaseStorage.instance.ref(ref).getDownloadURL();
 
-          ApiProvider().changeUserAvatar(_uStore.user!.id, ref!);
+          // ApiProvider().changeUserAvatar(_uStore.user!.id, ref!);
           setState(() {
             uploading = false;
             print(_uStore.user!.avatar);
@@ -190,32 +193,8 @@ class _ProfileViewState extends State<ProfileView> {
                   color: AppColors.backgroundColor,
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            child: Image.asset('assets/vicioLogo/tabagismoLogo.png'),
-                            radius: 40.r,
-                          ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
-                          CircleAvatar(
-                            child: Image.asset('assets/vicioLogo/alcolismoLogo.png'),
-                            radius: 40.r,
-                          ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: AppColors.primaryColor,
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 40.r,
-                            ),
-                            radius: 40.r,
-                          ),
-                        ],
+                      ViciosComponents(
+                        vicios: _uStore.user!.vicios!,
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 30.0.h),
