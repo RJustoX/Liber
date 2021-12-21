@@ -23,21 +23,8 @@ class _HomeViewState extends State<HomeView> {
   late UserStore _uStore;
   late VicioStore _vStore;
   late String avatarUrl;
-  List<Map<String, String>> dataMap = [
-    {
-      'value': '27',
-      'desc': 'Dias',
-    },
-    {
-      'value': 'R\$: 134,00',
-      'desc': 'Economizados',
-    },
-    {
-      'value': '2',
-      'desc': 'Metas ativas',
-    },
-  ];
   HomeController? _homeController;
+  late List<Map<String, String>> dataMap;
 
   @override
   void didChangeDependencies() {
@@ -97,7 +84,7 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(
                         width: 5.0,
                       ),
-                      Text('250'),
+                      Text('${_vStore.vicio?.score}'),
                     ],
                   ),
                 ],
@@ -223,6 +210,21 @@ class _HomeViewState extends State<HomeView> {
   Future<void> _initialFetch() async {
     if (_uStore.user!.avatar != null) {
       avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
+
+      dataMap = [
+        {
+          'value': '27',
+          'desc': 'Dias',
+        },
+        {
+          'value': 'R\$: ${_uStore.user?.savings}',
+          'desc': 'Economizados',
+        },
+        {
+          'value': '2',
+          'desc': 'Metas ativas',
+        },
+      ];
 
       print(avatarUrl);
     }

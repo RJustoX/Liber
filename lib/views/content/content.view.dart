@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
+import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ContentView extends StatefulWidget {
   const ContentView();
@@ -12,11 +15,20 @@ class ContentView extends StatefulWidget {
 
 class _ContentViewState extends State<ContentView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late UserStore _uStore;
+  late VicioStore _vStore;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    _uStore = Provider.of<UserStore>(context);
+    _vStore = Provider.of<VicioStore>(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -33,7 +45,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         ),
         actions: <Widget>[
           CircleAvatar(
-            child: Image.asset('assets/vicioLogo/tabagismoLogo.png'),
+            child: Image.asset('${_vStore.vicio?.icon}'),
             radius: 20.r,
           ),
           SizedBox(

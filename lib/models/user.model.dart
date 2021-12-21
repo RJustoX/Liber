@@ -10,6 +10,7 @@ class UserModel {
     this.birthDate,
     this.gender = 0,
     this.vicios,
+    this.savings = 0.0,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +21,7 @@ class UserModel {
     senha = json['ds_senha'];
     nickname = json['ds_nickname'];
     gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : null;
+    savings = (json['vl_economizado'] ?? 0.0).toDouble();
 
     if (json['dt_nascimento'] != null &&
         json['dt_nascimento'] != '' &&
@@ -34,6 +36,7 @@ class UserModel {
   late String email;
   late String senha;
   late String nickname;
+  late double savings;
   List<VicioModel>? vicios;
   DateTime? birthDate;
   int? gender;

@@ -175,7 +175,7 @@ class _ProfileViewState extends State<ProfileView> {
                               width: 15.w,
                             ),
                             Text(
-                              '250',
+                              '${_vStore.vicio?.score ?? 0}',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
