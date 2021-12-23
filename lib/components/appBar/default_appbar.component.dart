@@ -10,6 +10,7 @@ class DefaultAppBarComponent extends AppBar {
     TabBarComponent? tabBar,
     bool haveLeading = false,
     bool centerTitle = false,
+    String? vicioIcon,
   }) : super(
           backgroundColor: AppColors.primaryColor,
           leading: haveLeading
@@ -30,13 +31,14 @@ class DefaultAppBarComponent extends AppBar {
             ),
           ),
           actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: CircleAvatar(
-                child: Image.asset('assets/vicioLogo/tabagismoLogo.png'),
-                radius: 16,
+            if (vicioIcon != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: CircleAvatar(
+                  child: Image.asset(vicioIcon),
+                  radius: 16,
+                ),
               ),
-            ),
           ],
           bottom: tabBar,
         );

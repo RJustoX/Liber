@@ -446,10 +446,10 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
     bool result = false;
     switch (currentIndex) {
       case 0:
-        result = _uStore.user!.birthDate != null;
+        result = _uStore.user?.birthDate != null;
         break;
       case 1:
-        result = _uStore.user!.gender != null;
+        result = _uStore.user?.gender != null;
         break;
       case 2:
         result = vicioId != '';

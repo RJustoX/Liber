@@ -82,4 +82,13 @@ class ApiProvider {
       return VicioModel.fromJson(t as Map<String, dynamic>);
     }).toList();
   }
+
+  Future<Map<String, dynamic>> setNewVicio(int userId, int vicioId) async {
+    final Response response = await _dio.post('$url/insertNewVicio', data: <String, dynamic>{
+      'vicioId': vicioId,
+      'userId': userId,
+    });
+
+    return response.data;
+  }
 }

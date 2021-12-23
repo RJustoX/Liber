@@ -211,23 +211,24 @@ class _HomeViewState extends State<HomeView> {
     if (_uStore.user!.avatar != null) {
       avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
 
-      dataMap = [
-        {
-          'value': '27',
-          'desc': 'Dias',
-        },
-        {
-          'value': 'R\$: ${_uStore.user?.savings}',
-          'desc': 'Economizados',
-        },
-        {
-          'value': '2',
-          'desc': 'Metas ativas',
-        },
-      ];
-
       print(avatarUrl);
     }
+
+    dataMap = [
+      {
+        'value': '27',
+        'desc': 'Dias',
+      },
+      {
+        'value': 'R\$: ${_uStore.user?.savings}',
+        'desc': 'Economizados',
+      },
+      {
+        'value': '2',
+        'desc': 'Metas ativas',
+      },
+    ];
+
     if (mounted) setState(() => _homeController!.isLoading = false);
   }
 }
