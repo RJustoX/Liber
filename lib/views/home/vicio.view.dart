@@ -115,9 +115,11 @@ class _VicioViewState extends State<VicioView> {
                           Navigator.of(context).pop();
                           vicioController!.isLoading = true;
                         });
+
                         String message = await vicioController!.setNewVicio(vicio.id);
                         await sharedPreferences.setInt('vicio', vicio.id);
                         ToastUtil.success(message);
+
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute<void>(
                             builder: (_) {

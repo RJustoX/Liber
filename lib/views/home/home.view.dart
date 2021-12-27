@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/home/feature_card.component.dart';
+import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/components/shimmer/home_shimmer.component.dart';
 import 'package:nicotine/controllers/home.controller.dart';
 import 'package:nicotine/providers/firebase.provider.dart';
@@ -90,10 +91,7 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
               actions: <Widget>[
-                CircleAvatar(
-                  child: Image.asset(_vStore.vicio!.icon!),
-                  radius: 16,
-                ),
+                VicioAvatarComponent(_vStore.vicio!),
                 SizedBox(
                   width: 5.0,
                 ),

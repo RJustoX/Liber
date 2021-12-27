@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
+import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
@@ -43,10 +44,7 @@ class _RankingViewState extends State<RankingView> with SingleTickerProviderStat
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.sp),
         ),
         actions: <Widget>[
-          CircleAvatar(
-            child: Image.asset('${_vStore.vicio?.icon}'),
-            radius: 20.r,
-          ),
+          VicioAvatarComponent(_vStore.vicio!),
           SizedBox(
             width: 20.0.w,
           )

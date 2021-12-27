@@ -49,7 +49,10 @@ class ApiProvider {
   }
 
   Future<void> changeUserAvatar(int id, String newAvatar) async {
-    await _dio.put('${url}Alterar&id_usuario=$id&nm_avatar=$newAvatar');
+    await _dio.put('$url/changeAvatar', data: <String, dynamic>{
+      'id': id,
+      'avatar': newAvatar,
+    });
   }
 
   Future<UserModel> getUser(int id) async {
