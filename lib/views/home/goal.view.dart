@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:nicotine/components/goal_card.component.dart';
+import 'package:nicotine/components/goal/goal_card.component.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/home/new_goal.view.dart';
 
