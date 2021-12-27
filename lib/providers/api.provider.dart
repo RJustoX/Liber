@@ -94,4 +94,10 @@ class ApiProvider {
 
     return response.data;
   }
+
+  Future<Map<String, dynamic>> getUserGoals(int userId) async {
+    final Response response = await _dio.get('$url/goals/$userId');
+
+    return response.data;
+  }
 }

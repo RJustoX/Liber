@@ -11,6 +11,7 @@ class VicioModel {
     score = (json['nu_pontuacao'] ?? 0) as int;
     icon = json['nm_logo'];
   }
+
   late int id;
   late String name;
   int? score;

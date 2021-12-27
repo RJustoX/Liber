@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/goal/goal.dialog.dart';
+import 'package:nicotine/models/goal.model.dart';
 
 class GoalCardComponent extends StatelessWidget {
-  const GoalCardComponent();
+  const GoalCardComponent(this.goal);
+  final GoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class GoalCardComponent extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Tênis de marca',
+                          goal.title,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

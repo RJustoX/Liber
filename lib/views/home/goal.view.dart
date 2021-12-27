@@ -3,11 +3,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/goal/goal_card.component.dart';
+import 'package:nicotine/controllers/goal.controller.dart';
+import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/views/home/new_goal.view.dart';
+import 'package:provider/provider.dart';
 
-class GoalView extends StatelessWidget {
-  const GoalView({Key? key}) : super(key: key);
+class GoalView extends StatefulWidget {
+  const GoalView();
+
+  @override
+  State<GoalView> createState() => _GoalViewState();
+}
+
+class _GoalViewState extends State<GoalView> {
+  late UserStore _uStore;
+  GoalController? _controller;
+
+  @override
+  void didChangeDependencies() {
+    _uStore = Provider.of<UserStore>(context);
+    _controller ??= GoalController();
+    super.didChangeDependencies();
+    _initialFetch();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +70,23 @@ class GoalView extends StatelessWidget {
                   ),
                 ),
                 Flexible(
-                  child: Container(
-                    color: AppColors.backgroundColor,
-                    child: ListView.separated(
-                      padding: EdgeInsets.fromLTRB(30.w, 120.h, 30.w, 100.0.h),
-                      itemCount: 2,
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 20.h,
-                      ),
-                      itemBuilder: (context, index) {
-                        return GoalCardComponent();
-                      },
-                    ),
-                  ),
+                  child: _controller!.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container(
+                          color: AppColors.backgroundColor,
+                          child: ListView.separated(
+                            padding: EdgeInsets.fromLTRB(30.w, 120.h, 30.w, 100.0.h),
+                            itemCount: _controller!.goals!.length,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 20.h,
+                            ),
+                            itemBuilder: (context, index) {
+                              return GoalCardComponent(_controller!.goals![index]);
+                            },
+                          ),
+                        ),
                 )
               ],
             ),
@@ -194,5 +217,11 @@ class GoalView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _initialFetch() async {
+    await _controller!.fetchGoals(_uStore.user!.id);
+
+    if (mounted) setState(() => _controller!.isLoading = false);
   }
 }
