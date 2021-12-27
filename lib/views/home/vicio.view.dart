@@ -5,6 +5,7 @@ import 'package:nicotine/components/shared/dialog.component.dart';
 import 'package:nicotine/controllers/vicio.controller.dart';
 import 'package:nicotine/models/vicio.model.dart';
 import 'package:nicotine/stores/user.store.dart';
+import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/splash_screen.dialog.dart';
@@ -22,10 +23,12 @@ class VicioView extends StatefulWidget {
 class _VicioViewState extends State<VicioView> {
   VicioController? vicioController;
   late UserStore _uStore;
+  late VicioStore _vStore;
 
   @override
   void didChangeDependencies() {
     _uStore = Provider.of<UserStore>(context);
+    _vStore = Provider.of<VicioStore>(context);
     super.didChangeDependencies();
     vicioController ??= VicioController(_uStore);
     initialFetch();
@@ -52,7 +55,8 @@ class _VicioViewState extends State<VicioView> {
                   vicioController!.getMyVicios(),
                   false,
                 ),
-                if (vicioController!.getOtherVicios() != null)
+                if (vicioController!.getOtherVicios() != null &&
+                    vicioController!.getOtherVicios()!.isNotEmpty)
                   buildViciosWidget(
                     'Outros vícios',
                     vicioController!.getOtherVicios()!,
@@ -119,7 +123,7 @@ class _VicioViewState extends State<VicioView> {
                         String message = await vicioController!.setNewVicio(vicio.id);
                         await sharedPreferences.setInt('vicio', vicio.id);
                         ToastUtil.success(message);
-
+                        Navigator.of(context).pop();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute<void>(
                             builder: (_) {
@@ -130,7 +134,29 @@ class _VicioViewState extends State<VicioView> {
                       },
                     );
                   })
-              : () {},
+              : vicio.id != _vStore.vicio?.id
+                  ? () => showDialog(
+                      context: context,
+                      builder: (_) {
+                        return DialogComponent(
+                          content: 'Gostaria de acessar o vicio: ${vicio.name}?',
+                          confirmAction: () async {
+                            SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                            await sharedPreferences.setInt('vicio', vicio.id);
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute<void>(
+                                builder: (_) {
+                                  return SplashScreenDialog();
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      })
+                  : () {},
           child: Container(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
