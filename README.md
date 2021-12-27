@@ -1,4 +1,4 @@
-# nicotine
+# Liber
 
 Um aplicativo que tem como propósito auxiliar no processo de parar de fumar.
 
