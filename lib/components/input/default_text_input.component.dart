@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class DefaultTextInputComponent extends StatelessWidget {
+class DefaultTextInputComponent extends StatefulWidget {
   const DefaultTextInputComponent({
     required this.title,
     this.hint,
     this.onSaved,
     this.validate = false,
+    this.initialValue,
   });
 
   final String title;
-  final String? hint;
+  final String? hint, initialValue;
   final Function(String?)? onSaved;
   final bool validate;
 
+  @override
+  State<DefaultTextInputComponent> createState() => _DefaultTextInputComponentState();
+}
+
+class _DefaultTextInputComponentState extends State<DefaultTextInputComponent> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          title,
+          widget.title,
           style: TextStyle(
             color: HexColor('#B0B4C0'),
             fontSize: 16.0,
@@ -29,15 +35,16 @@ class DefaultTextInputComponent extends StatelessWidget {
         ),
         const SizedBox(height: 10.0),
         TextFormField(
+          initialValue: widget.initialValue,
           decoration: InputDecoration(
-            hintText: hint,
+            hintText: widget.hint,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15.0),
                 borderSide: BorderSide(width: 0.0, style: BorderStyle.none)),
             fillColor: HexColor('#CAD4DF'),
             filled: true,
           ),
-          validator: validate
+          validator: widget.validate
               ? (value) {
                   if (value!.isEmpty) {
                     return 'Campo não preenchido';
@@ -45,7 +52,7 @@ class DefaultTextInputComponent extends StatelessWidget {
                     return null;
                 }
               : (value) {},
-          onSaved: onSaved,
+          onSaved: widget.onSaved,
         ),
       ],
     );

@@ -116,4 +116,13 @@ class ApiProvider {
 
     return response.data;
   }
+
+  Future<Map<String, dynamic>> updateGoal(GoalModel goal) async {
+    final Response response = await _dio.put(
+      '$url/editGoal',
+      data: goal.toJson(),
+    );
+
+    return response.data;
+  }
 }

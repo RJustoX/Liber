@@ -6,11 +6,13 @@ import 'package:hexcolor/hexcolor.dart';
 class DefaultValueInputComponent extends StatelessWidget {
   const DefaultValueInputComponent({
     required this.title,
+    this.initialValue,
     this.onSaved,
   });
 
   final Function(String?)? onSaved;
   final String title;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class DefaultValueInputComponent extends StatelessWidget {
             ),
           ),
           TextFormField(
+            initialValue: initialValue,
             keyboardType: TextInputType.number,
             style: TextStyle(
               color: HexColor('#B0B4C0'),

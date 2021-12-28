@@ -43,6 +43,7 @@ class GoalModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
 
+    data['metaId'] = id;
     data['userId'] = userId;
     data['title'] = title;
     data['value'] = value;

@@ -5,6 +5,7 @@ import 'package:nicotine/controllers/goal.controller.dart';
 import 'package:nicotine/models/goal.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
+import 'package:nicotine/views/home/new_goal.view.dart';
 
 class GoalDialog extends StatelessWidget {
   const GoalDialog({
@@ -59,7 +60,16 @@ class GoalDialog extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => NewGoalView(
+                              goal: goal,
+                              callback: callback,
+                            ),
+                          ),
+                        );
+                      },
                       icon: Icon(
                         Icons.edit_outlined,
                         size: 35.r,
