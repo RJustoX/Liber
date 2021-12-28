@@ -3,11 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/goal/goal.dialog.dart';
+import 'package:nicotine/controllers/goal.controller.dart';
 import 'package:nicotine/models/goal.model.dart';
 
 class GoalCardComponent extends StatelessWidget {
-  const GoalCardComponent(this.goal);
+  const GoalCardComponent(this.goal, this.callback, this.controller);
   final GoalModel goal;
+  final VoidCallback callback;
+  final GoalController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,11 @@ class GoalCardComponent extends StatelessWidget {
           onTap: () => showDialog(
             context: context,
             builder: (_) {
-              return GoalDialog(goal);
+              return GoalDialog(
+                goal: goal,
+                callback: callback,
+                controller: controller,
+              );
             },
           ),
           child: Container(

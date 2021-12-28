@@ -15,4 +15,9 @@ class GoalController {
       }).toList();
     }
   }
+
+  Future<void> deleteGoal(goalId) async {
+    Map<String, dynamic> map = await ApiProvider().deleteGoal(goalId);
+    message = map['message'];
+  }
 }

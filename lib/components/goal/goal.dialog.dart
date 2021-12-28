@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/components/shared/dialog.component.dart';
+import 'package:nicotine/controllers/goal.controller.dart';
 import 'package:nicotine/models/goal.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:nicotine/utils/toast.util.dart';
 
 class GoalDialog extends StatelessWidget {
-  const GoalDialog(this.goal);
+  const GoalDialog({
+    required this.goal,
+    required this.callback,
+    required this.controller,
+  });
 
   final GoalModel goal;
+  final VoidCallback callback;
+  final GoalController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +37,22 @@ class GoalDialog extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return DialogComponent(
+                                content: 'Gostaria de excluir esta meta?',
+                                confirmAction: () async {
+                                  await controller.deleteGoal(goal.id);
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  ToastUtil.success(controller.message);
+                                  callback();
+                                },
+                              );
+                            });
+                      },
                       icon: Icon(
                         Icons.delete_outline,
                         size: 35.r,

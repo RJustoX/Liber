@@ -6,6 +6,7 @@ import 'package:nicotine/components/goal/goal_card.component.dart';
 import 'package:nicotine/controllers/goal.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/home/new_goal.view.dart';
 import 'package:provider/provider.dart';
 
@@ -87,7 +88,11 @@ class _GoalViewState extends State<GoalView> {
                                   height: 20.h,
                                 ),
                                 itemBuilder: (context, index) {
-                                  return GoalCardComponent(_controller!.goals![index]);
+                                  return GoalCardComponent(
+                                    _controller!.goals![index],
+                                    _initialFetch,
+                                    _controller!,
+                                  );
                                 },
                               ),
                             ),
@@ -231,6 +236,7 @@ class _GoalViewState extends State<GoalView> {
 
   Future<void> _initialFetch() async {
     await _controller!.fetchGoals(_uStore.user!.id);
+    if (!_controller!.message.contains('sucesso')) ToastUtil.success(_controller!.message);
 
     if (mounted) setState(() => _controller!.isLoading = false);
   }

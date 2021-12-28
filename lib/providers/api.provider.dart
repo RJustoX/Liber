@@ -110,4 +110,10 @@ class ApiProvider {
     print(response.data);
     return response.data;
   }
+
+  Future<Map<String, dynamic>> deleteGoal(int goalId) async {
+    final Response response = await _dio.get('$url/deleteGoal/$goalId');
+
+    return response.data;
+  }
 }
