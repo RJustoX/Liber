@@ -17,7 +17,7 @@ class GoalCardComponent extends StatelessWidget {
           onTap: () => showDialog(
             context: context,
             builder: (_) {
-              return GoalDialog();
+              return GoalDialog(goal);
             },
           ),
           child: Container(
@@ -45,13 +45,13 @@ class GoalCardComponent extends StatelessWidget {
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        Icon(Icons.circle, color: Colors.green),
+                        Icon(Icons.circle, color: goal.active ? Colors.green : Colors.red),
                       ],
                     ),
                     Row(
                       children: <Widget>[
                         Text(
-                          '+250',
+                          '+${goal.pontos}',
                           style: TextStyle(
                             color: HexColor('#617188'),
                             fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class GoalCardComponent extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: ' 350,00',
+                                text: goal.value.toString(),
                                 style: TextStyle(
                                   color: HexColor('#b0b4c0'),
                                   fontSize: 24.0.sp,
@@ -91,15 +91,19 @@ class GoalCardComponent extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
-                      'Conseguirá comprar em: 12/11/2021',
-                      style: TextStyle(
-                        color: HexColor('#617188'),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.sp,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    goal.active
+                        ? Text(
+                            'Conseguirá comprar em: 12/11/2021',
+                            style: TextStyle(
+                              color: HexColor('#617188'),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : SizedBox(
+                            height: 10.h,
+                          )
                   ],
                 ),
               ),

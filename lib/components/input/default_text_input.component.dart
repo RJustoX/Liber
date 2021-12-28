@@ -5,10 +5,14 @@ class DefaultTextInputComponent extends StatelessWidget {
   const DefaultTextInputComponent({
     required this.title,
     this.hint,
+    this.onSaved,
+    this.validate = false,
   });
 
   final String title;
   final String? hint;
+  final Function(String?)? onSaved;
+  final bool validate;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +37,15 @@ class DefaultTextInputComponent extends StatelessWidget {
             fillColor: HexColor('#CAD4DF'),
             filled: true,
           ),
-          // validator: (value) {
-          //   if (value!.isEmpty) {
-          //     return 'Campo não preenchido';
-          //   } else
-          //     return null;
-          // },
-          // onSaved: (nickname) {
-          //   _newUser.nickname = nickname!;
-          // },
+          validator: validate
+              ? (value) {
+                  if (value!.isEmpty) {
+                    return 'Campo não preenchido';
+                  } else
+                    return null;
+                }
+              : (value) {},
+          onSaved: onSaved,
         ),
       ],
     );

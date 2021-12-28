@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:nicotine/models/goal.model.dart';
 import 'package:nicotine/models/login.model.dart';
 import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/models/vicio.model.dart';
@@ -98,6 +99,15 @@ class ApiProvider {
   Future<Map<String, dynamic>> getUserGoals(int userId) async {
     final Response response = await _dio.get('$url/goals/$userId');
 
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> insertNewGoal(GoalModel goal) async {
+    final Response response = await _dio.put(
+      '$url/newGoal',
+      data: goal.toJson(),
+    );
+    print(response.data);
     return response.data;
   }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/models/goal.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 
 class GoalDialog extends StatelessWidget {
-  const GoalDialog();
+  const GoalDialog(this.goal);
+
+  final GoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class GoalDialog extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      'R\$: 325,00',
+                      'R\$: ${goal.value}',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 20.sp,
@@ -52,7 +55,7 @@ class GoalDialog extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 20.h, bottom: 10.h),
                   child: Text(
-                    'Tenis de marca',
+                    goal.title,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 21.sp,
@@ -60,14 +63,15 @@ class GoalDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  'Sempre quis comprar este tenis, se eu parar de fumar vou conseguir compra-lo',
-                  style: TextStyle(
-                    color: AppColors.primaryFontColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.normal,
+                if (goal.description != null)
+                  Text(
+                    goal.description!,
+                    style: TextStyle(
+                      color: AppColors.primaryFontColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
-                ),
                 Padding(
                   padding: EdgeInsets.only(top: 20.h, bottom: 15.h),
                   child: Text(
@@ -96,7 +100,7 @@ class GoalDialog extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Ativar',
+                          goal.active ? 'Desativar' : 'Ativar',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.sp,

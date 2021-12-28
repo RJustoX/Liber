@@ -74,19 +74,23 @@ class _GoalViewState extends State<GoalView> {
                       ? Center(
                           child: CircularProgressIndicator(),
                         )
-                      : Container(
-                          color: AppColors.backgroundColor,
-                          child: ListView.separated(
-                            padding: EdgeInsets.fromLTRB(30.w, 120.h, 30.w, 100.0.h),
-                            itemCount: _controller!.goals!.length,
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 20.h,
+                      : _controller!.goals != null && _controller!.goals!.isEmpty
+                          ? Center(
+                              child: Text('Sem metas cadastradas'),
+                            )
+                          : Container(
+                              color: AppColors.backgroundColor,
+                              child: ListView.separated(
+                                padding: EdgeInsets.fromLTRB(30.w, 120.h, 30.w, 100.0.h),
+                                itemCount: _controller!.goals!.length,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: 20.h,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return GoalCardComponent(_controller!.goals![index]);
+                                },
+                              ),
                             ),
-                            itemBuilder: (context, index) {
-                              return GoalCardComponent(_controller!.goals![index]);
-                            },
-                          ),
-                        ),
                 )
               ],
             ),
@@ -208,7 +212,13 @@ class _GoalViewState extends State<GoalView> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewGoalView()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewGoalView(
+                  callback: _initialFetch,
+                ),
+              ),
+            );
           },
           child: Icon(
             Icons.add,
