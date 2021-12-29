@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nicotine/components/bottomSheet/bottom_sheet_row.component.dart';
+import 'package:nicotine/components/bottomSheet/bottom_sheet_row_tile.component.dart';
 import 'package:nicotine/components/vicios.component.dart';
 import 'package:nicotine/providers/api.provider.dart';
 import 'package:nicotine/providers/firebase.provider.dart';
@@ -10,6 +12,7 @@ import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/utils/image.util.dart';
 import 'package:nicotine/views/login.view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,10 +40,11 @@ class _ProfileViewState extends State<ProfileView> {
   void didChangeDependencies() async {
     _uStore = Provider.of<UserStore>(context);
     _vStore = Provider.of<VicioStore>(context);
+    ref = 'images/${_uStore.user!.id}/avatar/img-${DateTime.now().toString()}.jpg';
     super.didChangeDependencies();
 
-    if (_uStore.user!.avatar != null) {
-      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
+    if (_uStore.user!.avatar != '') {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.id);
       setState(() {
         print(avatarUrl);
         loading = false;
@@ -48,26 +52,13 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-  Future<XFile?> getImage() async {
-    final ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    return image;
-  }
-
-  Future<UploadTask> upload(String path) async {
-    File file = File(path);
-    try {
-      ref = 'images/${_uStore.user!.nickname}/avatar/img-${DateTime.now().toString()}.jpg';
-      return _fStorage.ref(ref).putFile(file);
-    } on FirebaseException catch (error) {
-      throw Exception('Erro no upload ${error.code}');
-    }
-  }
-
-  pickAndUploadImage() async {
-    XFile? file = await getImage();
+  pickAndUploadImage(ImageSource source) async {
+    XFile? file = await ImageUtil.getImage(source);
     if (file != null) {
-      UploadTask task = await upload(file.path);
+      UploadTask task = await ImageUtil.upload(
+        file.path,
+        ref!,
+      );
 
       task.snapshotEvents.listen((TaskSnapshot snapshot) async {
         if (snapshot.state == TaskState.running) {
@@ -289,7 +280,34 @@ class _ProfileViewState extends State<ProfileView> {
               top: 150.h,
               left: (0.5.sw - 100.h),
               child: GestureDetector(
-                onTap: pickAndUploadImage,
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    backgroundColor: AppColors.primaryColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                    ),
+                    builder: (BuildContext context) => BottomSheetRowComponent(
+                      tiles: <BottomSheetRowTileComponent>[
+                        BottomSheetRowTileComponent(
+                          title: 'Camera',
+                          icon: Icons.camera_alt_outlined,
+                          onTap: () => pickAndUploadImage(ImageSource.camera),
+                        ),
+                        BottomSheetRowTileComponent(
+                          title: 'Galeria',
+                          icon: Icons.file_copy_sharp,
+                          onTap: () => pickAndUploadImage(ImageSource.gallery),
+                        ),
+                      ],
+                    ),
+
+                    //pickAndUploadImage();
+                  );
+                },
                 child: CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage:
@@ -312,7 +330,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 ))
                           ],
                         )
-                      : _uStore.user!.avatar != null
+                      : _uStore.user!.avatar != ''
                           ? null
                           : Icon(
                               Icons.person,

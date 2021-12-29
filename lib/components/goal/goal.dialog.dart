@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/components/shared/dialog.component.dart';
@@ -173,26 +174,28 @@ class GoalDialog extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            top: 5.h,
-            left: (0.5.sw - 105.r),
-            child: Card(
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: Container(
-                height: 105.r,
-                width: 105.r,
-                decoration: BoxDecoration(
+          if (goal.avatar != '')
+            Positioned(
+              top: 5.h,
+              left: (0.5.sw - 105.r),
+              child: Card(
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: Image.network(
-                  'https://cdnv2.moovin.com.br/belinhacalcados/imagens/produtos/det/tenis-nike-843895001-sb-check-solar-d880ea4a6c2100f909a78778c8407bbe.png',
+                child: Container(
+                  height: 105.r,
+                  width: 105.r,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0.r),
+                    child: CachedNetworkImage(
+                      imageUrl: goal.avatar!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

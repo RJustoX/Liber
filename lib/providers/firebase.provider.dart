@@ -11,8 +11,14 @@ class FirebaseProvider {
 
   final FirebaseStorage _fStorage = FirebaseStorage.instance;
 
-  Future<String> getUserAvatar(String nickname) async {
-    final Reference ref = (await _fStorage.ref('images/$nickname/avatar').listAll()).items.last;
+  Future<String> getUserAvatar(int id) async {
+    final Reference ref = (await _fStorage.ref('images/$id/avatar').listAll()).items.last;
+    String avatarUrl = await ref.getDownloadURL();
+    return avatarUrl;
+  }
+
+  Future<String> getGoalImage(int id) async {
+    final Reference ref = (await _fStorage.ref('images/$id/met').listAll()).items.last;
     String avatarUrl = await ref.getDownloadURL();
     return avatarUrl;
   }

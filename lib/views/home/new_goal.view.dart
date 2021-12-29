@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:nicotine/components/bottomSheet/bottom_sheet_row.component.dart';
+import 'package:nicotine/components/bottomSheet/bottom_sheet_row_tile.component.dart';
 import 'package:nicotine/components/button/default_primary_button.component.dart';
 import 'package:nicotine/components/input/default_text_input.component.dart';
 import 'package:nicotine/components/input/default_value_input.component.dart';
@@ -8,6 +13,7 @@ import 'package:nicotine/providers/api.provider.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/utils/image.util.dart';
 import 'package:provider/provider.dart';
 
 class NewGoalView extends StatefulWidget {
@@ -27,11 +33,16 @@ class _NewGoalViewState extends State<NewGoalView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late GoalModel newGoal;
   late UserStore _uStore;
-  bool loading = false;
+  XFile? file;
+  File? image;
+  bool uploading = false, loading = false;
+  double percent = 0;
+  String? ref;
 
   @override
   void didChangeDependencies() {
     _uStore = Provider.of<UserStore>(context);
+    ref = 'images/${_uStore.user!.id}/goals/img-${DateTime.now().toString()}.jpg';
 
     if (widget.goal != null)
       newGoal = widget.goal!;
@@ -39,6 +50,29 @@ class _NewGoalViewState extends State<NewGoalView> {
       newGoal = GoalModel();
 
     super.didChangeDependencies();
+  }
+
+  pickAndUploadImage(ImageSource source) async {
+    file = await ImageUtil.getImage(source);
+    if (file != null) {
+      image = File(file!.path);
+      UploadTask task = await ImageUtil.upload(file!.path, ref!);
+
+      task.snapshotEvents.listen((TaskSnapshot snapshot) async {
+        if (snapshot.state == TaskState.running) {
+          setState(() {
+            uploading = true;
+            percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          });
+        } else if (snapshot.state == TaskState.success) {
+          newGoal.avatar = await FirebaseStorage.instance.ref(ref).getDownloadURL();
+
+          setState(() {
+            uploading = false;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -92,6 +126,7 @@ class _NewGoalViewState extends State<NewGoalView> {
                           DefaultTextInputComponent(
                             title: 'Nome da meta',
                             hint: 'Insira o titulo da sua meta',
+                            initialValue: widget.goal?.title,
                             validate: true,
                             onSaved: (value) {
                               if (value!.isNotEmpty) newGoal.title = value.trim();
@@ -100,6 +135,7 @@ class _NewGoalViewState extends State<NewGoalView> {
                           const SizedBox(height: 20.0),
                           DefaultTextInputComponent(
                             title: 'Deixe alguma anotação',
+                            initialValue: widget.goal?.description,
                             onSaved: (value) {
                               if (value!.isNotEmpty) newGoal.description = value.trim();
                             },
@@ -108,6 +144,7 @@ class _NewGoalViewState extends State<NewGoalView> {
                             padding: EdgeInsets.symmetric(vertical: 20.h),
                             child: DefaultValueInputComponent(
                               title: 'Valor',
+                              initialValue: widget.goal?.value.toString(),
                               onSaved: (String? value) {
                                 if (value!.isNotEmpty) newGoal.value = double.parse(value);
                               },
@@ -142,13 +179,20 @@ class _NewGoalViewState extends State<NewGoalView> {
                               setState(() {
                                 loading = true;
                               });
-                              await ApiProvider().insertNewGoal(newGoal).then(
-                                    (value) => widget.callback(),
-                                  );
-                              Navigator.of(context).pop();
-                              print(newGoal.toJson());
+                              if (widget.goal == null) {
+                                await ApiProvider().insertNewGoal(newGoal).then(
+                                      (value) => widget.callback(),
+                                    );
+                                Navigator.of(context).pop();
+                              } else {
+                                await ApiProvider().updateGoal(newGoal).then(
+                                      (value) => widget.callback(),
+                                    );
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              }
                             },
-                            title: 'Salvar',
+                            title: widget.goal == null ? 'Salvar' : 'Atualizar',
                             loadingTitle: 'Salvando',
                           ),
                         ],
@@ -165,23 +209,58 @@ class _NewGoalViewState extends State<NewGoalView> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100.h),
                   ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 100.h,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.camera_alt_outlined,
-                          color: Colors.black,
-                          size: 80.h,
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        backgroundColor: AppColors.primaryColor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
                         ),
-                        Text('Adicionar imagem',
-                            style: TextStyle(
-                              color: AppColors.primaryFontColor,
-                              fontWeight: FontWeight.w600,
-                            ))
-                      ],
+                        builder: (BuildContext context) => BottomSheetRowComponent(
+                          tiles: <BottomSheetRowTileComponent>[
+                            BottomSheetRowTileComponent(
+                              title: 'Camera',
+                              icon: Icons.camera_alt_outlined,
+                              onTap: () => pickAndUploadImage(ImageSource.camera),
+                            ),
+                            BottomSheetRowTileComponent(
+                              title: 'Galeria',
+                              icon: Icons.file_copy_sharp,
+                              onTap: () => pickAndUploadImage(ImageSource.gallery),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 100.h,
+                      backgroundImage: image != null ? FileImage(image!) : null,
+                      child: image != null
+                          ? SizedBox()
+                          : uploading
+                              ? Icon(Icons.upload)
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: Colors.black,
+                                      size: 80.h,
+                                    ),
+                                    Text(
+                                      'Adicionar imagem',
+                                      style: TextStyle(
+                                        color: AppColors.primaryFontColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                     ),
                   ),
                 ),

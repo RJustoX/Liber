@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,12 +31,12 @@ class GoalCardComponent extends StatelessWidget {
           child: Container(
             width: double.maxFinite,
             height: 150.h,
-            margin: EdgeInsets.only(left: 30.r),
+            margin: goal.avatar != '' ? EdgeInsets.only(left: 30.r) : null,
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0.r)),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(80.w, 20.h, 20.h, 20.h),
+                padding: EdgeInsets.fromLTRB(goal.avatar != '' ? 80.w : 20.w, 20.h, 20.h, 20.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,22 +118,24 @@ class GoalCardComponent extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          top: 15.h,
-          left: 0.r,
-          child: Container(
-            height: 110.r,
-            width: 110.r,
-            child: Card(
-              shape: RoundedRectangleBorder(
+        if (goal.avatar != '')
+          Positioned(
+            top: 15.h,
+            left: 0.r,
+            child: Container(
+              height: 110.r,
+              width: 110.r,
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(25.0.r),
-              ),
-              child: Image.network(
-                'https://cdnv2.moovin.com.br/belinhacalcados/imagens/produtos/det/tenis-nike-843895001-sb-check-solar-d880ea4a6c2100f909a78778c8407bbe.png',
+                child: Card(
+                  child: CachedNetworkImage(
+                    imageUrl: goal.avatar!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

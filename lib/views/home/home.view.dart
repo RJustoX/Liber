@@ -58,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     );
                   },
-                  child: _uStore.user!.avatar != null
+                  child: _uStore.user!.avatar != ''
                       ? CircleAvatar(
                           backgroundColor: Colors.grey,
                           backgroundImage: CachedNetworkImageProvider(avatarUrl))
@@ -206,8 +206,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> _initialFetch() async {
-    if (_uStore.user!.avatar != null) {
-      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.nickname);
+    if (_uStore.user!.avatar != '') {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.id);
 
       print(avatarUrl);
     }
