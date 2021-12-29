@@ -239,8 +239,8 @@ class _NewGoalViewState extends State<NewGoalView> {
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 100.h,
-                      backgroundImage: image != null ? FileImage(image!) : null,
-                      child: image != null
+                      backgroundImage: getPreviewImage(),
+                      child: (image != null || widget.goal!.avatar != null)
                           ? SizedBox()
                           : uploading
                               ? Icon(Icons.upload)
@@ -270,5 +270,16 @@ class _NewGoalViewState extends State<NewGoalView> {
         ),
       ),
     );
+  }
+
+  ImageProvider? getPreviewImage() {
+    ImageProvider? result;
+    if (image != null) {
+      result = FileImage(image!);
+    } else if (widget.goal!.avatar != null) {
+      result = NetworkImage(widget.goal!.avatar!);
+    }
+
+    return result;
   }
 }

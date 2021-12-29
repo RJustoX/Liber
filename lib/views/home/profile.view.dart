@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,7 +27,6 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final FirebaseStorage _fStorage = FirebaseStorage.instance;
   late UserStore _uStore;
   late VicioStore _vStore;
   bool uploading = false, loading = true;
