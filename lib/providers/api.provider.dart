@@ -125,4 +125,11 @@ class ApiProvider {
 
     return response.data;
   }
+
+  Future<Map<String, dynamic>> getAllTimeRanking(int vicioId) async {
+    final Response response = await _dio.get('$url/ranking/allTime/$vicioId');
+    print(response.data);
+
+    return response.data;
+  }
 }

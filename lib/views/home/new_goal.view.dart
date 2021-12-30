@@ -240,7 +240,7 @@ class _NewGoalViewState extends State<NewGoalView> {
                       backgroundColor: Colors.white,
                       radius: 100.h,
                       backgroundImage: getPreviewImage(),
-                      child: (image != null || widget.goal!.avatar != null)
+                      child: (image != null || widget.goal?.avatar != null)
                           ? SizedBox()
                           : uploading
                               ? Icon(Icons.upload)
@@ -276,7 +276,7 @@ class _NewGoalViewState extends State<NewGoalView> {
     ImageProvider? result;
     if (image != null) {
       result = FileImage(image!);
-    } else if (widget.goal!.avatar != null) {
+    } else if (widget.goal?.avatar != null) {
       result = NetworkImage(widget.goal!.avatar!);
     }
 

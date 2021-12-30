@@ -51,3 +51,24 @@ class UserModel {
     return data;
   }
 }
+
+class UserRankingModel {
+  UserRankingModel({
+    this.id = 0,
+    this.nickname = '',
+    this.score = 0,
+  });
+
+  UserRankingModel.fromJson(Map<String, dynamic> json) {
+    id = json['id_usuario'] as int;
+    print(id);
+    avatar = json['nm_avatar'];
+    nickname = json['ds_nickname'];
+    score = (json['nu_pontuacao'] ?? 0) as int;
+  }
+
+  late int id;
+  String? avatar;
+  late String nickname;
+  late int score;
+}

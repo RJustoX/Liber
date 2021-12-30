@@ -3,10 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/shared/vicio_avatar.component.dart';
+import 'package:nicotine/controllers/ranking.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/utils/toast.util.dart';
 import 'package:provider/provider.dart';
 
 class RankingView extends StatefulWidget {
@@ -20,6 +22,7 @@ class _RankingViewState extends State<RankingView> with SingleTickerProviderStat
   late TabController _tabController;
   late UserStore _uStore;
   late VicioStore _vStore;
+  late RankingController _controller;
 
   @override
   void initState() {
@@ -29,9 +32,11 @@ class _RankingViewState extends State<RankingView> with SingleTickerProviderStat
 
   @override
   void didChangeDependencies() {
+    _controller = RankingController();
     _uStore = Provider.of<UserStore>(context);
     _vStore = Provider.of<VicioStore>(context);
     super.didChangeDependencies();
+    _initialFetch();
   }
 
   @override
@@ -72,57 +77,65 @@ class _RankingViewState extends State<RankingView> with SingleTickerProviderStat
             ),
           ),
           Flexible(
-            child: ListView.separated(
-              itemCount: 15,
-              separatorBuilder: (context, index) => Divider(),
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 15.h, 20.w, 15.h),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 60.w,
-                        child: Center(
-                          child: Text(
-                            '${index + 1}',
-                            style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
-                          ),
+            child: _controller.isLoading
+                ? Center(child: CircularProgressIndicator())
+                : ListView.separated(
+                    itemCount: 15,
+                    separatorBuilder: (context, index) => Divider(),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(0.0, 15.h, 20.w, 15.h),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 60.w,
+                              child: Center(
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.0.w),
+                              child: CircleAvatar(
+                                child: Icon(Icons.person),
+                              ),
+                            ),
+                            Text(
+                              'Rafael Justo',
+                              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+                            ),
+                            Spacer(),
+                            Icon(
+                              FontAwesomeIcons.trophy,
+                              color: HexColor('#6A7188'),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              '250',
+                              style: TextStyle(
+                                fontSize: 25.sp,
+                                fontWeight: FontWeight.bold,
+                                color: HexColor('#6A7188'),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.0.w),
-                        child: CircleAvatar(
-                          child: Icon(Icons.person),
-                        ),
-                      ),
-                      Text(
-                        'Rafael Justo',
-                        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
-                      ),
-                      Spacer(),
-                      Icon(
-                        FontAwesomeIcons.trophy,
-                        color: HexColor('#6A7188'),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Text(
-                        '250',
-                        style: TextStyle(
-                          fontSize: 25.sp,
-                          fontWeight: FontWeight.bold,
-                          color: HexColor('#6A7188'),
-                        ),
-                      )
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           )
         ],
       ),
     );
+  }
+
+  Future<void> _initialFetch() async {
+    await _controller.fetchAllTime(_vStore.vicio!.id);
+    ToastUtil.success(_controller.message);
+    if (mounted) setState(() => _controller.isLoading = false);
   }
 }
