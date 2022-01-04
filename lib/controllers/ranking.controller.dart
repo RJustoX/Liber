@@ -3,6 +3,7 @@ import 'package:nicotine/providers/api.provider.dart';
 
 class RankingController {
   late List<UserRankingModel> allTimeUsers;
+  late List<UserRankingModel> trinityUsers;
   late String message;
   bool isLoading = true;
 
@@ -18,5 +19,8 @@ class RankingController {
           .toList()
           .cast<UserRankingModel>();
     }
+
+    trinityUsers = allTimeUsers.getRange(0, 3).toList();
+    allTimeUsers.removeRange(0, 3);
   }
 }

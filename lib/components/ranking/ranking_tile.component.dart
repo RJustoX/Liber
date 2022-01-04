@@ -36,7 +36,7 @@ class _RankingTileComponentState extends State<RankingTileComponent> {
             width: 60.w,
             child: Center(
               child: Text(
-                '${widget.index + 1}',
+                '${widget.index + 4}',
                 style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
               ),
             ),
