@@ -67,7 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
         } else if (snapshot.state == TaskState.success) {
           avatarUrl = await FirebaseStorage.instance.ref(ref).getDownloadURL();
 
-          await ApiProvider().changeUserAvatar(_uStore.user!.id, ref!);
+          await ApiProvider().changeUserAvatar(_uStore.user!.id, avatarUrl);
           setState(() {
             uploading = false;
             print(_uStore.user!.avatar);
@@ -217,58 +217,6 @@ class _ProfileViewState extends State<ProfileView> {
                           ],
                         ),
                       ),
-                      // Container(
-                      //   padding: EdgeInsets.all(20.0.r),
-                      //   width: double.maxFinite,
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.circular(15.0),
-                      //     border: Border.all(color: Colors.black),
-                      //   ),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: <Widget>[
-                      //       Text(
-                      //         'Maior tempo sem fazer uso:',
-                      //         style: TextStyle(
-                      //           color: Colors.black87,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 22.sp,
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //         '3 dias',
-                      //         style: TextStyle(
-                      //           color: Colors.black45,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 20.sp,
-                      //         ),
-                      //       ),
-                      //       SizedBox(
-                      //         height: 20.h,
-                      //       ),
-                      //       Text(
-                      //         'Recorde de logins consecutivos:',
-                      //         style: TextStyle(
-                      //           color: Colors.black87,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 22.sp,
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //         '8 dias',
-                      //         style: TextStyle(
-                      //           color: Colors.black45,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 20.sp,
-                      //         ),
-                      //       ),
-                      //       SizedBox(
-                      //         height: 20.h,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 )

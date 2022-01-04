@@ -2,7 +2,7 @@ import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/providers/api.provider.dart';
 
 class RankingController {
-  late List<UserRankingModel> _allTimeUsers;
+  late List<UserRankingModel> allTimeUsers;
   late String message;
   bool isLoading = true;
 
@@ -11,7 +11,7 @@ class RankingController {
     message = response['message'];
     print(message);
     if (response['status'] != 0) {
-      _allTimeUsers = response['values']
+      allTimeUsers = response['values']
           .map((dynamic t) {
             return UserRankingModel.fromJson(t as Map<String, dynamic>);
           })

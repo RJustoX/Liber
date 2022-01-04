@@ -16,10 +16,4 @@ class FirebaseProvider {
     String avatarUrl = await ref.getDownloadURL();
     return avatarUrl;
   }
-
-  Future<String> getGoalImage(int id) async {
-    final Reference ref = (await _fStorage.ref('images/$id/met').listAll()).items.last;
-    String avatarUrl = await ref.getDownloadURL();
-    return avatarUrl;
-  }
 }

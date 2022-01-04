@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
+import 'package:nicotine/components/ranking/ranking_tile.component.dart';
 import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/controllers/ranking.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
@@ -80,50 +79,12 @@ class _RankingViewState extends State<RankingView> with SingleTickerProviderStat
             child: _controller.isLoading
                 ? Center(child: CircularProgressIndicator())
                 : ListView.separated(
-                    itemCount: 15,
+                    itemCount: _controller.allTimeUsers.length,
                     separatorBuilder: (context, index) => Divider(),
                     itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.fromLTRB(0.0, 15.h, 20.w, 15.h),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 60.w,
-                              child: Center(
-                                child: Text(
-                                  '${index + 1}',
-                                  style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 10.0.w),
-                              child: CircleAvatar(
-                                child: Icon(Icons.person),
-                              ),
-                            ),
-                            Text(
-                              'Rafael Justo',
-                              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(
-                              FontAwesomeIcons.trophy,
-                              color: HexColor('#6A7188'),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Text(
-                              '250',
-                              style: TextStyle(
-                                fontSize: 25.sp,
-                                fontWeight: FontWeight.bold,
-                                color: HexColor('#6A7188'),
-                              ),
-                            )
-                          ],
-                        ),
+                      return RankingTileComponent(
+                        index: index,
+                        user: _controller.allTimeUsers[index],
                       );
                     },
                   ),
