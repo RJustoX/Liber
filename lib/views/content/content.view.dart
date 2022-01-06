@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
+import 'package:nicotine/components/content/category_card.component.dart';
+import 'package:nicotine/components/content/content_card.component.dart';
 import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
@@ -44,28 +46,66 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
             fontSize: 28.sp,
           ),
         ),
-        actions: <Widget>[
-          VicioAvatarComponent(_vStore.vicio!),
-          SizedBox(
-            width: 20.0.w,
-          )
-        ],
+        // actions: <Widget>[
+        //   VicioAvatarComponent(_vStore.vicio!),
+        //   SizedBox(
+        //     width: 20.0.w,
+        //   )
+        // ],
         bottom: TabBarComponent(
           controller: _tabController,
           tabs: ['Relatos', 'Dicas'],
         ),
       ),
-      body: Center(
-        child: Text(
-          'Em Breve!',
-          style: TextStyle(
-            color: AppColors.primaryFontColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 32.sp,
-          ),
-          textAlign: TextAlign.center,
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          tipsView(),
+          Container(color: Colors.pink),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryColor,
+        onPressed: () {},
+        child: Icon(
+          Icons.add,
+          size: 32.0,
         ),
       ),
     );
+  }
+
+  Widget tipsView() {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          buildCategories(),
+          ...buildFeed(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCategories() {
+    return Container(
+      height: 200.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 15.w),
+        itemCount: 5,
+        separatorBuilder: (context, index) => SizedBox(
+          width: 15.0,
+        ),
+        itemBuilder: (context, index) => CategoryCardComponent(),
+      ),
+    );
+  }
+
+  List<Widget> buildFeed() {
+    List<Widget> result = [];
+    for (int i = 0; i <= 5; i++) {
+      result.add(ContentCardComponent());
+    }
+    return result;
   }
 }

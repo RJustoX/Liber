@@ -6,7 +6,7 @@ import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/content/content.view.dart';
-import 'package:nicotine/views/content/groups.view.dart';
+import 'package:nicotine/views/groups/groups.view.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/quest.view.dart';
