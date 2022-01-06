@@ -20,7 +20,7 @@ class HomeView extends StatefulWidget {
   _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin {
   late UserStore _uStore;
   late VicioStore _vStore;
   late String avatarUrl;
@@ -38,6 +38,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return _homeController!.isLoading
         ? HomeShimmerComponent()
         : Scaffold(
@@ -229,4 +230,7 @@ class _HomeViewState extends State<HomeView> {
 
     if (mounted) setState(() => _homeController!.isLoading = false);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

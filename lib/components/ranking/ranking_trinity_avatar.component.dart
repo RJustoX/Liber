@@ -24,7 +24,7 @@ class RankingTrinityAvatarComponent extends StatelessWidget {
           CircleAvatar(
             radius: 50.r,
             backgroundImage: user.avatar != '' ? CachedNetworkImageProvider(user.avatar!) : null,
-            child: user.avatar == '' ? Icon(Icons.person) : null,
+            child: user.avatar == '' ? Icon(Icons.person, size: 45.r) : null,
           ),
           Text(
             user.nickname,
