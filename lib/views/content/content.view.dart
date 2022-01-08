@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/content_card.component.dart';
-import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
@@ -60,8 +59,8 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
+          reportsView(),
           tipsView(),
-          Container(color: Colors.pink),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -80,7 +79,18 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       child: Column(
         children: <Widget>[
           buildCategories(),
-          ...buildFeed(),
+          ...buildFeed(true),
+        ],
+      ),
+    );
+  }
+
+  Widget reportsView() {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          buildCategories(),
+          ...buildFeed(false),
         ],
       ),
     );
@@ -101,10 +111,13 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     );
   }
 
-  List<Widget> buildFeed() {
+  List<Widget> buildFeed(bool isTip) {
     List<Widget> result = [];
     for (int i = 0; i <= 5; i++) {
-      result.add(ContentCardComponent());
+      result.add(Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        child: ContentCardComponent(isTip: isTip),
+      ));
     }
     return result;
   }
