@@ -3,6 +3,8 @@ import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/content_card.component.dart';
 import 'package:nicotine/components/content/reason_card.component.dart';
+import 'package:nicotine/components/content/report_card.component.dart';
+import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
@@ -52,19 +54,19 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
             fontSize: 28.sp,
           ),
         ),
-        // actions: <Widget>[
-        //   VicioAvatarComponent(_vStore.vicio!),
-        //   SizedBox(
-        //     width: 20.0.w,
-        //   )
-        // ],
+        actions: <Widget>[
+          VicioAvatarComponent(_vStore.vicio!),
+          SizedBox(
+            width: 20.0.w,
+          )
+        ],
         bottom: TabBarComponent(
           controller: _tabController,
           tabs: ['Relatos', 'Dicas'],
         ),
       ),
       body: _controller!.isLoading
-          ? CircularProgressIndicator()
+          ? Center(child: CircularProgressIndicator())
           : TabBarView(
               controller: _tabController,
               children: <Widget>[
@@ -88,7 +90,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       child: Column(
         children: <Widget>[
           buildCategories(),
-          ...buildFeed(true),
+          ...buildFeed(true, _controller!.reports),
         ],
       ),
     );
@@ -99,7 +101,10 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       child: Column(
         children: <Widget>[
           buildReasons(),
-          ...buildFeed(false),
+          ...buildFeed(
+            false,
+            _controller!.reports,
+          ),
         ],
       ),
     );
@@ -139,12 +144,14 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     );
   }
 
-  List<Widget> buildFeed(bool isTip) {
+  List<Widget> buildFeed(bool isTip, List<dynamic> contents) {
     List<Widget> result = [];
-    for (int i = 0; i <= 5; i++) {
+    for (int i = 0; i < contents.length; i++) {
       result.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        child: ContentCardComponent(isTip: isTip),
+        child: ReportCardComponent(
+          contents[i],
+        ),
       ));
     }
     return result;
@@ -153,6 +160,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
   Future<void> _initialFetch() async {
     await _controller!.fetchCategories(_vStore.vicio!.id);
     await _controller!.fetchReasons(_vStore.vicio!.id);
+    await _controller!.fetchReports(_vStore.vicio!.id);
 
     if (_controller!.message != null && _controller!.message != '')
       ToastUtil.error(_controller!.message!);

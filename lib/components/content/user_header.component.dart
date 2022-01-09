@@ -7,10 +7,14 @@ class UserHeaderComponent extends StatelessWidget {
   const UserHeaderComponent({
     this.padding,
     required this.isTip,
+    this.title = '',
+    this.avatar = '',
+    this.autor = '',
   });
 
   final EdgeInsets? padding;
   final bool isTip;
+  final String title, avatar, autor;
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +24,15 @@ class UserHeaderComponent extends StatelessWidget {
           children: <Widget>[
             CircleAvatar(
               radius: 30.r,
-              backgroundImage: CachedNetworkImageProvider(
-                  'https://firebasestorage.googleapis.com/v0/b/liber-a964e.appspot.com/o/images%2F21%2Fgoals%2Fimg-2021-12-29%2011%3A46%3A20.123127.jpg?alt=media&token=d6bbc17c-5251-4819-932d-1bfb8449dd99'),
+              backgroundImage: avatar != '' ? CachedNetworkImageProvider(avatar) : null,
+              child: avatar == '' ? Icon(Icons.person, size: 45.r) : null,
             ),
             SizedBox(width: 10.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  isTip ? 'Anonimo' : 'Antigos prazeres esquecidos',
+                  isTip ? autor : title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18.sp,
@@ -53,7 +57,7 @@ class UserHeaderComponent extends StatelessWidget {
                   )
                 else
                   Text(
-                    'Por: Rafael Justo',
+                    'Por: $autor',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.sp,

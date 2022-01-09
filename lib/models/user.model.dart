@@ -15,10 +15,10 @@ class UserModel {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id_usuario'] as int;
-    avatar = json['nm_avatar'];
-    name = json['nm_usuario'];
-    email = json['ds_email'];
-    senha = json['ds_senha'];
+    avatar = json['nm_avatar'] ?? '';
+    name = json['nm_usuario'] ?? '';
+    email = json['ds_email'] ?? '';
+    senha = json['ds_senha'] ?? '';
     nickname = json['ds_nickname'];
     gender = json['fl_sexo'] != null ? int.parse(json['fl_sexo']) : null;
     savings = (json['vl_economizado'] ?? 0.0).toDouble();

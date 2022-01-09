@@ -14,9 +14,7 @@ class GoalModel {
   GoalModel.fromJson(Map<String, dynamic> json) {
     id = json['id_meta'] as int;
     userId = json['id_usuario'] as int;
-    print(id);
     title = json['nm_meta'];
-    print(title);
     description = json['ds_meta'] ?? '';
     avatar = json['nm_logo'];
     pontos = (json['nu_pontuacao'] ?? 0) as int;
@@ -24,7 +22,6 @@ class GoalModel {
     active = json['fl_ativa'] ?? false;
     done = json['fl_concluida'] ?? false;
     avatar = json['nm_avatar'] ?? '';
-    print(avatar);
   }
 
   late int id;

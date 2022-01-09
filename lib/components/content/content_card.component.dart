@@ -6,9 +6,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ContentCardComponent extends StatelessWidget {
   const ContentCardComponent({
     required this.isTip,
+    this.content = '',
+    this.likes = 0,
+    this.title = '',
+    this.autor = '',
+    this.avatar = '',
   });
 
   final bool isTip;
+  final String content;
+  final int likes;
+  final String title;
+  final String autor;
+  final String avatar;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +32,15 @@ class ContentCardComponent extends StatelessWidget {
             UserHeaderComponent(
               padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
               isTip: isTip,
+              autor: autor,
+              title: title,
+              avatar: avatar,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
               child: Text(
-                  '     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+                content,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -42,7 +56,7 @@ class ContentCardComponent extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '27',
+                  '$likes',
                   style: TextStyle(
                     fontSize: 16.sp,
                     height: 1.6,
