@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/content_card.component.dart';
+import 'package:nicotine/components/content/reason_card.component.dart';
 import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
@@ -97,9 +98,26 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          buildCategories(),
+          buildReasons(),
           ...buildFeed(false),
         ],
+      ),
+    );
+  }
+
+  Widget buildReasons() {
+    return Container(
+      height: 200.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 15.w),
+        itemCount: _controller!.reasons.length,
+        separatorBuilder: (context, index) => SizedBox(
+          width: 15.0,
+        ),
+        itemBuilder: (context, index) => ReasonCardComponent(
+          reason: _controller!.reasons[index],
+        ),
       ),
     );
   }
@@ -134,6 +152,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
 
   Future<void> _initialFetch() async {
     await _controller!.fetchCategories(_vStore.vicio!.id);
+    await _controller!.fetchReasons(_vStore.vicio!.id);
 
     if (_controller!.message != null && _controller!.message != '')
       ToastUtil.error(_controller!.message!);

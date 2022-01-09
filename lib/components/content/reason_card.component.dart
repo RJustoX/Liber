@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:nicotine/models/category.model.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nicotine/models/reason.model.dart';
 
-class CategoryCardComponent extends StatelessWidget {
-  const CategoryCardComponent({
-    required this.category,
+class ReasonCardComponent extends StatelessWidget {
+  const ReasonCardComponent({
+    required this.reason,
   });
 
-  final CategoryModel category;
+  final ReasonModel reason;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class CategoryCardComponent extends StatelessWidget {
       width: 135.w,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
-        color: HexColor(category.color),
+        color: Colors.white,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w),
           child: Column(
@@ -31,7 +30,7 @@ class CategoryCardComponent extends StatelessWidget {
               ),
               SizedBox(height: 10.h),
               Text(
-                category.name,
+                reason.name,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w600,
