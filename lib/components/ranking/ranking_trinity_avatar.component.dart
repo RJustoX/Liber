@@ -7,16 +7,28 @@ import 'package:nicotine/models/user.model.dart';
 class RankingTrinityAvatarComponent extends StatelessWidget {
   const RankingTrinityAvatarComponent({
     required this.user,
-    this.first = false,
+    this.position = 1,
   });
 
   final UserRankingModel user;
-  final bool first;
+  final int position;
+
+  Color getColor() {
+    Color result = Colors.white;
+    if (position == 1)
+      result = Colors.amber[600]!;
+    else if (position == 2)
+      result = Colors.grey[400]!;
+    else
+      result = Colors.yellow[900]!;
+
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: first ? EdgeInsets.fromLTRB(35.w, 0, 35.w, 50.h) : null,
+      margin: position == 1 ? EdgeInsets.fromLTRB(35.w, 0, 35.w, 50.h) : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,8 +51,12 @@ class RankingTrinityAvatarComponent extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.trophy,
-                color: Colors.white,
-                size: 20.r,
+                color: getColor(),
+                size: position == 1
+                    ? 33.r
+                    : position == 2
+                        ? 26.r
+                        : 24.r,
               ),
               SizedBox(
                 width: 15.w,
@@ -49,7 +65,11 @@ class RankingTrinityAvatarComponent extends StatelessWidget {
                 '${user.score}',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20.sp,
+                  fontSize: position == 1
+                      ? 26.sp
+                      : position == 2
+                          ? 22.sp
+                          : 20.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),

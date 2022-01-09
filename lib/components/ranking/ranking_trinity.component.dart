@@ -3,7 +3,9 @@ import 'package:nicotine/components/ranking/ranking_trinity_avatar.component.dar
 import 'package:nicotine/models/user.model.dart';
 
 class RankingTrinityComponent extends StatelessWidget {
-  const RankingTrinityComponent(this.users);
+  const RankingTrinityComponent(
+    this.users,
+  );
   final List<UserRankingModel> users;
 
   @override
@@ -12,12 +14,18 @@ class RankingTrinityComponent extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RankingTrinityAvatarComponent(user: users[1]),
+          RankingTrinityAvatarComponent(
+            user: users[1],
+            position: 2,
+          ),
           RankingTrinityAvatarComponent(
             user: users[0],
-            first: true,
+            position: 1,
           ),
-          RankingTrinityAvatarComponent(user: users[2]),
+          RankingTrinityAvatarComponent(
+            user: users[2],
+            position: 3,
+          ),
         ],
       ),
     );
