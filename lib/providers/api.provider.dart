@@ -96,6 +96,8 @@ class ApiProvider {
     return response.data;
   }
 
+  /// METAS
+
   Future<Map<String, dynamic>> getUserGoals(int userId) async {
     final Response response = await _dio.get('$url/goals/$userId');
 
@@ -126,8 +128,18 @@ class ApiProvider {
     return response.data;
   }
 
+  /// RANKING
+
   Future<Map<String, dynamic>> getAllTimeRanking(int vicioId) async {
     final Response response = await _dio.get('$url/ranking/allTime/$vicioId');
+
+    return response.data;
+  }
+
+  /// CONTEÚDOS
+
+  Future<Map<String, dynamic>> getCategories(int vicioId) async {
+    final Response response = await _dio.get('$url/vicioCategories/$vicioId');
 
     return response.data;
   }

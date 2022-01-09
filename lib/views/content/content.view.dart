@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/content_card.component.dart';
+import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/utils/toast.util.dart';
 import 'package:provider/provider.dart';
 
 class ContentView extends StatefulWidget {
@@ -17,6 +19,7 @@ class ContentView extends StatefulWidget {
 
 class _ContentViewState extends State<ContentView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  ContentController? _controller;
   late UserStore _uStore;
   late VicioStore _vStore;
 
@@ -30,7 +33,10 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
   void didChangeDependencies() {
     _uStore = Provider.of<UserStore>(context);
     _vStore = Provider.of<VicioStore>(context);
+    _controller ??= ContentController();
     super.didChangeDependencies();
+
+    _initialFetch();
   }
 
   @override
@@ -56,13 +62,15 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
           tabs: ['Relatos', 'Dicas'],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          reportsView(),
-          tipsView(),
-        ],
-      ),
+      body: _controller!.isLoading
+          ? CircularProgressIndicator()
+          : TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                reportsView(),
+                tipsView(),
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
         onPressed: () {},
@@ -102,11 +110,13 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 15.w),
-        itemCount: 5,
+        itemCount: _controller!.categories.length,
         separatorBuilder: (context, index) => SizedBox(
           width: 15.0,
         ),
-        itemBuilder: (context, index) => CategoryCardComponent(),
+        itemBuilder: (context, index) => CategoryCardComponent(
+          category: _controller!.categories[index],
+        ),
       ),
     );
   }
@@ -120,5 +130,14 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       ));
     }
     return result;
+  }
+
+  Future<void> _initialFetch() async {
+    await _controller!.fetchCategories(_vStore.vicio!.id);
+
+    if (_controller!.message != null && _controller!.message != '')
+      ToastUtil.error(_controller!.message!);
+
+    if (mounted) setState(() => _controller!.isLoading = false);
   }
 }

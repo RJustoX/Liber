@@ -6,7 +6,6 @@ import 'package:nicotine/controllers/ranking.controller.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nicotine/utils/toast.util.dart';
 import 'package:provider/provider.dart';
 
 class RankingView extends StatefulWidget {
