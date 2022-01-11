@@ -17,7 +17,7 @@ class CategoryCardComponent extends StatelessWidget {
       width: 135.w,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
-        color: HexColor(category.color),
+        color: HexColor(category.color != '' ? category.color : '#ffffff'),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w),
           child: Column(

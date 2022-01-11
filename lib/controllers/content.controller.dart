@@ -42,9 +42,10 @@ class ContentController {
             return ReportModel.fromJson(t as Map<String, dynamic>);
           }).toList() ??
           [];
-    } else
+    } else {
       message = map['message'];
-    reports = [];
+      reports = [];
+    }
   }
 
   Future<void> fetchTips(int vicioId) async {
@@ -54,8 +55,9 @@ class ContentController {
       tips = map['value'].map((dynamic t) {
         return TipModel.fromJson(t as Map<String, dynamic>);
       }).toList();
-    } else
+    } else {
       message = map['message'];
-    tips = [];
+      tips = [];
+    }
   }
 }
