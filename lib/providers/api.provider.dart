@@ -155,4 +155,10 @@ class ApiProvider {
 
     return response.data;
   }
+
+  Future<Map<String, dynamic>> getVicioTips(int vicioId) async {
+    final Response response = await _dio.get('$url/getVicioTips/$vicioId');
+
+    return response.data;
+  }
 }

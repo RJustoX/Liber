@@ -1,12 +1,14 @@
 import 'package:nicotine/models/category.model.dart';
 import 'package:nicotine/models/reason.model.dart';
 import 'package:nicotine/models/report.model.dart';
+import 'package:nicotine/models/tip.model.dart';
 import 'package:nicotine/providers/api.provider.dart';
 
 class ContentController {
   late List<dynamic> categories;
   late List<dynamic> reasons;
   late List<dynamic> reports;
+  late List<dynamic> tips;
   bool isLoading = true;
   String? message;
 
@@ -37,9 +39,23 @@ class ContentController {
 
     if (map['status'] != 0) {
       reports = map['value'].map((dynamic t) {
-        return ReportModel.fromJson(t as Map<String, dynamic>);
+            return ReportModel.fromJson(t as Map<String, dynamic>);
+          }).toList() ??
+          [];
+    } else
+      message = map['message'];
+    reports = [];
+  }
+
+  Future<void> fetchTips(int vicioId) async {
+    Map<String, dynamic> map = await ApiProvider().getVicioTips(vicioId);
+
+    if (map['status'] != 0) {
+      tips = map['value'].map((dynamic t) {
+        return TipModel.fromJson(t as Map<String, dynamic>);
       }).toList();
     } else
       message = map['message'];
+    tips = [];
   }
 }

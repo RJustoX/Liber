@@ -4,6 +4,7 @@ import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/content_card.component.dart';
 import 'package:nicotine/components/content/reason_card.component.dart';
 import 'package:nicotine/components/content/report_card.component.dart';
+import 'package:nicotine/components/content/tip_card.component.dart';
 import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/stores/user.store.dart';
@@ -86,28 +87,39 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
   }
 
   Widget tipsView() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          buildCategories(),
-          ...buildFeed(true, _controller!.reports),
-        ],
-      ),
-    );
+    return _controller!.tips.isEmpty
+        ? Center(
+            child: Text('Sem dicas'),
+          )
+        : SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                buildCategories(),
+                ...buildTipFeed(
+                  true,
+                  _controller!.tips,
+                ),
+              ],
+            ),
+          );
   }
 
   Widget reportsView() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          buildReasons(),
-          ...buildFeed(
-            false,
-            _controller!.reports,
-          ),
-        ],
-      ),
-    );
+    return _controller!.reports.isEmpty
+        ? Center(
+            child: Text('Sem relatos'),
+          )
+        : SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                buildReasons(),
+                ...buildReportFeed(
+                  false,
+                  _controller!.reports,
+                ),
+              ],
+            ),
+          );
   }
 
   Widget buildReasons() {
@@ -144,13 +156,26 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     );
   }
 
-  List<Widget> buildFeed(bool isTip, List<dynamic> contents) {
+  List<Widget> buildReportFeed(bool isTip, List<dynamic> reports) {
     List<Widget> result = [];
-    for (int i = 0; i < contents.length; i++) {
+    for (int i = 0; i < reports.length; i++) {
       result.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         child: ReportCardComponent(
-          contents[i],
+          reports[i],
+        ),
+      ));
+    }
+    return result;
+  }
+
+  List<Widget> buildTipFeed(bool isTip, List<dynamic> tips) {
+    List<Widget> result = [];
+    for (int i = 0; i < tips.length; i++) {
+      result.add(Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        child: TipCardComponent(
+          tips[i],
         ),
       ));
     }
@@ -161,6 +186,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     await _controller!.fetchCategories(_vStore.vicio!.id);
     await _controller!.fetchReasons(_vStore.vicio!.id);
     await _controller!.fetchReports(_vStore.vicio!.id);
+    await _controller!.fetchTips(_vStore.vicio!.id);
 
     if (_controller!.message != null && _controller!.message != '')
       ToastUtil.error(_controller!.message!);

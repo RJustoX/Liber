@@ -56,6 +56,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mobx_codegen: ^2.0.4
+
+
+flutter_icons:
+  android: true
+  image_path_android: 'assets/vicioLogo/tabagismoLogo.png'
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -69,15 +74,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - assets/goalIcon.png
-  - assets/healthIcon.png
-  - assets/strengIcon.png
-  - assets/progress.gif
-  - assets/login.gif
-  - assets/welcome.gif
-  - assets/vicioLogo/alcolismoLogo.png
-  - assets/vicioLogo/chocolateLogo.png
-  - assets/vicioLogo/tabagismoLogo.png
+  - assets/
+  - assets/vicioLogo/
+  - assets/motivoLogo/
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

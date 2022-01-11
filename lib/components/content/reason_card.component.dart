@@ -13,7 +13,7 @@ class ReasonCardComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 135.w,
+      width: 145.w,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
         color: Colors.white,
@@ -23,10 +23,9 @@ class ReasonCardComponent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                FontAwesomeIcons.frownOpen,
-                color: Colors.black,
-                size: 60.r,
+              CircleAvatar(
+                radius: 45.r,
+                child: Image.asset(reason.logo != '' ? reason.logo : 'assets/motivoLogo/money.png'),
               ),
               SizedBox(height: 10.h),
               Text(
