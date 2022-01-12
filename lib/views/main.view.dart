@@ -9,7 +9,6 @@ import 'package:nicotine/views/content/content.view.dart';
 import 'package:nicotine/views/groups/groups.view.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nicotine/views/quest.view.dart';
 import 'package:nicotine/views/ranking/ranking.view.dart';
 import 'package:provider/provider.dart';
 
@@ -56,16 +55,16 @@ class _MainViewState extends State<MainView> {
               ),
             )
           : tabs[_currentIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => QuestView()));
-        },
-        backgroundColor: AppColors.secondaryColor,
-        child: Icon(Icons.forum),
-        tooltip: 'Questionário',
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => QuestView()));
+      //   },
+      //   backgroundColor: AppColors.secondaryColor,
+      //   child: Icon(Icons.forum),
+      //   tooltip: 'Questionário',
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedFontSize: 18.0.sp,

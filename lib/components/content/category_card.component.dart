@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/models/category.model.dart';
@@ -25,7 +24,7 @@ class CategoryCardComponent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(
-                FontAwesomeIcons.frownOpen,
+                category.icon,
                 color: Colors.black,
                 size: 60.r,
               ),

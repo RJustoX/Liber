@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
-import 'package:nicotine/components/content/content_card.component.dart';
 import 'package:nicotine/components/content/reason_card.component.dart';
 import 'package:nicotine/components/content/report_card.component.dart';
 import 'package:nicotine/components/content/tip_card.component.dart';
@@ -12,6 +11,7 @@ import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/utils/toast.util.dart';
+import 'package:nicotine/views/content/new_content.view.dart';
 import 'package:provider/provider.dart';
 
 class ContentView extends StatefulWidget {
@@ -77,7 +77,11 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
             ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => NewContentView()),
+          );
+        },
         child: Icon(
           Icons.add,
           size: 32.0,
