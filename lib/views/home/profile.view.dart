@@ -18,7 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView(this.callbackMethod);
+  const ProfileView(
+    this.callbackMethod,
+  );
 
   final VoidCallback callbackMethod;
 

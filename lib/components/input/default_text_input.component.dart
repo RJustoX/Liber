@@ -8,12 +8,16 @@ class DefaultTextInputComponent extends StatefulWidget {
     this.onSaved,
     this.validate = false,
     this.initialValue,
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   final String title;
   final String? hint, initialValue;
   final Function(String?)? onSaved;
   final bool validate;
+  final int minLines;
+  final int maxLines;
 
   @override
   State<DefaultTextInputComponent> createState() => _DefaultTextInputComponentState();
@@ -36,6 +40,8 @@ class _DefaultTextInputComponentState extends State<DefaultTextInputComponent> {
         const SizedBox(height: 10.0),
         TextFormField(
           initialValue: widget.initialValue,
+          maxLines: widget.maxLines,
+          minLines: widget.minLines,
           decoration: InputDecoration(
             hintText: widget.hint,
             border: OutlineInputBorder(

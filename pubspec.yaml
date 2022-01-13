@@ -36,6 +36,7 @@ dependencies:
   firebase_core: ^1.10.2
   firebase_storage: ^10.2.0
   flutter_screenutil: ^5.0.0+2
+  flutter_speed_dial: ^5.0.0+1
   fluttertoast: ^8.0.7
   font_awesome_flutter: ^9.1.0
   hexcolor: ^2.0.4

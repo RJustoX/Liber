@@ -25,6 +25,7 @@ class ReportModel {
   }
 
   int? id;
+  int? userId;
   late int idVicio;
   late int idReason;
   late bool anonimo;
@@ -32,4 +33,19 @@ class ReportModel {
   late String title;
   late int likes;
   UserModel? user;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+
+    data['id_conteudo'] = id;
+    data['id_usuario'] = userId!;
+    data['id_vicio'] = idVicio;
+    data['id_motivo'] = idReason;
+    data['fl_anonimo'] = anonimo;
+    data['ds_relato'] = content;
+    data['nm_titulo'] = title;
+    data['nu_likes'] = 0;
+
+    return data;
+  }
 }

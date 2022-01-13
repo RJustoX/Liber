@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/reason_card.component.dart';
@@ -75,13 +76,40 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
                 tipsView(),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: SpeedDial(
         backgroundColor: AppColors.primaryColor,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NewContentView()),
-          );
-        },
+        icon: Icons.add,
+        spaceBetweenChildren: 10.0,
+        children: <SpeedDialChild>[
+          SpeedDialChild(
+            child: Icon(Icons.assignment),
+            backgroundColor: AppColors.primaryColor,
+            foregroundColor: Colors.white,
+            label: 'Criar Relato',
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewContentView(
+                  isTip: false,
+                  callback: _initialFetch,
+                ),
+              ),
+            ),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.assignment),
+            backgroundColor: AppColors.primaryColor,
+            foregroundColor: Colors.white,
+            label: 'Criar dica',
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewContentView(
+                  isTip: true,
+                  callback: _initialFetch,
+                ),
+              ),
+            ),
+          ),
+        ],
         child: Icon(
           Icons.add,
           size: 32.0,
@@ -103,6 +131,9 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
                   true,
                   _controller!.tips,
                 ),
+                SizedBox(
+                  height: 85.h,
+                ),
               ],
             ),
           );
@@ -120,6 +151,9 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
                 ...buildReportFeed(
                   false,
                   _controller!.reports,
+                ),
+                SizedBox(
+                  height: 85.h,
                 ),
               ],
             ),

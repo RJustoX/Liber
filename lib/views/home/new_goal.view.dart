@@ -173,23 +173,24 @@ class _NewGoalViewState extends State<NewGoalView> {
                           DefaultPrimaryButtonComponent(
                             loading: loading,
                             onTap: () async {
-                              _formKey.currentState!.validate();
-                              _formKey.currentState!.save();
-                              newGoal.userId = _uStore.user!.id;
-                              setState(() {
-                                loading = true;
-                              });
-                              if (widget.goal == null) {
-                                await ApiProvider().insertNewGoal(newGoal).then(
-                                      (value) => widget.callback(),
-                                    );
-                                Navigator.of(context).pop();
-                              } else {
-                                await ApiProvider().updateGoal(newGoal).then(
-                                      (value) => widget.callback(),
-                                    );
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                newGoal.userId = _uStore.user!.id;
+                                setState(() {
+                                  loading = true;
+                                });
+                                if (widget.goal == null) {
+                                  await ApiProvider().insertNewGoal(newGoal).then(
+                                        (value) => widget.callback(),
+                                      );
+                                  Navigator.of(context).pop();
+                                } else {
+                                  await ApiProvider().updateGoal(newGoal).then(
+                                        (value) => widget.callback(),
+                                      );
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                }
                               }
                             },
                             title: widget.goal == null ? 'Salvar' : 'Atualizar',

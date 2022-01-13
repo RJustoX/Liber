@@ -53,7 +53,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                       MaterialPageRoute(
                         builder: (context) {
                           return ProfileView(
-                            () => setState(() {}),
+                            _initialFetch,
                           );
                         },
                       ),

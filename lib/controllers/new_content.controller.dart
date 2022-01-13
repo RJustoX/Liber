@@ -1,7 +1,7 @@
 import 'package:nicotine/models/_index.dart';
 import 'package:nicotine/providers/api.provider.dart';
 
-class ContentController {
+class NewContentController {
   late List<dynamic> categories;
   late List<dynamic> reasons;
   late List<dynamic> reports;
@@ -31,30 +31,13 @@ class ContentController {
       message = map['message'];
   }
 
-  Future<void> fetchReports(int vicioId) async {
-    Map<String, dynamic> map = await ApiProvider().getVicioReports(vicioId);
-
-    if (map['status'] != 0) {
-      reports = map['value'].map((dynamic t) {
-            return ReportModel.fromJson(t as Map<String, dynamic>);
-          }).toList() ??
-          [];
-    } else {
-      message = map['message'];
-      reports = [];
-    }
+  Map<int, dynamic> getReasonsMap() {
+    return <int, dynamic>{
+      for (ReasonModel reason in reasons) reason.id!: reason.name,
+    };
   }
 
-  Future<void> fetchTips(int vicioId) async {
-    Map<String, dynamic> map = await ApiProvider().getVicioTips(vicioId);
-
-    if (map['status'] != 0) {
-      tips = map['value'].map((dynamic t) {
-        return TipModel.fromJson(t as Map<String, dynamic>);
-      }).toList();
-    } else {
-      message = map['message'];
-      tips = [];
-    }
+  String getReasonImage(int id) {
+    return reasons.firstWhere((dynamic reason) => reason.id == id).logo;
   }
 }
