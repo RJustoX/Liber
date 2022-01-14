@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/content/user_header.component.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/models/category.model.dart';
 
 class ContentCardComponent extends StatelessWidget {
   const ContentCardComponent({
@@ -11,6 +12,7 @@ class ContentCardComponent extends StatelessWidget {
     this.title = '',
     this.autor = '',
     this.avatar = '',
+    this.category,
   });
 
   final bool isTip;
@@ -19,6 +21,7 @@ class ContentCardComponent extends StatelessWidget {
   final String title;
   final String autor;
   final String avatar;
+  final CategoryModel? category;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class ContentCardComponent extends StatelessWidget {
               autor: autor,
               title: title,
               avatar: avatar,
+              category: category,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),

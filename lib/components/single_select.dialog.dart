@@ -36,7 +36,7 @@ class _SingleSelectDialogComponentState extends State<SingleSelectDialogComponen
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Seleciona uma opção',
+          'Selecione uma opção',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28.sp),
         ),
       ),

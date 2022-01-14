@@ -37,7 +37,17 @@ class NewContentController {
     };
   }
 
+  Map<int, dynamic> getCategoriesMap() {
+    return <int, dynamic>{
+      for (CategoryModel category in categories) category.id!: category.name,
+    };
+  }
+
   String getReasonImage(int id) {
     return reasons.firstWhere((dynamic reason) => reason.id == id).logo;
+  }
+
+  CategoryModel getCategory(int id) {
+    return categories.firstWhere((dynamic category) => category.id == id);
   }
 }

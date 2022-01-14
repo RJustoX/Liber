@@ -57,4 +57,8 @@ class ContentController {
       tips = [];
     }
   }
+
+  CategoryModel getCategory(int id) {
+    return categories.firstWhere((dynamic category) => category.id == id);
+  }
 }

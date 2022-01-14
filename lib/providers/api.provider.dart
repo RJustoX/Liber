@@ -167,4 +167,13 @@ class ApiProvider {
     print(response.data);
     return response.data;
   }
+
+  Future<Map<String, dynamic>> insertNewTip(TipModel tip) async {
+    final Response response = await _dio.put(
+      '$url/newTip',
+      data: tip.toJson(),
+    );
+    print(response.data);
+    return response.data;
+  }
 }

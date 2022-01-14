@@ -2,6 +2,8 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/models/category.model.dart';
 
 class UserHeaderComponent extends StatelessWidget {
   const UserHeaderComponent({
@@ -10,9 +12,11 @@ class UserHeaderComponent extends StatelessWidget {
     this.title = '',
     this.avatar = '',
     this.autor = '',
+    this.category,
   });
 
   final EdgeInsets? padding;
+  final CategoryModel? category;
   final bool isTip;
   final String title, avatar, autor;
 
@@ -43,11 +47,11 @@ class UserHeaderComponent extends StatelessWidget {
                     padding: EdgeInsets.only(top: 5.h),
                     child: Badge(
                       padding: EdgeInsets.all(5),
-                      badgeColor: Colors.amber[100]!,
+                      badgeColor: HexColor(category!.color),
                       shape: BadgeShape.square,
                       borderRadius: BorderRadius.circular(15.r),
                       badgeContent: Text(
-                        'Ansiedade',
+                        category!.name,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,

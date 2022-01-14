@@ -30,21 +30,28 @@ class NewContentView extends StatefulWidget {
 class _NewContentViewState extends State<NewContentView> {
   late UserStore _uStore;
   late VicioStore _vStore;
+  late bool isTip;
   NewContentController? _controller;
   ReportModel? newReport;
+  TipModel? newTip;
   bool loading = false;
   String? reasonImage;
+  CategoryModel? category;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     _uStore = Provider.of<UserStore>(context);
     _vStore = Provider.of<VicioStore>(context);
+    isTip = widget.isTip;
     _controller ??= NewContentController();
+
+    newTip ??= TipModel();
     newReport ??= ReportModel();
+
     super.didChangeDependencies();
-    _initialFetch();
+    await _initialFetch();
   }
 
   @override
@@ -82,7 +89,7 @@ class _NewContentViewState extends State<NewContentView> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 35.w, top: 10.h),
                                   child: Text(
-                                    widget.isTip ? 'Nova dica' : 'Novo relato',
+                                    isTip ? 'Nova dica' : 'Novo relato',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -99,7 +106,7 @@ class _NewContentViewState extends State<NewContentView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          if (!widget.isTip)
+                          if (!isTip)
                             DefaultTextInputComponent(
                               title: 'Titulo do relato',
                               hint: 'Insira o titulo do seu relato',
@@ -111,13 +118,16 @@ class _NewContentViewState extends State<NewContentView> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20.0),
                             child: DefaultTextInputComponent(
-                              title: widget.isTip ? 'Dica' : 'Conteúdo',
+                              title: isTip ? 'Dica' : 'Conteúdo',
                               validate: true,
-                              hint: widget.isTip
-                                  ? 'Escreva aqui sua dica'
-                                  : 'Escreva aqui seu relato',
+                              hint: isTip ? 'Escreva aqui sua dica' : 'Escreva aqui seu relato',
+                              maxLines: isTip ? 10 : 15,
+                              minLines: 4,
                               onSaved: (value) {
-                                if (value!.isNotEmpty) newReport!.content = value.trim();
+                                if (value!.isNotEmpty)
+                                  isTip
+                                      ? newTip!.content = value.trim()
+                                      : newReport!.content = value.trim();
                               },
                             ),
                           ),
@@ -146,17 +156,27 @@ class _NewContentViewState extends State<NewContentView> {
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                newReport!.userId = _uStore.user!.id;
-                                newReport!.idVicio = _vStore.vicio!.id;
-                                newReport!.likes = 0;
 
                                 setState(() {
                                   loading = true;
                                 });
 
-                                await ApiProvider().insertNewReport(newReport!).then(
-                                      (value) => widget.callback(),
-                                    );
+                                if (isTip) {
+                                  newTip!.userId = _uStore.user!.id;
+                                  newTip!.idVicio = _vStore.vicio!.id;
+                                  newTip!.likes = 0;
+                                  await ApiProvider().insertNewTip(newTip!).then(
+                                        (value) => widget.callback(),
+                                      );
+                                } else {
+                                  newReport!.userId = _uStore.user!.id;
+                                  newReport!.idVicio = _vStore.vicio!.id;
+                                  newReport!.likes = 0;
+                                  await ApiProvider().insertNewReport(newReport!).then(
+                                        (value) => widget.callback(),
+                                      );
+                                }
+
                                 Navigator.of(context).pop();
                               }
                             },
@@ -186,43 +206,57 @@ class _NewContentViewState extends State<NewContentView> {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                               builder: (context) => SingleSelectDialogComponent(
-                                selectedOption: newReport!.idReason,
-                                options: _controller!.getReasonsMap(),
+                                selectedOption: isTip ? newTip!.idCategory : newReport!.idReason,
+                                options: isTip
+                                    ? _controller!.getCategoriesMap()
+                                    : _controller!.getReasonsMap(),
                               ),
                             ))
                                 .then((dynamic value) {
                               setState(() {
-                                newReport!.idReason = value;
-                                reasonImage = _controller!.getReasonImage(value);
+                                if (isTip) {
+                                  newTip!.idCategory = value;
+                                  category = _controller!.getCategory(value);
+                                } else {
+                                  newReport!.idReason = value;
+                                  reasonImage = _controller!.getReasonImage(value);
+                                }
                               });
                             });
                           },
                           child: CircleAvatar(
-                            backgroundColor: Colors.white,
+                            backgroundColor:
+                                category != null ? HexColor(category!.color) : Colors.white,
                             radius: 100.h,
                             backgroundImage: reasonImage != null ? AssetImage(reasonImage!) : null,
                             child: reasonImage != null
                                 ? null
-                                : Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        FontAwesomeIcons.icons,
-                                        color: AppColors.primaryFontColor,
-                                        size: 80.h,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        widget.isTip ? 'Selecionar categoria' : 'Selecionar motivo',
-                                        style: TextStyle(
+                                : category != null
+                                    ? Icon(
+                                        category!.icon,
+                                        color: Colors.black,
+                                        size: 100.h,
+                                      )
+                                    : Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            FontAwesomeIcons.icons,
                                             color: AppColors.primaryFontColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 18.sp),
+                                            size: 80.h,
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Text(
+                                            isTip ? 'Selecionar categoria' : 'Selecionar motivo',
+                                            style: TextStyle(
+                                                color: AppColors.primaryFontColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 18.sp),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
                           ),
                         ),
                 ),
@@ -235,12 +269,17 @@ class _NewContentViewState extends State<NewContentView> {
   }
 
   Future<void> _initialFetch() async {
-    await _controller!.fetchCategories(_vStore.vicio!.id);
-    await _controller!.fetchReasons(_vStore.vicio!.id);
+    if (_controller!.isLoading) {
+      if (isTip) {
+        await _controller!.fetchCategories(_vStore.vicio!.id);
+      } else {
+        await _controller!.fetchReasons(_vStore.vicio!.id);
+      }
 
-    if (_controller!.message != null && _controller!.message != '')
-      ToastUtil.error(_controller!.message!);
+      if (_controller!.message != null && _controller!.message != '')
+        ToastUtil.error(_controller!.message!);
 
-    if (mounted) setState(() => _controller!.isLoading = false);
+      if (mounted) setState(() => _controller!.isLoading = false);
+    }
   }
 }

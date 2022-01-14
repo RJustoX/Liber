@@ -24,9 +24,24 @@ class TipModel {
 
   int? id;
   late int idVicio;
+  int? userId;
   late int idCategory;
   late bool anonimo;
   late String content;
   late int likes;
   UserModel? user;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+
+    data['id_conteudo'] = id;
+    data['id_usuario'] = userId!;
+    data['id_vicio'] = idVicio;
+    data['id_categoria'] = idCategory;
+    data['fl_anonimo'] = anonimo;
+    data['ds_dica'] = content;
+    data['nu_likes'] = 0;
+
+    return data;
+  }
 }

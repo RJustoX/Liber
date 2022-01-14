@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/content/category_card.component.dart';
 import 'package:nicotine/components/content/reason_card.component.dart';
@@ -7,6 +8,7 @@ import 'package:nicotine/components/content/report_card.component.dart';
 import 'package:nicotine/components/content/tip_card.component.dart';
 import 'package:nicotine/components/shared/vicio_avatar.component.dart';
 import 'package:nicotine/controllers/content.controller.dart';
+import 'package:nicotine/models/_index.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
@@ -96,7 +98,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
             ),
           ),
           SpeedDialChild(
-            child: Icon(Icons.assignment),
+            child: Icon(FontAwesomeIcons.lightbulb),
             backgroundColor: AppColors.primaryColor,
             foregroundColor: Colors.white,
             label: 'Criar dica',
@@ -210,25 +212,45 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
   List<Widget> buildTipFeed(bool isTip, List<dynamic> tips) {
     List<Widget> result = [];
     for (int i = 0; i < tips.length; i++) {
+      CategoryModel category = _controller!.getCategory(tips[i].idCategory);
       result.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        child: TipCardComponent(
-          tips[i],
-        ),
+        child: TipCardComponent(tips[i], category),
       ));
     }
     return result;
   }
 
   Future<void> _initialFetch() async {
-    await _controller!.fetchCategories(_vStore.vicio!.id);
-    await _controller!.fetchReasons(_vStore.vicio!.id);
-    await _controller!.fetchReports(_vStore.vicio!.id);
-    await _controller!.fetchTips(_vStore.vicio!.id);
+    if (_controller!.isLoading) {
+      try {
+        await _controller!.fetchCategories(_vStore.vicio!.id);
+      } catch (error) {
+        ToastUtil.error(_controller!.message!);
+      }
 
-    if (_controller!.message != null && _controller!.message != '')
-      ToastUtil.error(_controller!.message!);
+      try {
+        await _controller!.fetchReasons(_vStore.vicio!.id);
+      } catch (error) {
+        ToastUtil.error(_controller!.message!);
+      }
 
-    if (mounted) setState(() => _controller!.isLoading = false);
+      try {
+        await _controller!.fetchReports(_vStore.vicio!.id);
+      } catch (error) {
+        ToastUtil.error(_controller!.message!);
+      }
+
+      try {
+        await _controller!.fetchTips(_vStore.vicio!.id);
+      } catch (error) {
+        ToastUtil.error(_controller!.message!);
+      }
+
+      if (_controller!.message != null && _controller!.message != '')
+        ToastUtil.error(_controller!.message!);
+
+      if (mounted) setState(() => _controller!.isLoading = false);
+    }
   }
 }
