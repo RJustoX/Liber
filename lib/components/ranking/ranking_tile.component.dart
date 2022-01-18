@@ -9,9 +9,11 @@ class RankingTileComponent extends StatefulWidget {
   const RankingTileComponent({
     required this.index,
     required this.user,
+    this.userPosition = false,
   });
   final UserRankingModel user;
   final int index;
+  final bool userPosition;
 
   @override
   State<RankingTileComponent> createState() => _RankingTileComponentState();
@@ -36,7 +38,7 @@ class _RankingTileComponentState extends State<RankingTileComponent> {
             width: 60.w,
             child: Center(
               child: Text(
-                '${widget.index + 4}',
+                widget.userPosition ? '${widget.index}' : '${widget.index + 4}',
                 style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
               ),
             ),

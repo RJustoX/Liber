@@ -45,8 +45,20 @@ class ContentController {
     }
   }
 
-  Future<void> fetchTips(int vicioId) async {
-    Map<String, dynamic> map = await ApiProvider().getVicioTips(vicioId);
+  Future<void> fetchTips(
+    int vicioId, {
+    int? categoryId,
+  }) async {
+    Map<String, dynamic> map = <String, dynamic>{};
+    int? selectedCategory = categories
+        .firstWhere((dynamic category) => category.selected == true, orElse: () => null)
+        ?.id;
+
+    if (selectedCategory != null) {
+      map = await ApiProvider().getTipsByCategory(vicioId, selectedCategory);
+    } else {
+      map = await ApiProvider().getVicioTips(vicioId);
+    }
 
     if (map['status'] != 0) {
       tips = map['value'].map((dynamic t) {
@@ -60,5 +72,11 @@ class ContentController {
 
   CategoryModel getCategory(int id) {
     return categories.firstWhere((dynamic category) => category.id == id);
+  }
+
+  void removeFilters() {
+    for (dynamic category in categories) {
+      category.selected = false;
+    }
   }
 }

@@ -6,6 +6,7 @@ class CategoryModel {
     this.id,
     this.name = '',
     this.color = '',
+    this.selected = false,
     required this.icon,
   });
 
@@ -14,6 +15,7 @@ class CategoryModel {
     name = json['ds_nome'];
     color = json['nm_cor'];
     icon = getIcon(name);
+    selected = false;
   }
 
   IconData getIcon(String value) {
@@ -49,4 +51,5 @@ class CategoryModel {
   late String color;
   late String name;
   late IconData icon;
+  late bool selected;
 }

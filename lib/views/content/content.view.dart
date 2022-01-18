@@ -122,8 +122,16 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
 
   Widget tipsView() {
     return _controller!.tips.isEmpty
-        ? Center(
-            child: Text('Sem dicas'),
+        ? Column(
+            children: <Widget>[
+              buildCategories(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.2.sh),
+                child: Center(
+                  child: Text('Sem dicas'),
+                ),
+              )
+            ],
           )
         : SingleChildScrollView(
             child: Column(
@@ -189,8 +197,18 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         separatorBuilder: (context, index) => SizedBox(
           width: 15.0,
         ),
-        itemBuilder: (context, index) => CategoryCardComponent(
-          category: _controller!.categories[index],
+        itemBuilder: (context, index) => InkWell(
+          onTap: () async {
+            setState(() {
+              _controller!.removeFilters();
+              _controller!.isLoading = true;
+              _controller!.categories[index].selected = true;
+              _initialFetch(isFilter: true);
+            });
+          },
+          child: CategoryCardComponent(
+            category: _controller!.categories[index],
+          ),
         ),
       ),
     );
@@ -221,18 +239,20 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     return result;
   }
 
-  Future<void> _initialFetch() async {
+  Future<void> _initialFetch({bool isFilter = false}) async {
     if (_controller!.isLoading) {
-      try {
-        await _controller!.fetchCategories(_vStore.vicio!.id);
-      } catch (error) {
-        ToastUtil.error(_controller!.message!);
-      }
+      if (!isFilter) {
+        try {
+          await _controller!.fetchCategories(_vStore.vicio!.id);
+        } catch (error) {
+          ToastUtil.error(_controller!.message!);
+        }
 
-      try {
-        await _controller!.fetchReasons(_vStore.vicio!.id);
-      } catch (error) {
-        ToastUtil.error(_controller!.message!);
+        try {
+          await _controller!.fetchReasons(_vStore.vicio!.id);
+        } catch (error) {
+          ToastUtil.error(_controller!.message!);
+        }
       }
 
       try {
@@ -242,13 +262,13 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       }
 
       try {
-        await _controller!.fetchTips(_vStore.vicio!.id);
+        await _controller!.fetchTips(_vStore.vicio!.id, categoryId: 1);
       } catch (error) {
-        ToastUtil.error(_controller!.message!);
+        ToastUtil.error('Não foi possivel carregar as dicas');
       }
 
-      if (_controller!.message != null && _controller!.message != '')
-        ToastUtil.error(_controller!.message!);
+      // if (_controller!.message != null && _controller!.message != '')
+      //   ToastUtil.error(_controller!.message!);
 
       if (mounted) setState(() => _controller!.isLoading = false);
     }

@@ -15,6 +15,7 @@ class CategoryCardComponent extends StatelessWidget {
     return SizedBox(
       width: 135.w,
       child: Card(
+        elevation: category.selected ? 8.0 : 1.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
         color: HexColor(category.color != '' ? category.color : '#ffffff'),
         child: Padding(

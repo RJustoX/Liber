@@ -133,6 +133,15 @@ class ApiProvider {
     return response.data;
   }
 
+  Future<Map<String, dynamic>> getUserPosition(int vicioId, int userId) async {
+    final Response response = await _dio.post('$url/ranking/userPosition', data: <String, dynamic>{
+      'vicioId': vicioId,
+      'userId': userId,
+    });
+
+    return response.data;
+  }
+
   /// CONTEÚDOS
 
   Future<Map<String, dynamic>> getCategories(int vicioId) async {
@@ -155,6 +164,15 @@ class ApiProvider {
 
   Future<Map<String, dynamic>> getVicioTips(int vicioId) async {
     final Response response = await _dio.get('$url/getVicioTips/$vicioId');
+
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> getTipsByCategory(int vicioId, int categoryId) async {
+    final Response response = await _dio.post('$url/getTipByCategory', data: <String, dynamic>{
+      'categoryId': categoryId,
+      'vicioId': vicioId,
+    });
 
     return response.data;
   }

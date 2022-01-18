@@ -61,14 +61,17 @@ class UserRankingModel {
 
   UserRankingModel.fromJson(Map<String, dynamic> json) {
     id = json['id_usuario'] as int;
-    print(id);
     avatar = json['nm_avatar'];
-    nickname = json['ds_nickname'];
+    nickname = json['ds_nickname'] ?? '';
+
     score = (json['nu_pontuacao'] ?? 0) as int;
+
+    if (json['posicao'] != null) position = int.parse(json['posicao']);
   }
 
   late int id;
   String? avatar;
+  int? position;
   late String nickname;
   late int score;
 }

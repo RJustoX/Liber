@@ -5,6 +5,7 @@ class RankingController {
   late List<UserRankingModel> allTimeUsers;
   late List<UserRankingModel> trinityUsers;
   late String message;
+  late UserRankingModel userPosition;
   bool isLoading = true;
 
   Future<void> fetchAllTime(int vicioId) async {
@@ -22,5 +23,16 @@ class RankingController {
 
     trinityUsers = allTimeUsers.getRange(0, 3).toList();
     allTimeUsers.removeRange(0, 3);
+  }
+
+  Future<void> fetchUserPosition(int vicioId, UserModel user) async {
+    Map<String, dynamic> response = await ApiProvider().getUserPosition(vicioId, user.id);
+    message = response['message'];
+    print(message);
+    if (response['status'] != 0) {
+      userPosition = UserRankingModel.fromJson(response['value']);
+      userPosition.avatar = user.avatar;
+      userPosition.nickname = user.nickname;
+    }
   }
 }

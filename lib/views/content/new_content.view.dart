@@ -71,120 +71,124 @@ class _NewContentViewState extends State<NewContentView> {
                       color: AppColors.primaryColor,
                       height: 250.h,
                       width: double.maxFinite,
-                      child: _controller!.isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                    size: 50.r,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 35.w, top: 10.h),
-                                  child: Text(
-                                    isTip ? 'Nova dica' : 'Novo relato',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 36.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 50.r,
                             ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 35.w, top: 10.h),
+                            child: Text(
+                              isTip ? 'Nova dica' : 'Novo relato',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 36.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 120.h, horizontal: 30.w),
                       color: AppColors.backgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          if (!isTip)
-                            DefaultTextInputComponent(
-                              title: 'Titulo do relato',
-                              hint: 'Insira o titulo do seu relato',
-                              validate: true,
-                              onSaved: (value) {
-                                if (value!.isNotEmpty) newReport!.title = value.trim();
-                              },
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            child: DefaultTextInputComponent(
-                              title: isTip ? 'Dica' : 'Conteúdo',
-                              validate: true,
-                              hint: isTip ? 'Escreva aqui sua dica' : 'Escreva aqui seu relato',
-                              maxLines: isTip ? 10 : 15,
-                              minLines: 4,
-                              onSaved: (value) {
-                                if (value!.isNotEmpty)
-                                  isTip
-                                      ? newTip!.content = value.trim()
-                                      : newReport!.content = value.trim();
-                              },
-                            ),
-                          ),
-                          Text(
-                            'Publicar como anônimo',
-                            style: TextStyle(
-                              color: HexColor('#B0B4C0'),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Transform.scale(
-                            scale: 1.50,
-                            child: Checkbox(
-                              value: newReport!.anonimo,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  newReport!.anonimo = !newReport!.anonimo;
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 20.0),
-                          DefaultPrimaryButtonComponent(
-                            loading: loading,
-                            onTap: () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
+                      child: _controller!.isLoading
+                          ? Padding(
+                              padding: EdgeInsets.only(top: 200.h),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                if (!isTip)
+                                  DefaultTextInputComponent(
+                                    title: 'Titulo do relato',
+                                    hint: 'Insira o titulo do seu relato',
+                                    validate: true,
+                                    onSaved: (value) {
+                                      if (value!.isNotEmpty) newReport!.title = value.trim();
+                                    },
+                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                                  child: DefaultTextInputComponent(
+                                    title: isTip ? 'Dica' : 'Conteúdo',
+                                    validate: true,
+                                    hint:
+                                        isTip ? 'Escreva aqui sua dica' : 'Escreva aqui seu relato',
+                                    maxLines: isTip ? 10 : 15,
+                                    minLines: 4,
+                                    onSaved: (value) {
+                                      if (value!.isNotEmpty)
+                                        isTip
+                                            ? newTip!.content = value.trim()
+                                            : newReport!.content = value.trim();
+                                    },
+                                  ),
+                                ),
+                                Text(
+                                  'Publicar como anônimo',
+                                  style: TextStyle(
+                                    color: HexColor('#B0B4C0'),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Transform.scale(
+                                  scale: 1.50,
+                                  child: Checkbox(
+                                    value: newReport!.anonimo,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        newReport!.anonimo = !newReport!.anonimo;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 20.0),
+                                DefaultPrimaryButtonComponent(
+                                  loading: loading,
+                                  onTap: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
 
-                                setState(() {
-                                  loading = true;
-                                });
+                                      setState(() {
+                                        loading = true;
+                                      });
 
-                                if (isTip) {
-                                  newTip!.userId = _uStore.user!.id;
-                                  newTip!.idVicio = _vStore.vicio!.id;
-                                  newTip!.likes = 0;
-                                  await ApiProvider().insertNewTip(newTip!).then(
-                                        (value) => widget.callback(),
-                                      );
-                                } else {
-                                  newReport!.userId = _uStore.user!.id;
-                                  newReport!.idVicio = _vStore.vicio!.id;
-                                  newReport!.likes = 0;
-                                  await ApiProvider().insertNewReport(newReport!).then(
-                                        (value) => widget.callback(),
-                                      );
-                                }
+                                      if (isTip) {
+                                        newTip!.userId = _uStore.user!.id;
+                                        newTip!.idVicio = _vStore.vicio!.id;
+                                        newTip!.likes = 0;
+                                        await ApiProvider().insertNewTip(newTip!).then(
+                                              (value) => widget.callback(),
+                                            );
+                                      } else {
+                                        newReport!.userId = _uStore.user!.id;
+                                        newReport!.idVicio = _vStore.vicio!.id;
+                                        newReport!.likes = 0;
+                                        await ApiProvider().insertNewReport(newReport!).then(
+                                              (value) => widget.callback(),
+                                            );
+                                      }
 
-                                Navigator.of(context).pop();
-                              }
-                            },
-                            title: 'Publicar',
-                            loadingTitle: 'Publicando',
-                          ),
-                        ],
-                      ),
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  title: 'Publicar',
+                                  loadingTitle: 'Publicando',
+                                ),
+                              ],
+                            ),
                     )
                   ],
                 ),
@@ -197,12 +201,10 @@ class _NewContentViewState extends State<NewContentView> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100.h),
                   ),
-                  child: _controller!.isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : GestureDetector(
-                          onTap: () async {
+                  child: GestureDetector(
+                    onTap: _controller!.isLoading
+                        ? () {}
+                        : () async {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                               builder: (context) => SingleSelectDialogComponent(
@@ -224,41 +226,44 @@ class _NewContentViewState extends State<NewContentView> {
                               });
                             });
                           },
-                          child: CircleAvatar(
-                            backgroundColor:
-                                category != null ? HexColor(category!.color) : Colors.white,
-                            radius: 100.h,
-                            backgroundImage: reasonImage != null ? AssetImage(reasonImage!) : null,
-                            child: reasonImage != null
-                                ? null
-                                : category != null
-                                    ? Icon(
-                                        category!.icon,
-                                        color: Colors.black,
-                                        size: 100.h,
-                                      )
-                                    : Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            FontAwesomeIcons.icons,
-                                            color: AppColors.primaryFontColor,
-                                            size: 80.h,
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Text(
-                                            isTip ? 'Selecionar categoria' : 'Selecionar motivo',
-                                            style: TextStyle(
-                                                color: AppColors.primaryFontColor,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 18.sp),
-                                          ),
-                                        ],
-                                      ),
-                          ),
-                        ),
+                    child: CircleAvatar(
+                      backgroundColor: category != null ? HexColor(category!.color) : Colors.white,
+                      radius: 100.h,
+                      backgroundImage: reasonImage != null ? AssetImage(reasonImage!) : null,
+                      child: _controller!.isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : reasonImage != null
+                              ? null
+                              : category != null
+                                  ? Icon(
+                                      category!.icon,
+                                      color: Colors.black,
+                                      size: 100.h,
+                                    )
+                                  : Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          FontAwesomeIcons.icons,
+                                          color: AppColors.primaryFontColor,
+                                          size: 80.h,
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Text(
+                                          isTip ? 'Selecionar categoria' : 'Selecionar motivo',
+                                          style: TextStyle(
+                                              color: AppColors.primaryFontColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18.sp),
+                                        ),
+                                      ],
+                                    ),
+                    ),
+                  ),
                 ),
               ),
             ],
