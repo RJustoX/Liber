@@ -14,6 +14,7 @@ class ReasonCardComponent extends StatelessWidget {
     return SizedBox(
       width: 145.w,
       child: Card(
+        elevation: reason.selected ? 8 : 1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
         color: Colors.white,
         child: Padding(

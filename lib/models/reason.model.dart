@@ -4,6 +4,7 @@ class ReasonModel {
     this.name = '',
     this.logo = '',
     this.sex = '',
+    this.selected = false,
   });
 
   ReasonModel.fromJson(Map<String, dynamic> json) {
@@ -11,10 +12,12 @@ class ReasonModel {
     name = json['nm_motivo'];
     logo = json['nm_logo'];
     sex = json['fl_sexo'];
+    selected = false;
   }
 
   int? id;
   late String name;
   late String logo;
   late String sex;
+  late bool selected;
 }

@@ -150,9 +150,17 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
   }
 
   Widget reportsView() {
-    return _controller!.reports.isEmpty
-        ? Center(
-            child: Text('Sem relatos'),
+    return _controller!.reasons.isEmpty
+        ? Column(
+            children: <Widget>[
+              buildReasons(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.2.sh),
+                child: Center(
+                  child: Text('Sem relatos'),
+                ),
+              )
+            ],
           )
         : SingleChildScrollView(
             child: Column(
@@ -180,11 +188,34 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         separatorBuilder: (context, index) => SizedBox(
           width: 15.0,
         ),
-        itemBuilder: (context, index) => ReasonCardComponent(
-          reason: _controller!.reasons[index],
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () {
+            setState(() {
+              _controller!.setReasonFilter(_controller!.reasons[index]);
+            });
+          },
+          child: ReasonCardComponent(
+            reason: _controller!.reasons[index],
+          ),
         ),
       ),
     );
+  }
+
+  List<Widget> buildReportFeed(bool isTip, List<dynamic> reports) {
+    List<Widget> result = [];
+    reports = _controller!.getFilterReports(reports);
+    for (int i = 0; i < reports.length; i++) {
+      ReasonModel reason = _controller!.getReason(reports[i].idReason);
+      result.add(Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        child: ReportCardComponent(
+          reports[i],
+          reason,
+        ),
+      ));
+    }
+    return result;
   }
 
   Widget buildCategories() {
@@ -212,19 +243,6 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         ),
       ),
     );
-  }
-
-  List<Widget> buildReportFeed(bool isTip, List<dynamic> reports) {
-    List<Widget> result = [];
-    for (int i = 0; i < reports.length; i++) {
-      result.add(Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        child: ReportCardComponent(
-          reports[i],
-        ),
-      ));
-    }
-    return result;
   }
 
   List<Widget> buildTipFeed(bool isTip, List<dynamic> tips) {

@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:nicotine/models/category.model.dart';
+import 'package:nicotine/models/_index.dart';
 
 class UserHeaderComponent extends StatelessWidget {
   const UserHeaderComponent({
@@ -13,10 +13,12 @@ class UserHeaderComponent extends StatelessWidget {
     this.avatar = '',
     this.autor = '',
     this.category,
+    this.reason,
   });
 
   final EdgeInsets? padding;
   final CategoryModel? category;
+  final ReasonModel? reason;
   final bool isTip;
   final String title, avatar, autor;
 
@@ -25,6 +27,7 @@ class UserHeaderComponent extends StatelessWidget {
     return Container(
         margin: padding,
         child: Row(
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             CircleAvatar(
               radius: 30.r,
@@ -32,43 +35,55 @@ class UserHeaderComponent extends StatelessWidget {
               child: avatar == '' ? Icon(Icons.person, size: 45.r) : null,
             ),
             SizedBox(width: 10.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  isTip ? autor : title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.sp,
-                  ),
-                ),
-                if (isTip)
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: Badge(
-                      padding: EdgeInsets.all(5),
-                      badgeColor: HexColor(category!.color),
-                      shape: BadgeShape.square,
-                      borderRadius: BorderRadius.circular(15.r),
-                      badgeContent: Text(
-                        category!.name,
+            Flexible(
+              child: SizedBox(
+                width: 0.6.sw,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      isTip ? autor : title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.sp,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                    if (isTip)
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.h),
+                        child: Badge(
+                          padding: EdgeInsets.all(5),
+                          badgeColor: HexColor(category!.color),
+                          shape: BadgeShape.square,
+                          borderRadius: BorderRadius.circular(15.r),
+                          badgeContent: Text(
+                            category!.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      Text(
+                        'Por: $autor',
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,
                         ),
                       ),
-                    ),
-                  )
-                else
-                  Text(
-                    'Por: $autor',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-              ],
-            )
+                  ],
+                ),
+              ),
+            ),
+            if (!isTip)
+              CircleAvatar(
+                child:
+                    Image.asset(reason!.logo != '' ? reason!.logo : 'assets/motivoLogo/money.png'),
+              ),
           ],
         ));
   }

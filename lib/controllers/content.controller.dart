@@ -6,6 +6,7 @@ class ContentController {
   late List<dynamic> reasons;
   late List<dynamic> reports;
   late List<dynamic> tips;
+  int? selectedReason;
   bool isLoading = true;
   String? message;
 
@@ -74,9 +75,34 @@ class ContentController {
     return categories.firstWhere((dynamic category) => category.id == id);
   }
 
+  ReasonModel getReason(int id) {
+    return reasons.firstWhere((dynamic reason) => reason.id == id);
+  }
+
   void removeFilters() {
     for (dynamic category in categories) {
       category.selected = false;
+    }
+  }
+
+  List<dynamic> getFilterReports(List<dynamic> list) {
+    List<dynamic> result = [];
+    if (selectedReason != null) {
+      result = list.where((dynamic d) => d.idReason == selectedReason).toList();
+    } else {
+      result = list;
+    }
+
+    return result;
+  }
+
+  void setReasonFilter(ReasonModel reason) {
+    for (dynamic r in reasons) {
+      if (r.id == reason.id) {
+        selectedReason = selectedReason != reason.id ? reason.id : null;
+        reason.selected = !reason.selected;
+      } else
+        r.selected = false;
     }
   }
 }
