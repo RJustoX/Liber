@@ -205,6 +205,16 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
   List<Widget> buildReportFeed(bool isTip, List<dynamic> reports) {
     List<Widget> result = [];
     reports = _controller!.getFilterReports(reports);
+
+    if (reports.isEmpty) {
+      result = [
+        SizedBox(
+          height: 0.2.sh,
+        ),
+        Center(child: Text('Sem relatos'))
+      ];
+    }
+
     for (int i = 0; i < reports.length; i++) {
       ReasonModel reason = _controller!.getReason(reports[i].idReason);
       result.add(Padding(
@@ -229,12 +239,9 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
           width: 15.0,
         ),
         itemBuilder: (context, index) => InkWell(
-          onTap: () async {
+          onTap: () {
             setState(() {
-              _controller!.removeFilters();
-              _controller!.isLoading = true;
-              _controller!.categories[index].selected = true;
-              _initialFetch(isFilter: true);
+              _controller!.setCategoryFilter(_controller!.categories[index]);
             });
           },
           child: CategoryCardComponent(
@@ -247,6 +254,17 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
 
   List<Widget> buildTipFeed(bool isTip, List<dynamic> tips) {
     List<Widget> result = [];
+    tips = _controller!.getFilterTips(tips);
+
+    if (tips.isEmpty) {
+      result = [
+        SizedBox(
+          height: 0.2.sh,
+        ),
+        Center(child: Text('Sem dicas'))
+      ];
+    }
+
     for (int i = 0; i < tips.length; i++) {
       CategoryModel category = _controller!.getCategory(tips[i].idCategory);
       result.add(Padding(

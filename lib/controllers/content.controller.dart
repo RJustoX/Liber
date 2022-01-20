@@ -7,8 +7,11 @@ class ContentController {
   late List<dynamic> reports;
   late List<dynamic> tips;
   int? selectedReason;
+  int? selectedCategory;
   bool isLoading = true;
   String? message;
+
+  /// GETS DO BANCO
 
   Future<void> fetchCategories(int vicioId) async {
     Map<String, dynamic> map = await ApiProvider().getCategories(vicioId);
@@ -40,6 +43,7 @@ class ContentController {
             return ReportModel.fromJson(t as Map<String, dynamic>);
           }).toList() ??
           [];
+      reports.shuffle();
     } else {
       message = map['message'];
       reports = [];
@@ -50,45 +54,59 @@ class ContentController {
     int vicioId, {
     int? categoryId,
   }) async {
-    Map<String, dynamic> map = <String, dynamic>{};
-    int? selectedCategory = categories
-        .firstWhere((dynamic category) => category.selected == true, orElse: () => null)
-        ?.id;
-
-    if (selectedCategory != null) {
-      map = await ApiProvider().getTipsByCategory(vicioId, selectedCategory);
-    } else {
-      map = await ApiProvider().getVicioTips(vicioId);
-    }
+    Map<String, dynamic> map = await ApiProvider().getVicioTips(vicioId);
 
     if (map['status'] != 0) {
       tips = map['value'].map((dynamic t) {
         return TipModel.fromJson(t as Map<String, dynamic>);
       }).toList();
+
+      tips.shuffle();
     } else {
       message = map['message'];
       tips = [];
     }
   }
 
+  /// FILTRAR DICAS
+
   CategoryModel getCategory(int id) {
     return categories.firstWhere((dynamic category) => category.id == id);
   }
 
-  ReasonModel getReason(int id) {
-    return reasons.firstWhere((dynamic reason) => reason.id == id);
+  List<dynamic> getFilterTips(List<dynamic> list) {
+    List<dynamic> result = [];
+    if (selectedCategory != null) {
+      result = list.where((dynamic d) => d.idCategory == selectedCategory).toList();
+      result.shuffle();
+    } else {
+      result = list;
+    }
+
+    return result;
   }
 
-  void removeFilters() {
-    for (dynamic category in categories) {
-      category.selected = false;
+  void setCategoryFilter(CategoryModel tip) {
+    for (dynamic r in categories) {
+      if (r.id == tip.id) {
+        selectedCategory = selectedCategory != tip.id ? tip.id : null;
+        tip.selected = !tip.selected;
+      } else
+        r.selected = false;
     }
+  }
+
+  /// FILTRAR RELATOS
+
+  ReasonModel getReason(int id) {
+    return reasons.firstWhere((dynamic reason) => reason.id == id);
   }
 
   List<dynamic> getFilterReports(List<dynamic> list) {
     List<dynamic> result = [];
     if (selectedReason != null) {
       result = list.where((dynamic d) => d.idReason == selectedReason).toList();
+      result.shuffle();
     } else {
       result = list;
     }
