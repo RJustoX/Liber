@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/tab_bar.component.dart';
 import 'package:nicotine/components/shared/vicio_avatar.component.dart';
-import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +15,6 @@ class GroupsView extends StatefulWidget {
 
 class _GroupsViewState extends State<GroupsView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late UserStore _uStore;
   late VicioStore _vStore;
 
   @override
@@ -27,7 +25,6 @@ class _GroupsViewState extends State<GroupsView> with SingleTickerProviderStateM
 
   @override
   void didChangeDependencies() {
-    _uStore = Provider.of<UserStore>(context);
     _vStore = Provider.of<VicioStore>(context);
     super.didChangeDependencies();
   }

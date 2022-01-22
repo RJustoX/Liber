@@ -12,6 +12,7 @@ import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/utils/image.util.dart';
+import 'package:nicotine/views/home/edit_profile.view.dart';
 import 'package:nicotine/views/login.view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,6 +107,22 @@ class _ProfileViewState extends State<ProfileView> {
                               size: 50.r,
                             ),
                           ),
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () async {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => EditProfileView(),
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.userEdit,
+                              color: Colors.white,
+                              size: 30.r,
+                            ),
+                            tooltip: 'Editar perfil',
+                          ),
                           IconButton(
                             onPressed: () async {
                               showDialog(
@@ -136,10 +153,11 @@ class _ProfileViewState extends State<ProfileView> {
                               );
                             },
                             icon: Icon(
-                              FontAwesomeIcons.edit,
+                              Icons.exit_to_app,
                               color: Colors.white,
-                              size: 35.r,
+                              size: 40.r,
                             ),
+                            tooltip: 'Sair da conta',
                           ),
                         ],
                       ),

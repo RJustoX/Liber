@@ -6,7 +6,6 @@ import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/content/content.view.dart';
-import 'package:nicotine/views/groups/groups.view.dart';
 import 'package:nicotine/views/home/home.view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/views/ranking/ranking.view.dart';
@@ -37,7 +36,6 @@ class _MainViewState extends State<MainView> {
   List<Widget> tabs = [
     HomeView(),
     ContentView(),
-    GroupsView(),
     RankingView(),
   ];
   @override
@@ -87,10 +85,6 @@ class _MainViewState extends State<MainView> {
           BottomNavigationBarItem(
             icon: Icon(Icons.assignment),
             label: 'Conteúdos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: 'Grupos',
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.medal),
