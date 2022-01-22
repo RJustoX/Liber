@@ -9,6 +9,7 @@ class ContentController {
   int? selectedReason;
   int? selectedCategory;
   bool isLoading = true;
+  bool filtering = false;
   String? message;
 
   /// GETS DO BANCO
@@ -24,7 +25,7 @@ class ContentController {
       message = map['message'];
   }
 
-  Future<void> fetchReasons(int vicioId) async {
+  Future<void> fetchReasons(int userId, int vicioId) async {
     Map<String, dynamic> map = await ApiProvider().getReasons(vicioId);
 
     if (map['status'] != 0) {
@@ -35,8 +36,8 @@ class ContentController {
       message = map['message'];
   }
 
-  Future<void> fetchReports(int vicioId) async {
-    Map<String, dynamic> map = await ApiProvider().getVicioReports(vicioId);
+  Future<void> fetchReports(int userId, int vicioId) async {
+    Map<String, dynamic> map = await ApiProvider().getVicioReports(userId, vicioId);
 
     if (map['status'] != 0) {
       reports = map['value'].map((dynamic t) {
@@ -51,10 +52,11 @@ class ContentController {
   }
 
   Future<void> fetchTips(
+    int userId,
     int vicioId, {
     int? categoryId,
   }) async {
-    Map<String, dynamic> map = await ApiProvider().getVicioTips(vicioId);
+    Map<String, dynamic> map = await ApiProvider().getVicioTips(userId, vicioId);
 
     if (map['status'] != 0) {
       tips = map['value'].map((dynamic t) {
@@ -121,6 +123,13 @@ class ContentController {
         reason.selected = !reason.selected;
       } else
         r.selected = false;
+    }
+  }
+
+  void likeContent(dynamic content, bool add) async {
+    Map<String, dynamic> map = await ApiProvider().likeContent(content, add);
+    if (map['status'] == 0) {
+      message = map['message'];
     }
   }
 }

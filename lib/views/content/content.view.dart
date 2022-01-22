@@ -137,10 +137,15 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
             child: Column(
               children: <Widget>[
                 buildCategories(),
-                ...buildTipFeed(
-                  true,
-                  _controller!.tips,
-                ),
+                if (_controller!.filtering)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 0.2.sh),
+                    child: CircularProgressIndicator(),
+                  )
+                else
+                  ...buildTipFeed(
+                    _controller!.tips,
+                  ),
                 SizedBox(
                   height: 85.h,
                 ),
@@ -166,10 +171,16 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
             child: Column(
               children: <Widget>[
                 buildReasons(),
-                ...buildReportFeed(
-                  false,
-                  _controller!.reports,
-                ),
+                if (_controller!.filtering)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 0.2.sh),
+                    child: CircularProgressIndicator(),
+                  )
+                else
+                  ...buildReportFeed(
+                    false,
+                    _controller!.reports,
+                  ),
                 SizedBox(
                   height: 85.h,
                 ),
@@ -191,7 +202,11 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
             setState(() {
-              _controller!.setReasonFilter(_controller!.reasons[index]);
+              setState(() {
+                _controller!.setReasonFilter(_controller!.reasons[index]);
+                _controller!.filtering = true;
+                _initialFetch();
+              });
             });
           },
           child: ReasonCardComponent(
@@ -220,8 +235,10 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
       result.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         child: ReportCardComponent(
+          _uStore.user!.id,
           reports[i],
           reason,
+          _controller!,
         ),
       ));
     }
@@ -242,6 +259,8 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
           onTap: () {
             setState(() {
               _controller!.setCategoryFilter(_controller!.categories[index]);
+              _controller!.filtering = true;
+              _initialFetch();
             });
           },
           child: CategoryCardComponent(
@@ -252,7 +271,7 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
     );
   }
 
-  List<Widget> buildTipFeed(bool isTip, List<dynamic> tips) {
+  List<Widget> buildTipFeed(List<dynamic> tips) {
     List<Widget> result = [];
     tips = _controller!.getFilterTips(tips);
 
@@ -267,17 +286,24 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
 
     for (int i = 0; i < tips.length; i++) {
       CategoryModel category = _controller!.getCategory(tips[i].idCategory);
-      result.add(Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        child: TipCardComponent(tips[i], category),
-      ));
+      result.add(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+          child: TipCardComponent(
+            _uStore.user!.id,
+            tips[i],
+            category,
+            _controller!,
+          ),
+        ),
+      );
     }
     return result;
   }
 
-  Future<void> _initialFetch({bool isFilter = false}) async {
+  Future<void> _initialFetch() async {
     if (_controller!.isLoading) {
-      if (!isFilter) {
+      if (!_controller!.filtering) {
         try {
           await _controller!.fetchCategories(_vStore.vicio!.id);
         } catch (error) {
@@ -285,28 +311,33 @@ class _ContentViewState extends State<ContentView> with SingleTickerProviderStat
         }
 
         try {
-          await _controller!.fetchReasons(_vStore.vicio!.id);
+          await _controller!.fetchReasons(_uStore.user!.id, _vStore.vicio!.id);
         } catch (error) {
           ToastUtil.error(_controller!.message!);
         }
       }
+    }
 
-      try {
-        await _controller!.fetchReports(_vStore.vicio!.id);
-      } catch (error) {
-        ToastUtil.error(_controller!.message!);
-      }
+    try {
+      await _controller!.fetchReports(_uStore.user!.id, _vStore.vicio!.id);
+    } catch (error) {
+      ToastUtil.error('Não foi possivel carregar os relatos');
+    }
 
-      try {
-        await _controller!.fetchTips(_vStore.vicio!.id, categoryId: 1);
-      } catch (error) {
-        ToastUtil.error('Não foi possivel carregar as dicas');
-      }
+    try {
+      await _controller!.fetchTips(_uStore.user!.id, _vStore.vicio!.id, categoryId: 1);
+    } catch (error) {
+      ToastUtil.error('Não foi possivel carregar as dicas');
+    }
 
-      // if (_controller!.message != null && _controller!.message != '')
-      //   ToastUtil.error(_controller!.message!);
+    // if (_controller!.message != null && _controller!.message != '')
+    //   ToastUtil.error(_controller!.message!);
 
-      if (mounted) setState(() => _controller!.isLoading = false);
+    if (mounted) {
+      setState(() {
+        _controller!.isLoading = false;
+        _controller!.filtering = false;
+      });
     }
   }
 }

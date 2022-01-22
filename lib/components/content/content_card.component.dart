@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/content/user_header.component.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/models/_index.dart';
 
-class ContentCardComponent extends StatelessWidget {
-  const ContentCardComponent({
+// ignore: must_be_immutable
+class ContentCardComponent extends StatefulWidget {
+  ContentCardComponent({
     required this.isTip,
     this.content = '',
     this.likes = 0,
@@ -14,17 +16,28 @@ class ContentCardComponent extends StatelessWidget {
     this.avatar = '',
     this.category,
     this.reason,
+    this.controller,
+    this.liked = false,
+    required this.data,
   });
 
   final bool isTip;
   final String content;
-  final int likes;
+  int likes;
   final String title;
   final String autor;
   final String avatar;
+  bool liked;
   final CategoryModel? category;
   final ReasonModel? reason;
+  final ContentController? controller;
+  final Map<String, dynamic> data;
 
+  @override
+  State<ContentCardComponent> createState() => _ContentCardComponentState();
+}
+
+class _ContentCardComponentState extends State<ContentCardComponent> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -36,17 +49,17 @@ class ContentCardComponent extends StatelessWidget {
           children: <Widget>[
             UserHeaderComponent(
               padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
-              isTip: isTip,
-              autor: autor,
-              title: title,
-              avatar: avatar,
-              category: category,
-              reason: reason,
+              isTip: widget.isTip,
+              autor: widget.autor,
+              title: widget.title,
+              avatar: widget.avatar,
+              category: widget.category,
+              reason: widget.reason,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
               child: Text(
-                content,
+                widget.content,
               ),
             ),
             Row(
@@ -63,7 +76,7 @@ class ContentCardComponent extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$likes',
+                  '${widget.likes}',
                   style: TextStyle(
                     fontSize: 16.sp,
                     height: 1.6,
@@ -77,23 +90,39 @@ class ContentCardComponent extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(30.w, 0, 0, 5.h),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.thumbsUp,
-                        color: Colors.blue,
-                        size: 32.r,
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'Gostei',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.sp,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        widget.liked = !widget.liked;
+                        print(widget.liked);
+                        if (widget.liked) {
+                          widget.likes++;
+                          widget.controller!.likeContent(widget.data, true);
+                        } else {
+                          widget.likes--;
+                          widget.controller!.likeContent(widget.data, false);
+                        }
+                      });
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.thumbsUp,
+                          color: Colors.blue,
+                          size: widget.liked ? 35.r : 32.r,
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 5),
+                        Text(
+                          'Gostei',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp,
+                            color: !widget.liked ? Colors.black : Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Spacer(),

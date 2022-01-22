@@ -156,23 +156,28 @@ class ApiProvider {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> getVicioReports(int vicioId) async {
-    final Response response = await _dio.get('$url/getVicioReports/$vicioId');
+  Future<Map<String, dynamic>> getVicioReports(int userId, int vicioId) async {
+    final Response response = await _dio.get(
+      '$url/getVicioReports/$vicioId',
+      options: Options(
+        headers: <String, dynamic>{
+          'userId': userId,
+        },
+      ),
+    );
 
     return response.data;
   }
 
-  Future<Map<String, dynamic>> getVicioTips(int vicioId) async {
-    final Response response = await _dio.get('$url/getVicioTips/$vicioId');
-
-    return response.data;
-  }
-
-  Future<Map<String, dynamic>> getTipsByCategory(int vicioId, int categoryId) async {
-    final Response response = await _dio.post('$url/getTipByCategory', data: <String, dynamic>{
-      'categoryId': categoryId,
-      'vicioId': vicioId,
-    });
+  Future<Map<String, dynamic>> getVicioTips(int userId, int vicioId) async {
+    final Response response = await _dio.get(
+      '$url/getVicioTips/$vicioId',
+      options: Options(
+        headers: <String, dynamic>{
+          'userId': userId,
+        },
+      ),
+    );
 
     return response.data;
   }
@@ -192,6 +197,18 @@ class ApiProvider {
       data: tip.toJson(),
     );
     print(response.data);
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> likeContent(dynamic content, bool add) async {
+    final Response response = await _dio.put(
+      '$url/like',
+      data: <String, dynamic>{
+        'content': content,
+        'add': add,
+      },
+    );
+
     return response.data;
   }
 }
