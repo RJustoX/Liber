@@ -47,6 +47,8 @@ class UserModel {
     data['id_usuario'] = id;
     data['nm_usuario'] = name;
     data['ds_email'] = email;
+    data['dt_nascimento'] = birthDate?.toIso8601String();
+    data['ds_nickname'] = nickname;
 
     return data;
   }

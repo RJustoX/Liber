@@ -80,233 +80,240 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
+  Future<bool> Function()? _onWillPop() {
+    widget.callbackMethod();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        body: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(15),
-                  color: AppColors.primaryColor,
-                  height: 250.h,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 50.r,
-                            ),
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () async {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => EditProfileView(),
-                                ),
-                              );
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.userEdit,
-                              color: Colors.white,
-                              size: 30.r,
-                            ),
-                            tooltip: 'Editar perfil',
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: Text('Atenção!'),
-                                  content: Text('Quer mesmo sair da sua conta?'),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Cancelar')),
-                                    TextButton(
-                                        onPressed: () async {
-                                          SharedPreferences sharedPreferences =
-                                              await SharedPreferences.getInstance();
-                                          await sharedPreferences.clear();
-                                          Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginView(),
-                                            ),
-                                          );
-                                        },
-                                        child: Text('Confirmar'))
-                                  ],
-                                ),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.exit_to_app,
-                              color: Colors.white,
-                              size: 40.r,
-                            ),
-                            tooltip: 'Sair da conta',
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 35.w, top: 10.h),
-                        child: Text(
-                          _uStore.user!.nickname,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 26.sp,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 35.w),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              FontAwesomeIcons.trophy,
-                              size: 22.r,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 15.w,
-                            ),
-                            Text(
-                              '${_vStore.vicio?.score ?? 0}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 120.h, horizontal: 30.w),
-                  color: AppColors.backgroundColor,
-                  child: Column(
-                    children: <Widget>[
-                      ViciosComponents(
-                        vicios: _uStore.user!.vicios!,
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 30.0.h),
-                        padding: EdgeInsets.all(20.0.r),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          border: Border.all(color: Colors.black),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return WillPopScope(
+      onWillPop: _onWillPop(),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          body: Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    color: AppColors.primaryColor,
+                    height: 250.h,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              _uStore.user!.name,
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 22.sp,
+                            GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                                size: 50.r,
                               ),
                             ),
-                            Text(
-                              _uStore.user!.email,
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20.sp,
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EditProfileView(),
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.userEdit,
+                                color: Colors.white,
+                                size: 30.r,
                               ),
+                              tooltip: 'Editar perfil',
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Atenção!'),
+                                    content: Text('Quer mesmo sair da sua conta?'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancelar')),
+                                      TextButton(
+                                          onPressed: () async {
+                                            SharedPreferences sharedPreferences =
+                                                await SharedPreferences.getInstance();
+                                            await sharedPreferences.clear();
+                                            Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                builder: (context) => LoginView(),
+                                              ),
+                                            );
+                                          },
+                                          child: Text('Confirmar'))
+                                    ],
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.exit_to_app,
+                                color: Colors.white,
+                                size: 40.r,
+                              ),
+                              tooltip: 'Sair da conta',
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Positioned(
-              top: 150.h,
-              left: (0.5.sw - 100.h),
-              child: GestureDetector(
-                onTap: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    backgroundColor: AppColors.primaryColor,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                    ),
-                    builder: (BuildContext context) => BottomSheetRowComponent(
-                      tiles: <BottomSheetRowTileComponent>[
-                        BottomSheetRowTileComponent(
-                          title: 'Camera',
-                          icon: Icons.camera_alt_outlined,
-                          onTap: () => pickAndUploadImage(ImageSource.camera),
+                        Padding(
+                          padding: EdgeInsets.only(left: 35.w, top: 10.h),
+                          child: Text(
+                            _uStore.user!.nickname,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26.sp,
+                            ),
+                          ),
                         ),
-                        BottomSheetRowTileComponent(
-                          title: 'Galeria',
-                          icon: Icons.file_copy_sharp,
-                          onTap: () => pickAndUploadImage(ImageSource.gallery),
+                        Padding(
+                          padding: EdgeInsets.only(left: 35.w),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                FontAwesomeIcons.trophy,
+                                size: 22.r,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 15.w,
+                              ),
+                              Text(
+                                '${_vStore.vicio?.score ?? 0}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24.sp,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-
-                    //pickAndUploadImage();
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage:
-                      !loading && !uploading ? CachedNetworkImageProvider(avatarUrl) : null,
-                  radius: 100.h,
-                  child: uploading
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.upload,
-                              color: Colors.white,
-                              size: 60.r,
-                            ),
-                            Text('Carregando: ${percent.round()}%',
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 120.h, horizontal: 30.w),
+                    color: AppColors.backgroundColor,
+                    child: Column(
+                      children: <Widget>[
+                        ViciosComponents(
+                          vicios: _uStore.user!.vicios!,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 30.0.h),
+                          padding: EdgeInsets.all(20.0.r),
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                _uStore.user!.name,
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.sp,
+                                  color: Colors.black87,
                                   fontWeight: FontWeight.w600,
-                                ))
-                          ],
-                        )
-                      : _uStore.user!.avatar != ''
-                          ? null
-                          : Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 80.h,
-                            ),
+                                  fontSize: 22.sp,
+                                ),
+                              ),
+                              Text(
+                                _uStore.user!.email,
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Positioned(
+                top: 150.h,
+                left: (0.5.sw - 100.h),
+                child: GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      backgroundColor: AppColors.primaryColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                      ),
+                      builder: (BuildContext context) => BottomSheetRowComponent(
+                        tiles: <BottomSheetRowTileComponent>[
+                          BottomSheetRowTileComponent(
+                            title: 'Camera',
+                            icon: Icons.camera_alt_outlined,
+                            onTap: () => pickAndUploadImage(ImageSource.camera),
+                          ),
+                          BottomSheetRowTileComponent(
+                            title: 'Galeria',
+                            icon: Icons.file_copy_sharp,
+                            onTap: () => pickAndUploadImage(ImageSource.gallery),
+                          ),
+                        ],
+                      ),
+
+                      //pickAndUploadImage();
+                    );
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage:
+                        !loading && !uploading ? CachedNetworkImageProvider(avatarUrl) : null,
+                    radius: 100.h,
+                    child: uploading
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.upload,
+                                color: Colors.white,
+                                size: 60.r,
+                              ),
+                              Text('Carregando: ${percent.round()}%',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ))
+                            ],
+                          )
+                        : _uStore.user!.avatar != ''
+                            ? null
+                            : Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 80.h,
+                              ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -53,6 +53,15 @@ class ApiProvider {
     });
   }
 
+  Future<Map<String, dynamic>> updateUserData(UserModel user) async {
+    Response response = await _dio.put(
+      '$url/updateUser',
+      data: user.toJson(),
+    );
+
+    return response.data;
+  }
+
   Future<UserModel> getUser(int id) async {
     final Response response = await _dio.get('$url/user/$id');
 
