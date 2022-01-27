@@ -17,6 +17,7 @@ class TipCardComponent extends ContentCardComponent {
             liked: tip.liked,
             autor: tip.user!.nickname,
             avatar: tip.user!.avatar!,
+            isOwner: tip.isOwner,
             category: category,
             controller: controller,
             data: {

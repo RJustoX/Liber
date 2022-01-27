@@ -4,6 +4,7 @@ import 'package:nicotine/components/content/user_header.component.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/models/_index.dart';
+import 'package:nicotine/utils/toast.util.dart';
 
 // ignore: must_be_immutable
 class ContentCardComponent extends StatefulWidget {
@@ -19,9 +20,10 @@ class ContentCardComponent extends StatefulWidget {
     this.controller,
     this.liked = false,
     required this.data,
+    this.isOwner = false,
   });
 
-  final bool isTip;
+  final bool isTip, isOwner;
   final String content;
   int likes;
   final String title;
@@ -126,6 +128,43 @@ class _ContentCardComponentState extends State<ContentCardComponent> {
                   ),
                 ),
                 Spacer(),
+                if (widget.isOwner)
+                  IconButton(
+                    icon: Icon(Icons.delete_outline),
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Atenção!'),
+                          content: Text('Deseja mesmo excluir este conteúdo?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Cancelar')),
+                            TextButton(
+                                onPressed: () async {
+                                  String message = await widget.controller!
+                                      .deleteContent(widget.data['contentId']);
+                                  Navigator.of(context).pop();
+
+                                  setState(() {
+                                    widget.controller!.isLoading = true;
+                                    return ToastUtil.success(message);
+                                  });
+                                },
+                                child: Text('Confirmar'))
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                if (widget.isOwner)
+                  IconButton(
+                    icon: Icon(Icons.edit_outlined),
+                    onPressed: () {},
+                  )
               ],
             )
           ],

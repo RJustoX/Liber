@@ -1,5 +1,6 @@
 import 'package:nicotine/views/health/health.view.dart';
 import 'package:nicotine/views/home/goal.view.dart';
+import 'package:nicotine/views/home/memory_game.view.dart';
 import 'package:nicotine/views/progress/progress.view.dart';
 
 class HomeController {
@@ -32,6 +33,12 @@ class HomeController {
         'title': 'Metas',
         'desc': 'Estabeleça metas! Coloque em mente seus objetivos e foque para alcançá-los.',
         'route': GoalView(),
+      },
+      <String, dynamic>{
+        'icon': 'assets/strengIcon.png',
+        'title': 'Distração',
+        'desc': 'Lute contra a abstinencia se distraindo um pouco.',
+        'route': MemoryGameView(),
       },
       <String, dynamic>{
         'icon': 'assets/strengIcon.png',

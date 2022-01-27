@@ -21,6 +21,7 @@ class ReportModel {
     likes = (json['nu_likes'] ?? 0) as int;
     anonimo = json['fl_anonimo'] ?? true;
     liked = json['liked'] as bool;
+    isOwner = json['isOwner'] as bool;
 
     user = UserModel.fromJson(json['user'][0]);
   }
@@ -31,6 +32,7 @@ class ReportModel {
   late int idReason;
   late bool anonimo;
   late bool liked;
+  late bool isOwner;
   late String content;
   late String title;
   late int likes;

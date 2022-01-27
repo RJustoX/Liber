@@ -205,7 +205,7 @@ class ApiProvider {
       '$url/newTip',
       data: tip.toJson(),
     );
-    print(response.data);
+
     return response.data;
   }
 
@@ -216,6 +216,14 @@ class ApiProvider {
         'content': content,
         'add': add,
       },
+    );
+
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> deleteContent(int id) async {
+    final Response response = await _dio.delete(
+      '$url/deleteContent/$id',
     );
 
     return response.data;

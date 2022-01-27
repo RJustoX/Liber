@@ -18,6 +18,7 @@ class ReportCardComponent extends ContentCardComponent {
             title: report.title,
             avatar: report.user!.avatar!,
             reason: reason,
+            isOwner: report.isOwner,
             controller: controller,
             data: {
               'userId': userId,

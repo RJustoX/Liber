@@ -132,4 +132,9 @@ class ContentController {
       message = map['message'];
     }
   }
+
+  Future<String> deleteContent(int id) async {
+    Map<String, dynamic> map = await ApiProvider().deleteContent(id);
+    return map['message'];
+  }
 }

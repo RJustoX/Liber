@@ -161,27 +161,31 @@ class _NewContentViewState extends State<NewContentView> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
 
-                                      setState(() {
-                                        loading = true;
-                                      });
+                                      if (canSave() == '') {
+                                        setState(() {
+                                          loading = true;
+                                        });
 
-                                      if (isTip) {
-                                        newTip!.userId = _uStore.user!.id;
-                                        newTip!.idVicio = _vStore.vicio!.id;
-                                        newTip!.likes = 0;
-                                        await ApiProvider().insertNewTip(newTip!).then(
-                                              (value) => widget.callback(),
-                                            );
+                                        if (isTip) {
+                                          newTip!.userId = _uStore.user!.id;
+                                          newTip!.idVicio = _vStore.vicio!.id;
+                                          newTip!.likes = 0;
+                                          await ApiProvider().insertNewTip(newTip!).then(
+                                                (value) => widget.callback(),
+                                              );
+                                        } else {
+                                          newReport!.userId = _uStore.user!.id;
+                                          newReport!.idVicio = _vStore.vicio!.id;
+                                          newReport!.likes = 0;
+                                          await ApiProvider().insertNewReport(newReport!).then(
+                                                (value) => widget.callback(),
+                                              );
+                                        }
+
+                                        Navigator.of(context).pop();
                                       } else {
-                                        newReport!.userId = _uStore.user!.id;
-                                        newReport!.idVicio = _vStore.vicio!.id;
-                                        newReport!.likes = 0;
-                                        await ApiProvider().insertNewReport(newReport!).then(
-                                              (value) => widget.callback(),
-                                            );
+                                        ToastUtil.error(canSave());
                                       }
-
-                                      Navigator.of(context).pop();
                                     }
                                   },
                                   title: 'Publicar',
@@ -271,6 +275,18 @@ class _NewContentViewState extends State<NewContentView> {
         ),
       ),
     );
+  }
+
+  String canSave() {
+    String result = '';
+
+    if (isTip) {
+      result = newTip!.idCategory != 0 ? '' : 'Selecione uma categoria';
+    } else {
+      result = newReport!.idReason != 0 ? '' : 'Selecione um motivo';
+    }
+
+    return result;
   }
 
   Future<void> _initialFetch() async {

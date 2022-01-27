@@ -18,6 +18,7 @@ class TipModel {
     content = json['ds_dica'] ?? '';
     likes = (json['nu_likes'] ?? 0) as int;
     anonimo = json['fl_anonimo'] ?? true;
+    isOwner = json['isOwner'] as bool;
 
     liked = json['liked'] as bool;
     user = UserModel.fromJson(json['user'][0]);
@@ -29,6 +30,7 @@ class TipModel {
   late int idCategory;
   late bool anonimo;
   late bool liked;
+  late bool isOwner;
   late String content;
   late int likes;
   UserModel? user;
