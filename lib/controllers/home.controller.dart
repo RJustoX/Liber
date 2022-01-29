@@ -1,6 +1,6 @@
+import 'package:nicotine/game/game.view.dart';
 import 'package:nicotine/views/health/health.view.dart';
 import 'package:nicotine/views/home/goal.view.dart';
-import 'package:nicotine/views/home/memory_game.view.dart';
 import 'package:nicotine/views/progress/progress.view.dart';
 
 class HomeController {
@@ -38,7 +38,7 @@ class HomeController {
         'icon': 'assets/strengIcon.png',
         'title': 'Distração',
         'desc': 'Lute contra a abstinencia se distraindo um pouco.',
-        'route': MemoryGameView(),
+        'route': GameView(),
       },
       <String, dynamic>{
         'icon': 'assets/strengIcon.png',

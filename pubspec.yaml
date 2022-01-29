@@ -79,6 +79,7 @@ flutter:
   - assets/
   - assets/vicioLogo/
   - assets/motivoLogo/
+  - assets/game/
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
