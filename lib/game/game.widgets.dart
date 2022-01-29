@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 import 'game.constants.dart';
 import 'game.records.dart';
+import 'game_controller.dart';
 import 'game_model.dart';
 
 class StartButton extends StatelessWidget {
@@ -125,24 +128,24 @@ class _CardGameState extends State<CardGame> with SingleTickerProviderStateMixin
 
   AssetImage getImage(double angulo) {
     if (angulo > 0.5 * pi) {
-      return AssetImage('images/${widget.gameOpcao.opcao.toString()}.png');
+      return AssetImage('assets/game/${widget.gameOpcao.opcao.toString()}.png');
     } else {
       return widget.modo == Modo.normal
-          ? const AssetImage('images/card_normal.png')
-          : const AssetImage('images/card_round.png');
+          ? const AssetImage('assets/game/card_normal.png')
+          : const AssetImage('assets/game/card_round.png');
     }
   }
 
   flipCard() {
-    // final game = context.read<GameController>();
+    final game = context.read<GameController>();
 
-    // if (!animation.isAnimating &&
-    //     !widget.gameOpcao.matched &&
-    //     !widget.gameOpcao.selected &&
-    //     !game.jogadaCompleta) {
-    //   animation.forward();
-    //   game.escolher(widget.gameOpcao, resetCard);
-    // }
+    if (!animation.isAnimating &&
+        !widget.gameOpcao.matched &&
+        !widget.gameOpcao.selected &&
+        !game.jogadaCompleta) {
+      animation.forward();
+      game.escolher(widget.gameOpcao, resetCard);
+    }
   }
 
   resetCard() {
@@ -180,6 +183,37 @@ class _CardGameState extends State<CardGame> with SingleTickerProviderStateMixin
           ),
         );
       },
+    );
+  }
+}
+
+class GameScore extends StatelessWidget {
+  final Modo modo;
+  const GameScore({Key? key, required this.modo}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Provider.of<GameController>(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(modo == Modo.round6 ? Icons.my_location : Icons.touch_app_rounded),
+            const SizedBox(width: 10),
+            Observer(
+                builder: (_) =>
+                    Text(controller.score.toString(), style: const TextStyle(fontSize: 25))),
+          ],
+        ),
+        Image.asset('assets/game/host.png', width: 38, height: 60),
+        TextButton(
+          child: const Text('Sair', style: TextStyle(fontSize: 18)),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
     );
   }
 }

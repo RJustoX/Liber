@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:nicotine/stores/recordes_repository.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
 import 'package:nicotine/views/splash_screen.dialog.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+
+import 'game/game_controller.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +32,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: <Provider<dynamic>>[
+      providers: [
         Provider<UserStore>.value(value: UserStore()),
         Provider<VicioStore>.value(value: VicioStore()),
+        Provider<RecordesRepository>(create: (_) => RecordesRepository()),
+        ProxyProvider<RecordesRepository, GameController>(
+          update: (_, repo, __) => GameController(recordesRepository: repo),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(500, 1000),

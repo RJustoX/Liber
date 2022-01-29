@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/components/appBar/default_appbar.component.dart';
+import 'package:nicotine/game/game.settings.dart';
+import 'package:nicotine/game/memory_game.dart';
 import 'package:nicotine/utils/app_colors.dart';
+import 'package:provider/src/provider.dart';
 import 'game.constants.dart';
 import 'game.widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'game_controller.dart';
 import 'game_model.dart';
-import 'memory_game.dart';
 
 class GameView extends StatelessWidget {
   const GameView({Key? key}) : super(key: key);
@@ -89,10 +92,9 @@ class NivelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final niveis = GameSettings.niveis
-    //     .map((n) => CardNivel(
-    //       //gamePlay: GamePlay(modo: modo, nivel: n)))
-    //     .toList();
+    final niveis = GameSettings.niveis
+        .map((n) => CardNivel(gamePlay: GamePlay(modo: modo, nivel: n)))
+        .toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nível do Jogo'),
@@ -104,7 +106,7 @@ class NivelPage extends StatelessWidget {
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
           padding: const EdgeInsets.all(24),
-          //  children: niveis,
+          children: niveis,
         ),
       ),
     );
@@ -117,38 +119,35 @@ class CardNivel extends StatelessWidget {
   const CardNivel({Key? key, required this.gamePlay}) : super(key: key);
 
   startGame(BuildContext context) {
-    //  context.read<GameController>().startGame(gamePlay: gamePlay);
+    context.read<GameController>().startGame(gamePlay: gamePlay);
 
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     fullscreenDialog: true,
-    //     builder: (BuildContext context) => GamePage(gamePlay: gamePlay),
-    //   ),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (BuildContext context) => MemoryGame(gamePlay: gamePlay),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
-      // => startGame(context),
+      onTap: () => startGame(context),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       child: Container(
         width: 90,
         height: 90,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            border: Border.all(
-                color: Colors.white // gamePlay.modo == Modo.normal ? Colors.white : Colors.red,
-                ),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            color: Colors
-                .white //gamePlay.modo == Modo.normal ? Colors.transparent : Colors.red.withOpacity(.6),
-            ),
+          border: Border.all(
+            color: gamePlay.modo == Modo.normal ? Colors.white : Colors.red,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: gamePlay.modo == Modo.normal ? Colors.transparent : Colors.red.withOpacity(.6),
+        ),
         child: Center(
-          child: Text(
-              'Tico litle'), //gamePlay.nivel.toString(), style: const TextStyle(fontSize: 30)),
+          child: Text(gamePlay.nivel.toString(), style: const TextStyle(fontSize: 30)),
         ),
       ),
     );

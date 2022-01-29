@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nicotine/game/game.constants.dart';
-import 'package:provider/provider.dart';
-import 'package:mobx/mobx.dart';
 
 class GameRecords extends StatelessWidget {
   final Modo modo;
