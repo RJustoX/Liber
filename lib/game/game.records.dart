@@ -25,6 +25,11 @@ class _GameRecordsState extends State<GameRecords> {
 
   MainAxisAlignment mainAxis = MainAxisAlignment.start;
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   List<Widget> getRecordesList(Map recordes) {
     final List<Widget> widgets = [];
 
@@ -56,7 +61,6 @@ class _GameRecordsState extends State<GameRecords> {
     });
 
     if (widgets.isEmpty) {
-      mainAxis = MainAxisAlignment.center;
       widgets.add(
         Center(
           child: Text(
@@ -93,7 +97,7 @@ class _GameRecordsState extends State<GameRecords> {
             mainAxisAlignment: mainAxis,
             children: <Widget>[
               ...getRecordesList(
-                widget.modo == Modo.normal ? repository.recordesNormal : repository.recordesRound6,
+                widget.modo == Modo.normal ? repository.recordesNormal : repository.recordesDesafio,
               ),
             ],
           ),

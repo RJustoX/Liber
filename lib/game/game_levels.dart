@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nicotine/components/appBar/default_appbar.component.dart';
 import 'package:nicotine/game/game.constants.dart';
 import 'package:nicotine/game/game_model.dart';

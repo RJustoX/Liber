@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nicotine/stores/recordes_repository.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
@@ -11,8 +12,10 @@ import 'package:provider/provider.dart';
 
 import 'game/game_controller.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
   runApp(
     DevicePreview(
       enabled: false,
