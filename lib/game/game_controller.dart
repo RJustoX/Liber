@@ -54,7 +54,13 @@ abstract class GameControllerBase with Store {
     List<int> cardOpcoes = GameSettings.cardOpcoes.sublist(0)..shuffle();
     cardOpcoes = cardOpcoes.sublist(0, _numPares);
     gameCards = [...cardOpcoes, ...cardOpcoes]
-        .map((opcao) => GameOpcao(opcao: opcao, matched: false, selected: false))
+        .map(
+          (opcao) => GameOpcao(
+            opcao: opcao,
+            matched: false,
+            selected: false,
+          ),
+        )
         .toList();
     gameCards.shuffle();
   }

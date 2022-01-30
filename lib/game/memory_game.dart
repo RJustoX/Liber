@@ -38,10 +38,13 @@ class MemoryGame extends StatelessWidget {
                 crossAxisCount: GameSettings.gameBoardAxisCount(gamePlay.nivel),
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 15,
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(20.0),
                 children: controller.gameCards
                     .map(
-                      (GameOpcao go) => CardGame(modo: gamePlay.modo, gameOpcao: go),
+                      (GameOpcao go) => CardGame(
+                        modo: gamePlay.modo,
+                        gameOpcao: go,
+                      ),
                     )
                     .toList(),
               ),
@@ -59,7 +62,7 @@ class FeedbackGame extends StatelessWidget {
   const FeedbackGame({Key? key, required this.resultado}) : super(key: key);
 
   String getResultado() {
-    return resultado == Resultado.aprovado ? 'aprovado' : 'eliminado';
+    return resultado == Resultado.aprovado ? 'Você venceu!' : 'Você perdeu!';
   }
 
   @override
@@ -76,7 +79,9 @@ class FeedbackGame extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Image.asset('assets/game/${getResultado()}.png'),
+            child: Image.asset(
+              'assets/game/${resultado == Resultado.aprovado ? 'aprovado' : 'eliminado'}.png',
+            ),
           ),
           resultado == Resultado.eliminado
               ? DefaultPrimaryButtonComponent(

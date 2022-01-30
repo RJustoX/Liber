@@ -148,13 +148,14 @@ class _CardGameState extends State<CardGame> with SingleTickerProviderStateMixin
             alignment: Alignment.center,
             child: Container(
               decoration: BoxDecoration(
+                color: Colors.transparent,
                 border: Border.all(
                   color: widget.modo == Modo.normal ? Colors.white : Colors.red,
                   width: 2,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
                 image: DecorationImage(
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   image: getImage(angulo),
                 ),
               ),
