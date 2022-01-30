@@ -39,7 +39,7 @@ abstract class RecordesRepositoryBase with Store {
         (recordesNormal[gamePlay.nivel] == null || score < recordesNormal[gamePlay.nivel])) {
       recordesNormal[gamePlay.nivel] = score;
       // _recordes.put(key, recordesNormal);
-    } else if (gamePlay.modo == Modo.round6 &&
+    } else if (gamePlay.modo == Modo.desafio &&
         (recordesRound6[gamePlay.nivel] == null || score > recordesRound6[gamePlay.nivel])) {
       recordesRound6[gamePlay.nivel] = score;
       //  _recordes.put(key, recordesRound6);

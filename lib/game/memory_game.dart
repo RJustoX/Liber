@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:nicotine/components/button/default_primary_button.component.dart';
+import 'package:nicotine/utils/app_colors.dart';
 import 'package:provider/provider.dart';
-
 import 'game.constants.dart';
 import 'game.settings.dart';
 import 'game.widgets.dart';
@@ -18,6 +19,7 @@ class MemoryGame extends StatelessWidget {
     final controller = Provider.of<GameController>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
         automaticallyImplyLeading: false,
         title: GameScore(modo: gamePlay.modo),
       ),
@@ -66,7 +68,7 @@ class FeedbackGame extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 12),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             '${getResultado().toUpperCase()}!',
@@ -77,16 +79,15 @@ class FeedbackGame extends StatelessWidget {
             child: Image.asset('assets/game/${getResultado()}.png'),
           ),
           resultado == Resultado.eliminado
-              ? StartButton(
+              ? DefaultPrimaryButtonComponent(
+                  onTap: () => controller.restartGame(),
                   title: 'Tentar novamente',
-                  color: Colors.white,
-                  action: () => controller.restartGame(),
+                  revertColors: true,
                 )
-              : StartButton(
+              : DefaultPrimaryButtonComponent(
+                  onTap: () => controller.nextLevel(),
                   title: 'Próximo Nível',
-                  color: Colors.white,
-                  action: () => controller.nextLevel(),
-                ),
+                )
         ],
       ),
     );

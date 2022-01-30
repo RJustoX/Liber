@@ -1,6 +1,6 @@
 enum Modo {
   normal,
-  round6,
+  desafio,
 }
 
 enum Resultado {

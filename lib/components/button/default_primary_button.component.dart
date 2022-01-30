@@ -7,6 +7,7 @@ class DefaultPrimaryButtonComponent extends TextButton {
     required String title,
     String? loadingTitle,
     bool loading = false,
+    bool revertColors = false,
   }) : super(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -14,7 +15,7 @@ class DefaultPrimaryButtonComponent extends TextButton {
               Text(
                 !loading ? title : loadingTitle ?? title,
                 style: TextStyle(
-                  color: AppColors.backgroundColor,
+                  color: revertColors ? AppColors.primaryColor : Colors.white,
                   fontSize: 26.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -27,8 +28,13 @@ class DefaultPrimaryButtonComponent extends TextButton {
           ),
           onPressed: onTap,
           style: TextButton.styleFrom(
-            backgroundColor:
-                loading ? AppColors.primaryColor.withOpacity(0.6) : AppColors.primaryColor,
+            backgroundColor: revertColors
+                ? loading
+                    ? Colors.white.withOpacity(0.6)
+                    : Colors.white
+                : loading
+                    ? AppColors.primaryColor.withOpacity(0.6)
+                    : AppColors.primaryColor,
             minimumSize: Size(double.maxFinite, 45.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),

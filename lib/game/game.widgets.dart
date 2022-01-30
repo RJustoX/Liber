@@ -1,45 +1,14 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nicotine/utils/app_colors.dart';
 import 'package:provider/provider.dart';
-
 import 'game.constants.dart';
 import 'game.records.dart';
 import 'game_controller.dart';
 import 'game_model.dart';
-
-class StartButton extends StatelessWidget {
-  final String title;
-  final Color color;
-  final Function action;
-
-  const StartButton({
-    Key? key,
-    required this.title,
-    required this.color,
-    required this.action,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: OutlinedButton(
-        onPressed: () => action(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 20),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class Recordes extends StatefulWidget {
   const Recordes({Key? key}) : super(key: key);
@@ -61,20 +30,30 @@ class _RecordesState extends State<Recordes> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey[900],
+      elevation: 0.0,
+      color: AppColors.backgroundColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
+          children: <Widget>[
+            Padding(
               padding: EdgeInsets.all(12),
-              child: Text(
-                'Recordes',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 22,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Recordes',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 28.0.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 7.5),
+                  Icon(FontAwesomeIcons.trophy)
+                ],
               ),
             ),
             ListTile(
@@ -83,9 +62,9 @@ class _RecordesState extends State<Recordes> {
               onTap: () => showRecordes(Modo.normal),
             ),
             ListTile(
-              title: const Text('Modo Round 6'),
+              title: const Text('Modo Desafio'),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => showRecordes(Modo.round6),
+              onTap: () => showRecordes(Modo.desafio),
             )
           ],
         ),
@@ -194,23 +173,24 @@ class GameScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<GameController>(context);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(modo == Modo.round6 ? Icons.my_location : Icons.touch_app_rounded),
+            Icon(modo == Modo.desafio ? Icons.my_location : Icons.touch_app_rounded),
             const SizedBox(width: 10),
             Observer(
                 builder: (_) =>
                     Text(controller.score.toString(), style: const TextStyle(fontSize: 25))),
           ],
         ),
-        Image.asset('assets/game/host.png', width: 38, height: 60),
         TextButton(
-          child: const Text('Sair', style: TextStyle(fontSize: 18)),
+          child: const Text(
+            'Sair',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ],

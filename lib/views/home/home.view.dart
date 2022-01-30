@@ -219,7 +219,8 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
         'desc': 'Dias',
       },
       {
-        'value': 'R\$: ${_uStore.user?.savings}',
+        ''
+            'value': 'R\$: ${_uStore.user?.savings}',
         'desc': 'Economizados',
       },
       {
