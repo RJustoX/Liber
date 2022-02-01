@@ -35,9 +35,9 @@ class HomeController {
         'route': GoalView(),
       },
       <String, dynamic>{
-        'icon': 'assets/strengIcon.png',
+        'icon': 'assets/gameicon.png',
         'title': 'Distração',
-        'desc': 'Lute contra a abstinencia se distraindo um pouco.',
+        'desc': 'Lute contra a abstinencia se distraindo e exercitando sua memória!',
         'route': GameView(),
       },
       <String, dynamic>{
