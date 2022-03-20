@@ -1,6 +1,7 @@
 class Endpoint {
-  //static const String endpointUrl = 'http://200.19.1.18:2210'; // Server
-  static const String endpointUrl = 'http://10.1.1.178:3001'; // Justo
+   static const String endpointUrl = 'http://200.19.1.18:2210'; // Server
+  //static const String endpointUrl = 'http://10.1.1.179:3001'; // Justo
+  //static const String endpointUrl = 'http://192.168.253.194:3001';
   //static const String endpointUrl = 'http://192.168.3.10:3001'; // Sitio
   //static const String endpointUrl = 'http://10.1.1.179:3001'; // Office
   //static const String apiUrl = '$endpointUrl/justo/apiLiber/Controller';

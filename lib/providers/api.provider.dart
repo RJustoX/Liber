@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:nicotine/models/_index.dart';
+import 'package:nicotine/models/new_content.model.dart';
 import 'package:nicotine/utils/endpoint.dart';
 
 class ApiProvider {
@@ -191,7 +192,7 @@ class ApiProvider {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> insertNewReport(ReportModel report) async {
+  Future<Map<String, dynamic>> insertNewReport(NewContentModel report) async {
     final Response response = await _dio.put(
       '$url/newReport',
       data: report.toJson(),
@@ -200,7 +201,7 @@ class ApiProvider {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> insertNewTip(TipModel tip) async {
+  Future<Map<String, dynamic>> insertNewTip(NewContentModel tip) async {
     final Response response = await _dio.put(
       '$url/newTip',
       data: tip.toJson(),

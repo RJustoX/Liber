@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nicotine/controllers/content.controller.dart';
 import 'package:nicotine/models/_index.dart';
 import 'package:nicotine/utils/toast.util.dart';
+import 'package:nicotine/views/content/new_content.view.dart';
 
 // ignore: must_be_immutable
 class ContentCardComponent extends StatefulWidget {
@@ -21,6 +22,8 @@ class ContentCardComponent extends StatefulWidget {
     this.liked = false,
     required this.data,
     this.isOwner = false,
+    this.report,
+    this.tip,
   });
 
   final bool isTip, isOwner;
@@ -32,6 +35,8 @@ class ContentCardComponent extends StatefulWidget {
   bool liked;
   final CategoryModel? category;
   final ReasonModel? reason;
+  final ReportModel? report;
+  final TipModel? tip;
   final ContentController? controller;
   final Map<String, dynamic> data;
 
@@ -163,7 +168,19 @@ class _ContentCardComponentState extends State<ContentCardComponent> {
                 if (widget.isOwner)
                   IconButton(
                     icon: Icon(Icons.edit_outlined),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => NewContentView(
+                            isTip: widget.isTip,
+                            callback: () {},
+                            isEdit: true,
+                            reportToEdit: widget.report,
+                            tipToEdit: widget.tip,
+                          ),
+                        ),
+                      );
+                    },
                   )
               ],
             )

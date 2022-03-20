@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/button/default_primary_button.component.dart';
 import 'package:nicotine/components/input/default_text_input.component.dart';
+import 'package:nicotine/models/new_content.model.dart';
 import 'package:nicotine/providers/api.provider.dart';
 import 'package:nicotine/stores/user.store.dart';
 import 'package:nicotine/stores/vicio.store.dart';
@@ -18,10 +19,15 @@ class NewContentView extends StatefulWidget {
   const NewContentView({
     required this.isTip,
     required this.callback,
+    this.isEdit = false,
+    this.tipToEdit,
+    this.reportToEdit,
   });
 
-  final bool isTip;
+  final bool isTip, isEdit;
   final VoidCallback callback;
+  final TipModel? tipToEdit;
+  final ReportModel? reportToEdit;
 
   @override
   _NewContentViewState createState() => _NewContentViewState();
@@ -31,9 +37,9 @@ class _NewContentViewState extends State<NewContentView> {
   late UserStore _uStore;
   late VicioStore _vStore;
   late bool isTip;
+  late bool isEdit;
   NewContentController? _controller;
-  ReportModel? newReport;
-  TipModel? newTip;
+  NewContentModel? newContent;
   bool loading = false;
   String? reasonImage;
   CategoryModel? category;
@@ -44,12 +50,33 @@ class _NewContentViewState extends State<NewContentView> {
   void didChangeDependencies() async {
     _uStore = Provider.of<UserStore>(context);
     _vStore = Provider.of<VicioStore>(context);
+    isEdit = widget.isEdit;
     isTip = widget.isTip;
     _controller ??= NewContentController();
 
-    newTip ??= TipModel();
-    newReport ??= ReportModel();
-
+    if (isEdit) {
+      if (isTip) {
+        newContent ??= NewContentModel(
+          id: widget.tipToEdit!.id,
+          idVicio: widget.tipToEdit!.idVicio,
+          idCategory: widget.tipToEdit!.idCategory,
+          userId: widget.tipToEdit!.userId,
+          content: widget.tipToEdit!.content,
+          anonimo: widget.tipToEdit!.anonimo,
+        );
+      } else {
+        newContent!.id = widget.reportToEdit!.id;
+        newContent!.idVicio = widget.reportToEdit!.idVicio;
+        newContent!.idReason = widget.reportToEdit!.idReason;
+        newContent!.title = widget.reportToEdit!.title;
+        newContent!.userId = widget.reportToEdit!.userId;
+        newContent!.content = widget.reportToEdit!.content;
+        newContent!.anonimo = widget.reportToEdit!.anonimo;
+      }
+    } else {
+      newContent ??= NewContentModel();
+    }
+    print(newContent!.toJson());
     super.didChangeDependencies();
     await _initialFetch();
   }
@@ -113,9 +140,12 @@ class _NewContentViewState extends State<NewContentView> {
                                   DefaultTextInputComponent(
                                     title: 'Titulo do relato',
                                     hint: 'Insira o titulo do seu relato',
+                                    initialValue: widget.reportToEdit != null
+                                        ? widget.reportToEdit!.title
+                                        : null,
                                     validate: true,
                                     onSaved: (value) {
-                                      if (value!.isNotEmpty) newReport!.title = value.trim();
+                                      if (value!.isNotEmpty) newContent!.title = value.trim();
                                     },
                                   ),
                                 Padding(
@@ -125,13 +155,11 @@ class _NewContentViewState extends State<NewContentView> {
                                     validate: true,
                                     hint:
                                         isTip ? 'Escreva aqui sua dica' : 'Escreva aqui seu relato',
+                                    initialValue: isEdit ? newContent!.content : null,
                                     maxLines: isTip ? 10 : 15,
                                     minLines: 4,
                                     onSaved: (value) {
-                                      if (value!.isNotEmpty)
-                                        isTip
-                                            ? newTip!.content = value.trim()
-                                            : newReport!.content = value.trim();
+                                      if (value!.isNotEmpty) newContent!.content = value.trim();
                                     },
                                   ),
                                 ),
@@ -146,10 +174,10 @@ class _NewContentViewState extends State<NewContentView> {
                                 Transform.scale(
                                   scale: 1.50,
                                   child: Checkbox(
-                                    value: newReport!.anonimo,
+                                    value: newContent!.anonimo,
                                     onChanged: (bool? value) {
                                       setState(() {
-                                        newReport!.anonimo = !newReport!.anonimo;
+                                        newContent!.anonimo = !newContent!.anonimo;
                                       });
                                     },
                                   ),
@@ -166,18 +194,16 @@ class _NewContentViewState extends State<NewContentView> {
                                           loading = true;
                                         });
 
+                                        newContent!.userId = _uStore.user!.id;
+                                        newContent!.idVicio = _vStore.vicio!.id;
+                                        newContent!.likes = 0;
+
                                         if (isTip) {
-                                          newTip!.userId = _uStore.user!.id;
-                                          newTip!.idVicio = _vStore.vicio!.id;
-                                          newTip!.likes = 0;
-                                          await ApiProvider().insertNewTip(newTip!).then(
+                                          await ApiProvider().insertNewTip(newContent!).then(
                                                 (value) => widget.callback(),
                                               );
                                         } else {
-                                          newReport!.userId = _uStore.user!.id;
-                                          newReport!.idVicio = _vStore.vicio!.id;
-                                          newReport!.likes = 0;
-                                          await ApiProvider().insertNewReport(newReport!).then(
+                                          await ApiProvider().insertNewReport(newContent!).then(
                                                 (value) => widget.callback(),
                                               );
                                         }
@@ -212,7 +238,8 @@ class _NewContentViewState extends State<NewContentView> {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                               builder: (context) => SingleSelectDialogComponent(
-                                selectedOption: isTip ? newTip!.idCategory : newReport!.idReason,
+                                selectedOption:
+                                    isTip ? newContent!.idCategory : newContent!.idReason,
                                 options: isTip
                                     ? _controller!.getCategoriesMap()
                                     : _controller!.getReasonsMap(),
@@ -221,10 +248,10 @@ class _NewContentViewState extends State<NewContentView> {
                                 .then((dynamic value) {
                               setState(() {
                                 if (isTip) {
-                                  newTip!.idCategory = value;
+                                  newContent!.idCategory = value;
                                   category = _controller!.getCategory(value);
                                 } else {
-                                  newReport!.idReason = value;
+                                  newContent!.idReason = value;
                                   reasonImage = _controller!.getReasonImage(value);
                                 }
                               });
@@ -281,9 +308,9 @@ class _NewContentViewState extends State<NewContentView> {
     String result = '';
 
     if (isTip) {
-      result = newTip!.idCategory != 0 ? '' : 'Selecione uma categoria';
+      result = newContent!.idCategory != 0 ? '' : 'Selecione uma categoria';
     } else {
-      result = newReport!.idReason != 0 ? '' : 'Selecione um motivo';
+      result = newContent!.idReason != 0 ? '' : 'Selecione um motivo';
     }
 
     return result;
@@ -293,6 +320,7 @@ class _NewContentViewState extends State<NewContentView> {
     if (_controller!.isLoading) {
       if (isTip) {
         await _controller!.fetchCategories(_vStore.vicio!.id);
+        category = _controller!.getCategory(newContent!.idCategory);
       } else {
         await _controller!.fetchReasons(_vStore.vicio!.id);
       }

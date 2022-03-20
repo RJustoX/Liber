@@ -11,18 +11,20 @@ class TipCardComponent extends ContentCardComponent {
     final CategoryModel category,
     final ContentController controller,
   ) : super(
-            isTip: true,
-            content: tip.content,
-            likes: tip.likes,
-            liked: tip.liked,
-            autor: tip.user!.nickname,
-            avatar: tip.user!.avatar!,
-            isOwner: tip.isOwner,
-            category: category,
-            controller: controller,
-            data: {
-              'userId': userId,
-              'contentId': tip.id,
-              'vicioId': tip.idVicio,
-            });
+          isTip: true,
+          content: tip.content,
+          likes: tip.likes,
+          liked: tip.liked,
+          autor: tip.user!.nickname,
+          avatar: tip.user!.avatar!,
+          isOwner: tip.isOwner,
+          category: category,
+          controller: controller,
+          data: {
+            'userId': userId,
+            'contentId': tip.id,
+            'vicioId': tip.idVicio,
+          },
+          tip: tip,
+        );
 }

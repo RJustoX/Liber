@@ -10,19 +10,21 @@ class ReportCardComponent extends ContentCardComponent {
     final ReasonModel reason,
     final ContentController controller,
   ) : super(
-            isTip: false,
-            content: report.content,
-            likes: report.likes,
-            liked: report.liked,
-            autor: report.user!.nickname,
-            title: report.title,
-            avatar: report.user!.avatar!,
-            reason: reason,
-            isOwner: report.isOwner,
-            controller: controller,
-            data: {
-              'userId': userId,
-              'contentId': report.id,
-              'vicioId': report.idVicio,
-            });
+          isTip: false,
+          content: report.content,
+          likes: report.likes,
+          liked: report.liked,
+          autor: report.user!.nickname,
+          title: report.title,
+          avatar: report.user!.avatar!,
+          reason: reason,
+          isOwner: report.isOwner,
+          controller: controller,
+          data: {
+            'userId': userId,
+            'contentId': report.id,
+            'vicioId': report.idVicio,
+          },
+          report: report,
+        );
 }

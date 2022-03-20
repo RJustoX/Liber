@@ -17,17 +17,17 @@ class HomeController {
     } else {
       result = 'Boa noite';
     }
-    return '$result $name';
+    return '$result, $name';
   }
 
   List<Map<String, dynamic>> getFeatures() {
     List<Map<String, dynamic>> featureData = <Map<String, dynamic>>[
-      <String, dynamic>{
-        'icon': 'assets/healthIcon.png',
-        'title': 'Saúde',
-        'desc': 'Informações sobre doenças e maleficios derivadas do vicio.',
-        'route': HealthView(),
-      },
+      // <String, dynamic>{
+      //   'icon': 'assets/healthIcon.png',
+      //   'title': 'Saúde',
+      //   'desc': 'Informações sobre doenças e maleficios derivadas do vicio.',
+      //   'route': HealthView(),
+      // },
       <String, dynamic>{
         'icon': 'assets/goalIcon.png',
         'title': 'Metas',
