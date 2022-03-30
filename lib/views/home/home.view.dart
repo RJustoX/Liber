@@ -21,8 +21,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin {
-  late UserStore _uStore;
-  late VicioStore _vStore;
+  UserStore? _uStore;
+  VicioStore? _vStore;
   late String avatarUrl;
   HomeController? _homeController;
   late List<Map<String, String>> dataMap;
@@ -30,8 +30,8 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _uStore = Provider.of<UserStore>(context);
-    _vStore = Provider.of<VicioStore>(context);
+    _uStore ??= Provider.of<UserStore>(context);
+    _vStore ??= Provider.of<VicioStore>(context);
     _homeController ??= HomeController();
     _initialFetch();
   }
@@ -52,14 +52,12 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return ProfileView(
-                            _initialFetch,
-                          );
+                          return ProfileView(() {});
                         },
                       ),
                     );
                   },
-                  child: _uStore.user!.avatar != ''
+                  child: _uStore!.user!.avatar != ''
                       ? CircleAvatar(
                           backgroundColor: Colors.grey,
                           backgroundImage: CachedNetworkImageProvider(avatarUrl))
@@ -76,7 +74,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(_uStore.user!.name),
+                  Text(_uStore!.user!.name),
                   Row(
                     children: <Widget>[
                       Icon(
@@ -86,13 +84,13 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                       SizedBox(
                         width: 5.0,
                       ),
-                      Text('${_vStore.vicio?.score}'),
+                      Text('${_vStore!.vicio?.score}'),
                     ],
                   ),
                 ],
               ),
               actions: <Widget>[
-                VicioAvatarComponent(_vStore.vicio!),
+                VicioAvatarComponent(_vStore!.vicio!),
                 SizedBox(
                   width: 5.0,
                 ),
@@ -163,7 +161,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                       child: Column(
                         children: [
                           Text(
-                            _homeController!.getInitialMessage(_uStore.user!.name),
+                            _homeController!.getInitialMessage(_uStore!.user!.name),
                             style: TextStyle(
                               color: AppColors.backgroundColor,
                               fontSize: 22.0.sp,
@@ -207,8 +205,8 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
   }
 
   Future<void> _initialFetch() async {
-    if (_uStore.user!.avatar != '') {
-      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.id);
+    if (_uStore!.user!.avatar != '') {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore!.user!.id);
 
       print(avatarUrl);
     }
@@ -219,7 +217,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
         'desc': 'Dias',
       },
       {
-        'value': 'R\$: ${_uStore.user?.savings}',
+        'value': 'R\$: ${_uStore!.user?.savings}',
         'desc': 'Economizados',
       },
       {

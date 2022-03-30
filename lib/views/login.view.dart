@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nicotine/components/logo.components.dart';
 import 'package:nicotine/controllers/login.controller.dart';
 import 'package:nicotine/models/login.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
@@ -40,37 +41,14 @@ class _LoginViewState extends State<LoginView> {
             width: 1.sw,
             height: 1.sh,
             child: Padding(
-              padding: EdgeInsets.only(top: 80.h),
+              padding: EdgeInsets.only(top: 50.h),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: <Widget>[
-                          Container(
-                            width: 140.0.r,
-                            height: 140.0.r,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(70.r),
-                              color: AppColors.secondaryColor,
-                            ),
-                          ),
-                          Text(
-                            'Nicotine',
-                            style: TextStyle(
-                              color: HexColor('#F4F5F5'),
-                              fontSize: 50.0.sp,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: LogoComponent(size: 160.h),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 50.0.w, bottom: 25.0.h, top: 30.h),

@@ -30,8 +30,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late UserStore _uStore;
-  late VicioStore _vStore;
+  UserStore? _uStore;
+  VicioStore? _vStore;
   bool uploading = false, loading = true;
   double percent = 0;
   String? ref;
@@ -39,13 +39,13 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void didChangeDependencies() async {
-    _uStore = Provider.of<UserStore>(context);
-    _vStore = Provider.of<VicioStore>(context);
-    ref = 'images/${_uStore.user!.id}/avatar/img-${DateTime.now().toString()}.jpg';
+    _uStore ??= Provider.of<UserStore>(context);
+    _vStore ??= Provider.of<VicioStore>(context);
+    ref = 'images/${_uStore!.user!.id}/avatar/img-${DateTime.now().toString()}.jpg';
     super.didChangeDependencies();
 
-    if (_uStore.user!.avatar != '') {
-      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore.user!.id);
+    if (_uStore!.user!.avatar != '') {
+      avatarUrl = await FirebaseProvider().getUserAvatar(_uStore!.user!.id);
       setState(() {
         print(avatarUrl);
         loading = false;
@@ -70,10 +70,10 @@ class _ProfileViewState extends State<ProfileView> {
         } else if (snapshot.state == TaskState.success) {
           avatarUrl = await FirebaseStorage.instance.ref(ref).getDownloadURL();
 
-          await ApiProvider().changeUserAvatar(_uStore.user!.id, avatarUrl);
+          await ApiProvider().changeUserAvatar(_uStore!.user!.id, avatarUrl);
           setState(() {
             uploading = false;
-            print(_uStore.user!.avatar);
+            print(_uStore!.user!.avatar);
           });
         }
       });
@@ -170,7 +170,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Padding(
                           padding: EdgeInsets.only(left: 35.w, top: 10.h),
                           child: Text(
-                            _uStore.user!.nickname,
+                            _uStore!.user!.nickname,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -191,7 +191,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 width: 15.w,
                               ),
                               Text(
-                                '${_vStore.vicio?.score ?? 0}',
+                                '${_vStore!.vicio?.score ?? 0}',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -210,7 +210,7 @@ class _ProfileViewState extends State<ProfileView> {
                     child: Column(
                       children: <Widget>[
                         ViciosComponents(
-                          vicios: _uStore.user!.vicios!,
+                          vicios: _uStore!.user!.vicios!,
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 30.0.h),
@@ -225,7 +225,7 @@ class _ProfileViewState extends State<ProfileView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                _uStore.user!.name,
+                                _uStore!.user!.name,
                                 style: TextStyle(
                                   color: Colors.black87,
                                   fontWeight: FontWeight.w600,
@@ -233,7 +233,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 ),
                               ),
                               Text(
-                                _uStore.user!.email,
+                                _uStore!.user!.email,
                                 style: TextStyle(
                                   color: Colors.black45,
                                   fontWeight: FontWeight.w600,
@@ -302,7 +302,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   ))
                             ],
                           )
-                        : _uStore.user!.avatar != ''
+                        : _uStore!.user!.avatar != ''
                             ? null
                             : Icon(
                                 Icons.person,

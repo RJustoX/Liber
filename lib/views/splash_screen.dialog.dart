@@ -20,8 +20,8 @@ class SplashScreenDialog extends StatefulWidget {
 
 class _SplashScreenDialogState extends State<SplashScreenDialog> {
   bool loading = true;
-  late UserStore _uStore;
-  late VicioStore _vStore;
+  UserStore? _uStore;
+  VicioStore? _vStore;
   late MainController _controller;
 
   Future<void> _initialFetch() async {
@@ -36,10 +36,10 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
 
   @override
   void didChangeDependencies() {
-    _uStore = Provider.of<UserStore>(context);
-    _vStore = Provider.of<VicioStore>(context);
-    super.didChangeDependencies();
-    _controller = MainController(_uStore, _vStore);
+    _uStore ??= Provider.of<UserStore>(context);
+    _vStore ??= Provider.of<VicioStore>(context);
+
+    _controller = MainController(_uStore!, _vStore!);
     _initialFetch().then((void value) {
       getSession().then(
         (int value) {
@@ -58,6 +58,7 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
         },
       );
     });
+    super.didChangeDependencies();
   }
 
   @override
@@ -74,10 +75,11 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.12,
             ),
             LogoComponent(
-              size: 120,
+              size: 400.h,
+              fullLogo: true,
             ),
             Spacer(),
             loading
@@ -158,7 +160,7 @@ class _SplashScreenDialogState extends State<SplashScreenDialog> {
     int result = 1;
     if (sharedPreferences.getInt('token') == null) {
       return 0;
-    } else if (_uStore.user!.gender == null) {
+    } else if (_uStore!.user!.gender == null) {
       return 2;
     }
     return result;

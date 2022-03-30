@@ -41,7 +41,7 @@ class _IntroductionViewState extends State<IntroductionView> {
             child: Column(
               children: [
                 Text(
-                  'Seja bem vindo ao Nicotine',
+                  'Seja bem vindo ao Liber',
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -58,7 +58,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                   ),
                 ),
                 Text(
-                  'Estamos muito contentes por teres dado este primeiro passo rumo a uma vida sem cigarros!',
+                  'Estamos muito contentes por teres dado este primeiro passo rumo a uma vida livre do vicio!',
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -84,7 +84,7 @@ class _IntroductionViewState extends State<IntroductionView> {
             child: Column(
               children: [
                 Text(
-                  'O caminho para uma vida sem cigarros não será fácil!',
+                  'O caminho para uma vida sem seu vício não será fácil!',
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -101,7 +101,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                   ),
                 ),
                 Text(
-                  'Lutar contra a abstinencia não será fácil, vai ser preciso muita determinação! vamos tentar ajuda-lo, mas lembre-se que só você pode tomar o controle de sua vida de volta.',
+                  'Lutar contra a abstinencia não é uma tarefa fácil, vai ser preciso muita determinação! vamos tentar ajuda-lo, mas lembre-se que só você pode tomar o controle de sua vida de volta.',
                   style: TextStyle(
                     fontSize: 18,
                   ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nicotine/components/button/default_primary_button.component.dart';
+import 'package:nicotine/components/logo.components.dart';
 import 'package:nicotine/controllers/logon.controller.dart';
 import 'package:nicotine/dialogs/logon_info.dialog.dart';
 import 'package:nicotine/models/user.model.dart';
 import 'package:nicotine/utils/app_colors.dart';
 import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/login.view.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LogonView extends StatefulWidget {
   @override
@@ -34,38 +36,16 @@ class _LogonViewState extends State<LogonView> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height + 140,
           child: Padding(
-            padding: const EdgeInsets.only(top: 70),
+            padding: const EdgeInsets.only(top: 80),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    clipBehavior: Clip.none,
-                    children: <Widget>[
-                      Container(
-                        width: 100.0,
-                        height: 100.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(60),
-                          color: AppColors.secondaryColor,
-                        ),
-                      ),
-                      Text(
-                        'Nicotine',
-                        style: TextStyle(
-                          color: HexColor('#F4F5F5'),
-                          fontSize: 38.0,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.italic,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    child: LogoComponent(
+                  size: 130.h,
+                )),
                 Padding(
-                  padding: const EdgeInsets.only(left: 40.0, bottom: 20.0, top: 30),
+                  padding: const EdgeInsets.only(left: 40.0, bottom: 20.0, top: 20),
                   child: Text(
                     'Cadastro',
                     style: TextStyle(

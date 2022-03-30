@@ -1,7 +1,6 @@
 import 'package:nicotine/game/game.view.dart';
-import 'package:nicotine/views/health/health.view.dart';
 import 'package:nicotine/views/home/goal.view.dart';
-import 'package:nicotine/views/progress/progress.view.dart';
+import '../views/health/health.view.dart';
 
 class HomeController {
   HomeController();
@@ -22,12 +21,12 @@ class HomeController {
 
   List<Map<String, dynamic>> getFeatures() {
     List<Map<String, dynamic>> featureData = <Map<String, dynamic>>[
-      // <String, dynamic>{
-      //   'icon': 'assets/healthIcon.png',
-      //   'title': 'Saúde',
-      //   'desc': 'Informações sobre doenças e maleficios derivadas do vicio.',
-      //   'route': HealthView(),
-      // },
+      <String, dynamic>{
+        'icon': 'assets/healthIcon.png',
+        'title': 'Saúde',
+        'desc': 'Informações sobre doenças e maleficios derivadas do vicio.',
+        'route': HealthView(),
+      },
       <String, dynamic>{
         'icon': 'assets/goalIcon.png',
         'title': 'Metas',
@@ -40,12 +39,12 @@ class HomeController {
         'desc': 'Lute contra a abstinencia se distraindo e exercitando sua memória!',
         'route': GameView(),
       },
-      <String, dynamic>{
-        'icon': 'assets/strengIcon.png',
-        'title': 'Acompanhamento',
-        'desc': 'Acompanhe seu progresso em se desvencilhar do seu vicio.',
-        'route': ProgressView(),
-      },
+      // <String, dynamic>{
+      //   'icon': 'assets/strengIcon.png',
+      //   'title': 'Acompanhamento',
+      //   'desc': 'Acompanhe seu progresso em se desvencilhar do seu vicio.',
+      //   'route': ProgressView(),
+      // },
     ];
     return featureData;
   }

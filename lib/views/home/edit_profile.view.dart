@@ -20,18 +20,18 @@ class EditProfileView extends StatefulWidget {
 }
 
 class _EditProfileViewState extends State<EditProfileView> {
-  late UserStore _uStore;
+  UserStore? _uStore;
   late UserModel _updateUser;
 
   @override
   void didChangeDependencies() {
-    _uStore = Provider.of<UserStore>(context);
+    _uStore ??= Provider.of<UserStore>(context);
     _updateUser = UserModel(
-      id: _uStore.user!.id,
-      name: _uStore.user!.name,
-      email: _uStore.user!.email,
-      nickname: _uStore.user!.nickname,
-      birthDate: _uStore.user!.birthDate,
+      id: _uStore!.user!.id,
+      name: _uStore!.user!.name,
+      email: _uStore!.user!.email,
+      nickname: _uStore!.user!.nickname,
+      birthDate: _uStore!.user!.birthDate,
     );
 
     super.didChangeDependencies();
@@ -125,7 +125,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                 showDatePicker(
                   context: context,
                   firstDate: DateTime(1900),
-                  initialDate: _uStore.user!.birthDate ?? DateTime(DateTime.now().year - 18, 5),
+                  initialDate: _uStore!.user!.birthDate ?? DateTime(DateTime.now().year - 18, 5),
                   lastDate: DateTime(DateTime.now().year - 18, 5, 30),
                   errorInvalidText: 'Data inválida',
                 ).then(

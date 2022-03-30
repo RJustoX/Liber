@@ -46,7 +46,7 @@ class _RankingTileComponentState extends State<RankingTileComponent> {
           Padding(
             padding: EdgeInsets.only(right: 10.0.w),
             child: CircleAvatar(
-              backgroundImage: !loading && widget.user.avatar != ''
+              backgroundImage: !loading && widget.user.avatar != '' && widget.user.avatar != null
                   ? CachedNetworkImageProvider(widget.user.avatar!)
                   : null,
               child: widget.user.avatar == '' ? Icon(Icons.person) : null,

@@ -57,7 +57,9 @@ class _DefaultTextInputComponentState extends State<DefaultTextInputComponent> {
                   } else
                     return null;
                 }
-              : (value) {},
+              : (value) {
+                  return null;
+                },
           onSaved: widget.onSaved,
         ),
       ],
