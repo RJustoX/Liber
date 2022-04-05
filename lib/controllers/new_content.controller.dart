@@ -47,7 +47,10 @@ class NewContentController {
     return reasons.firstWhere((dynamic reason) => reason.id == id).logo;
   }
 
-  CategoryModel getCategory(int id) {
-    return categories.firstWhere((dynamic category) => category.id == id);
+  CategoryModel? getCategory(int id) {
+    return categories.firstWhere(
+      (dynamic category) => category.id == id,
+      orElse: () => null,
+    );
   }
 }

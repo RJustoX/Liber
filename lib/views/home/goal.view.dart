@@ -136,7 +136,7 @@ class _GoalViewState extends State<GoalView> {
                               ),
                               const SizedBox(height: 2.5),
                               Text(
-                                'R\$: 7,50',
+                                'R\$: ${_uStore.user?.daySave}',
                                 style: TextStyle(
                                   color: HexColor('#617188'),
                                   fontWeight: FontWeight.w600,
@@ -165,7 +165,7 @@ class _GoalViewState extends State<GoalView> {
                               ),
                               const SizedBox(height: 2.5),
                               Text(
-                                'R\$: 15,00',
+                                'R\$: ${_uStore.user?.savings}',
                                 style: TextStyle(
                                   color: HexColor('#617188'),
                                   fontWeight: FontWeight.w600,

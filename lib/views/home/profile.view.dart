@@ -42,7 +42,6 @@ class _ProfileViewState extends State<ProfileView> {
     _uStore ??= Provider.of<UserStore>(context);
     _vStore ??= Provider.of<VicioStore>(context);
     ref = 'images/${_uStore!.user!.id}/avatar/img-${DateTime.now().toString()}.jpg';
-    super.didChangeDependencies();
 
     if (_uStore!.user!.avatar != '') {
       avatarUrl = await FirebaseProvider().getUserAvatar(_uStore!.user!.id);
@@ -51,6 +50,7 @@ class _ProfileViewState extends State<ProfileView> {
         loading = false;
       });
     }
+    super.didChangeDependencies();
   }
 
   pickAndUploadImage(ImageSource source) async {

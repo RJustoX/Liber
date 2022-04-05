@@ -210,10 +210,11 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
 
       print(avatarUrl);
     }
+    String days = _uStore!.user?.email == 'rafael.justo@gmail.com' ? '24' : '0';
 
     dataMap = [
       {
-        'value': '27',
+        'value': days,
         'desc': 'Dias',
       },
       {

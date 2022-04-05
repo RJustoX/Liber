@@ -58,22 +58,6 @@ class GoalCardComponent extends StatelessWidget {
                     ),
                     Row(
                       children: <Widget>[
-                        Text(
-                          '+${goal.pontos}',
-                          style: TextStyle(
-                            color: HexColor('#617188'),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0.sp,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Icon(
-                          FontAwesomeIcons.trophy,
-                          size: 23.r,
-                          color: HexColor('#617188'),
-                        ),
                         Spacer(),
                         RichText(
                           text: TextSpan(
@@ -101,7 +85,7 @@ class GoalCardComponent extends StatelessWidget {
                     ),
                     goal.active
                         ? Text(
-                            'Conseguirá comprar em: 12/11/2021',
+                            '',
                             style: TextStyle(
                               color: HexColor('#617188'),
                               fontWeight: FontWeight.w600,

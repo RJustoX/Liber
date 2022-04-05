@@ -12,6 +12,8 @@ import 'package:nicotine/utils/toast.util.dart';
 import 'package:nicotine/views/main.view.dart';
 import 'package:provider/provider.dart';
 
+import '../components/input/default_value_input.component.dart';
+
 class LogonInfoDialog extends StatefulWidget {
   const LogonInfoDialog();
 
@@ -25,34 +27,28 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
   int currentIndex = 0;
   late String vicioId = '';
   PageController? _pageController;
-  late LogonController _controller;
-  late UserStore _uStore;
+  LogonController? _controller;
+  UserStore? _uStore;
 
   Future<void> _initialFetch() async {
     try {
-      await _controller.fetchVicios();
+      await _controller!.fetchVicios();
     } catch (error) {
       ToastUtil.error(error.toString());
       print(error.toString());
     }
 
-    if (mounted) setState(() => _controller.loading = false);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = LogonController();
+    if (mounted) setState(() => _controller!.loading = false);
   }
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _uStore = Provider.of<UserStore>(context);
+    _controller ??= LogonController();
+    _uStore ??= Provider.of<UserStore>(context);
     _initialFetch();
 
     _pageController ??= PageController(initialPage: 0, keepPage: true);
+    super.didChangeDependencies();
   }
 
   @override
@@ -68,7 +64,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
         ),
         centerTitle: true,
       ),
-      body: _controller.loading
+      body: _controller!.loading
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -114,7 +110,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                 ),
               ),
             Spacer(),
-            if (!_controller.loading)
+            if (!_controller!.loading)
               TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor:
@@ -134,8 +130,8 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                             });
                           }
                         : () async {
-                            await _controller
-                                .finalizaCadastro(_uStore.user!, int.parse(vicioId))
+                            await _controller!
+                                .finalizaCadastro(_uStore!.user!, int.parse(vicioId))
                                 .then(
                               (_) {
                                 ToastUtil.success('Seja bem vindo!');
@@ -201,10 +197,10 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   ),
                   Spacer(),
                   DateTimeField(
-                    initialValue: _uStore.user?.birthDate,
+                    initialValue: _uStore!.user?.birthDate,
                     autocorrect: true,
                     onChanged: (DateTime? date) {
-                      setState(() => _uStore.user!.birthDate = date!);
+                      setState(() => _uStore!.user!.birthDate = date!);
                     },
                     decoration: const InputDecoration(
                         hintText: 'Clique para inserir',
@@ -216,7 +212,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                         context: context,
                         firstDate: DateTime(1900),
                         initialDate:
-                            _uStore.user!.birthDate ?? DateTime(DateTime.now().year - 18, 5),
+                            _uStore!.user?.birthDate ?? DateTime(DateTime.now().year - 18, 5),
                         lastDate: DateTime(DateTime.now().year - 18, 5, 30),
                         errorInvalidText: 'Data inválida',
                       );
@@ -289,7 +285,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   dense: true,
                   value: 1,
                   activeColor: Theme.of(context).primaryColor,
-                  groupValue: _uStore.user?.gender,
+                  groupValue: _uStore!.user?.gender,
                   title: Text(
                     'Masculino',
                     style: const TextStyle(fontSize: 14.0),
@@ -297,7 +293,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   onChanged: (int? value) {
                     if (value != null)
                       setState(() {
-                        _uStore.user!.gender = value;
+                        _uStore!.user!.gender = value;
                       });
                   },
                 ),
@@ -306,7 +302,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   dense: true,
                   value: 2,
                   activeColor: Theme.of(context).primaryColor,
-                  groupValue: _uStore.user?.gender,
+                  groupValue: _uStore!.user?.gender,
                   title: Text(
                     'Feminino',
                     style: const TextStyle(fontSize: 14.0),
@@ -314,7 +310,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
                   onChanged: (int? value) {
                     if (value != null)
                       setState(() {
-                        _uStore.user!.gender = value;
+                        _uStore!.user!.gender = value;
                       });
                   },
                 ),
@@ -375,7 +371,7 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
     return Column(
       children: <Widget>[
         Text(
-          'Por qual razão gostaria de desvencilhar deste vicio?',
+          'Em média, quanto você gasta diariamente com seu vicio?',
           style: TextStyle(
             color: AppColors.primaryFontColor,
             fontWeight: FontWeight.w600,
@@ -384,14 +380,60 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
           textAlign: TextAlign.center,
         ),
         Spacer(),
-        Text(
-          'Em Breve!',
-          style: TextStyle(
-            color: AppColors.primaryFontColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 32.sp,
-          ),
-          textAlign: TextAlign.center,
+        Container(
+          height: 85.h,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Text(
+              'Valor',
+              style: TextStyle(
+                color: HexColor('#B0B4C0'),
+                fontSize: 18.0.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextFormField(
+              initialValue: '10.00',
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: HexColor('#B0B4C0'),
+                fontSize: 18.0.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: HexColor('#B0B4C0'),
+                  ),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: HexColor('#B0B4C0'),
+                  ),
+                ),
+                prefix: Text(
+                  'R\$: ',
+                  style: TextStyle(
+                    color: HexColor('#B0B4C0'),
+                    fontSize: 14.0.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                hintText: '0,00',
+                hintStyle: TextStyle(
+                  color: HexColor('#B0B4C0'),
+                  fontSize: 18.0.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onChanged: (String? value) {
+                if (value != null) {
+                  setState(() {
+                    _uStore!.user!.daySave = double.parse(value);
+                  });
+                }
+              },
+            ),
+          ]),
         ),
         Spacer(),
       ],
@@ -400,8 +442,8 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
 
   List<Widget> buildVicioTiles() {
     List<Widget> tiles = [];
-    int lenght = _controller.getVicios().length;
-    for (VicioModel vicio in _controller.getVicios()) {
+    int lenght = _controller!.getVicios().length;
+    for (VicioModel vicio in _controller!.getVicios()) {
       tiles.add(
         Container(
           child: Padding(
@@ -446,16 +488,16 @@ class _LogonInfoDialogState extends State<LogonInfoDialog> {
     bool result = false;
     switch (currentIndex) {
       case 0:
-        result = _uStore.user?.birthDate != null;
+        result = _uStore!.user?.birthDate != null;
         break;
       case 1:
-        result = _uStore.user?.gender != null;
+        result = _uStore!.user?.gender != null;
         break;
       case 2:
         result = vicioId != '';
         break;
       case 3:
-        result = true;
+        result = _uStore!.user?.daySave != null;
         break;
     }
     return result;

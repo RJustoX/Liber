@@ -44,6 +44,7 @@ class ApiProvider {
       'birthDate': user.birthDate!.toIso8601String(),
       'sex': user.gender,
       'vicioId': idvicio,
+      'daySave': user.daySave,
     });
   }
 

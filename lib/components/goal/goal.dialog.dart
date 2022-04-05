@@ -110,7 +110,7 @@ class GoalDialog extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 20.h, bottom: 15.h),
                   child: Text(
-                    'Conseguira comprar em: 12/10/2022',
+                    '',
                     style: TextStyle(
                       color: AppColors.primaryFontColor,
                       fontSize: 16.sp,
